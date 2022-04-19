@@ -3,7 +3,7 @@
 // When a New order has been completed then write a record in the wis_order_temp table
 // If this is called with a
 
-namespace Drupal\prjo_dap_gql\Controller;
+namespace Drupal\prjo_dap\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Component\Serialization\Json as Json;
@@ -29,11 +29,11 @@ class Outline extends ControllerBase {
       '#theme' => 'evaluation_outline',
       '#attached' => [
         'library' => [
-          // 'prjo_dap_gql/jQuery-contextMenu',
-          'prjo_dap_gql/bootstrap-multiselect',
-          'prjo_dap_gql/plotly',
-          'prjo_dap_gql/outline-infograph',
-          // 'prjo_dap_gql/charts',
+          // 'prjo_dap/jQuery-contextMenu',
+          'prjo_dap/bootstrap-multiselect',
+          'prjo_dap/plotly',
+          'prjo_dap/outline-infograph',
+          // 'prjo_dap/charts',
         ],
         'drupalSettings' => [
           'prjo_dap' => [

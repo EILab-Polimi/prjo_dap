@@ -3,7 +3,7 @@
 // When a New order has been completed then write a record in the wis_order_temp table
 // If this is called with a
 
-namespace Drupal\prjo_dap_gql\Controller;
+namespace Drupal\prjo_dap\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Component\Serialization\Json as Json;
@@ -41,11 +41,11 @@ class Evaluation extends ControllerBase {
       // '#portfolios' => $rows_ins,
       '#attached' => [
         'library' => [
-          // 'prjo_dap_gql/jQuery-contextMenu',
-          'prjo_dap_gql/bootstrap-multiselect',
-          'prjo_dap_gql/plotly',
-          'prjo_dap_gql/test',
-          'prjo_dap_gql/charts',
+          // 'prjo_dap/jQuery-contextMenu',
+          'prjo_dap/bootstrap-multiselect',
+          'prjo_dap/plotly',
+          'prjo_dap/test',
+          'prjo_dap/charts',
         ]
       ],
     ];
@@ -60,11 +60,11 @@ class Evaluation extends ControllerBase {
       // '#portfolios' => $rows_ins,
       '#attached' => [
         'library' => [
-          // 'prjo_dap_gql/jQuery-contextMenu',
-          'prjo_dap_gql/bootstrap-multiselect',
-          'prjo_dap_gql/plotly',
-          'prjo_dap_gql/test-pyplotly',
-          // 'prjo_dap_gql/charts',
+          // 'prjo_dap/jQuery-contextMenu',
+          'prjo_dap/bootstrap-multiselect',
+          'prjo_dap/plotly',
+          'prjo_dap/test-pyplotly',
+          // 'prjo_dap/charts',
         ]
       ],
     ];

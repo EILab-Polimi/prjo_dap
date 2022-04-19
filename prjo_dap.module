@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains prjo_dap_gql.module.
+ * Contains prjo_dap.module.
  */
 
 use Drupal\Core\Routing\RouteMatchInterface;
@@ -10,10 +10,10 @@ use Drupal\Core\Routing\RouteMatchInterface;
 /**
  * Implements hook_help().
  */
-function prjo_dap_gql_help($route_name, RouteMatchInterface $route_match) {
+function prjo_dap_help($route_name, RouteMatchInterface $route_match) {
   switch ($route_name) {
-    // Main module help for the prjo_dap_gql module.
-    case 'help.page.prjo_dap_gql':
+    // Main module help for the prjo_dap module.
+    case 'help.page.prjo_dap':
       $output = '';
       $output .= '<h3>' . t('About') . '</h3>';
       $output .= '<p>' . t('My Awesome Module') . '</p>';
@@ -26,9 +26,9 @@ function prjo_dap_gql_help($route_name, RouteMatchInterface $route_match) {
 /**
  * Implements hook_theme().
  */
-function prjo_dap_gql_theme() {
+function prjo_dap_theme() {
   return [
-    // 'prjo_dap_gql' => [
+    // 'prjo_dap' => [
     //   'render element' => 'children',
     // ],
     'portfolios' => [
