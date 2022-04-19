@@ -24,15 +24,15 @@ class Portfolios extends ControllerBase {
 
     // Use external database
     // db_set_active('prjo_dap_v2');
-    $connection = Database::getConnection('prjo_dap_v2', 'default');
-    // $query_test = $connection->query("SELECT DISTINCT storage.exp AS storage_exp
-    //                         FROM
-    //                         {storage} storage");
+    $connection = Database::getConnection('prjo_dap', 'default');
+    $query_test = $connection->query("SELECT DISTINCT storage.exp AS storage_exp
+                            FROM
+                            {storage} storage");
     // $query_test = $connection->query("SELECT DISTINCT storage.exp AS storage_exp
     //                         FROM
     //                         {storage} storage");
 
-    $query_test = $connection->query("SELECT * FROM {storage}");
+    // $query_test = $connection->query("SELECT * FROM {storage}");
 
     $rows_ins = $query_test->fetchAll();
 
