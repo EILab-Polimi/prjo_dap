@@ -7,7 +7,7 @@ namespace Drupal\prjo_dap\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Component\Serialization\Json as Json;
-
+use Drupal\Core\Database\Database;
 // use Drupal\Core\Language;
 // use \Drupal\Core\Entity\EntityDefinitionUpdateManager;
 // use Symfony\Component\HttpFoundation\Response;
@@ -23,7 +23,8 @@ class Portfolios extends ControllerBase {
   public function portfolios() {
 
     // Use external database
-    db_set_active('prjo_dap_v2');
+    // db_set_active('prjo_dap_v2');
+    $connection = Database::getConnection('prjo_dap_v2', 'default');
     $query_test = db_query("SELECT DISTINCT storage.exp AS storage_exp
                             FROM
                             {storage} storage");
