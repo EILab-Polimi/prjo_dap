@@ -16,7 +16,7 @@
       $('#wpp').once().each(function() {
         $.ajax({
             type: 'GET',
-            url: 'http://fastapi:8008/portfolios',
+            url: 'http://fastapi:8000/portfolios',
             success: parseJson,
             // complete: setGCjsonObject,
         });
@@ -36,7 +36,7 @@
 
         $.ajax({
             type: 'GET',
-            url: 'http://fastapi:8008/indicators/graph_test',
+            url: 'http://fastapi:8000/indicators/graph_test',
             success: parseHTML,
             // complete: setGCjsonObject,
         });
@@ -54,7 +54,7 @@
 
         $.ajax({
             type: 'GET',
-            url: 'http://fastapi:8008/indicators/graph_params?i_label=mean_y&i_name=yearly mean&var=s&scen=rcp8.5&loc=Locone',
+            url: 'http://fastapi:8000/indicators/graph_params?i_label=mean_y&i_name=yearly mean&var=s&scen=rcp8.5&loc=Locone',
             success: parseHTML,
             // complete: setGCjsonObject,
         });
