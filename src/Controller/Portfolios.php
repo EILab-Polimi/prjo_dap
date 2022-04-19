@@ -39,7 +39,7 @@ class Portfolios extends ControllerBase {
     // dpm($rows_ins);
     // Go back to the default database,
     // otherwise Drupal will not be able to access its own data later on.
-    db_set_active();
+    // db_set_active();
 
     $build = [
       // '#theme' => 'message_water_request',
