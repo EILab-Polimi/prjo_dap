@@ -42,7 +42,7 @@ class Evaluation extends ControllerBase {
       '#attached' => [
         'library' => [
           // 'prjo_dap/jQuery-contextMenu',
-          'prjo_dap/bootstrap-multiselect',
+          // 'prjo_dap/bootstrap-multiselect',
           'prjo_dap/plotly',
           'prjo_dap/test',
           'prjo_dap/charts',
