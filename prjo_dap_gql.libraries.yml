@@ -1,0 +1,41 @@
+
+plotly:
+  version: 1.58.4
+  js:
+    /libraries/plotlyjs/plotly-latest.min.js: {}
+
+# jQuery-contextMenu:
+#   version: 3.x
+#   js:
+#     /libraries/jQuery-contextMenu/dist/jquery.contextMenu.min.js: {}
+#   css:
+#     component:
+#       /libraries/jQuery-contextMenu/dist/jquery.contextMenu.min.css: {}
+
+bootstrap-multiselect:
+  version: 1.x
+  js:
+    /libraries/bootstrap-multiselect/dist/js/bootstrap-multiselect.min.js: {}
+  css:
+    component:
+      /libraries/bootstrap-multiselect/dist/css/bootstrap-multiselect.min.css: {}
+
+test:
+  version: 1.x
+  js:
+    js/test_graph.js: {}
+
+test-pyplotly:
+  version: 1.x
+  js:
+    js/test_pyplotly.js: {}
+
+charts:
+  version: 1.x
+  js:
+    js/multi_card_charts.js: {}
+
+outline-infograph:
+  version: 1.x
+  js:
+    js/outline_infograph.js: {}

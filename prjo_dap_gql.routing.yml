@@ -1,0 +1,65 @@
+
+# Portfolios page
+prjo_dap_gql.portfolios:
+  path: '/dap_portfolios'
+  defaults:
+    _controller: '\Drupal\prjo_dap_gql\Controller\Portfolios::portfolios'
+    _title: 'Portfolios'
+  requirements:
+    _permission: 'access content'
+
+# # Outline pages
+prjo_dap_gql.out_infograph:
+  path: '/dap_out_infograph/{wpp}'
+  defaults:
+    _controller: '\Drupal\prjo_dap_gql\Controller\Outline::infograph'
+    # _title: ''
+  options:
+    parameters:
+      wpp:
+        type: string  
+  requirements:
+    _permission: 'access content'
+
+# prjo_dap_gql.out_map:
+#   path: '/dap_out_map'
+#   defaults:
+#     _controller: '\Drupal\prjo_dap_gql\Controller\Outline::map'
+#     # _title: ''
+#   requirements:
+#     _permission: 'access content'
+
+# # Evaluation pages
+prjo_dap_gql.eval_infograph:
+  path: '/dap_eval_infograph'
+  defaults:
+    _controller: '\Drupal\prjo_dap_gql\Controller\Evaluation::infograph'
+    # _title: ''
+  requirements:
+    _permission: 'access content'
+
+prjo_dap_gql.eval_pyplotly:
+  path: '/dap_eval_pyplotly'
+  defaults:
+    _controller: '\Drupal\prjo_dap_gql\Controller\Evaluation::pyplotly'
+    # _title: ''
+  requirements:
+    _permission: 'access content'
+
+#
+# prjo_dap_gql.eval_map:
+#   path: '/dap_eval_map'
+#   defaults:
+#     _controller: '\Drupal\prjo_dap_gql\Controller\Eval::map'
+#     # _title: ''
+#   requirements:
+#     _permission: 'access content'
+#
+# # Comparison graph page
+# prjo_dap_gql.comparison:
+#   path: '/dap_comparison'
+#   defaults:
+#     _controller: '\Drupal\prjo_dap_gql\Controller\Comparison::comparison'
+#     # _title: ''
+#   requirements:
+#     _permission: 'access content'

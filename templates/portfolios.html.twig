@@ -1,0 +1,53 @@
+
+<div class="row">
+  <div class="col">
+    <div class="card">
+      <div class="card-header">
+        WPP portfolios list
+        {# {{ dpm(portfolios) }} #}
+      </div>
+      <div class="card-body">
+        <table class="table">
+          <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Scenarios</th>
+                <th scope="col">Description</th>
+                <th scope="col">Outline</th>
+                <th scope="col">Evaluations</th>
+              </tr>
+            </thead>
+          {% for value in portfolios %}
+            {# {{ dpm(value.storage_exp) }} #}
+            <tr>
+              <td>
+                <span class="fa-stack">
+                  <i class="fas fa-circle fa-stack-2x text-primary"></i>
+                  <i class="fas fa-folder-open fa-stack-1x fa-inverse"></i>
+                </span>
+                {{ value.storage_exp }}</td>
+              <td>4</td>
+              <td>Test description</td>
+              <td>
+                <!-- <a type="button" class="btn" href="{# {{ url('prjo_dap_gql.out_infograph', { 'wpp': 'test' }) }} #}"> -->
+
+                <!-- https://www.drupal.org/docs/theming-drupal/twig-in-drupal/functions-in-twig-templates#s-urlname-parameters-options -->
+                <a type="button" class="btn" href="{{ url('prjo_dap_gql.out_infograph', { 'wpp': value.storage_exp }) }}">
+                  <i class="far fa-eye text-primary"></i>
+                </a>
+              </td>
+              <td>
+                <a type="button" class="btn">
+                  <i class="far fa-eye text-primary"></i>
+                </a>
+                <a type="button" class="btn">
+                  <i class="far fa-map text-primary"></i>
+                </a>
+              </td>
+            </tr>
+          {% endfor %}
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

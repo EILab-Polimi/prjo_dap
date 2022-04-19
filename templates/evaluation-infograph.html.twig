@@ -1,0 +1,71 @@
+<div class="row">
+  <div class="col">
+    <h4 style="color:#395360;">Evaluation charts</h4>
+    <p style="font-size: 10px;">Analyze evaluation indicators of the selected combination of the WPP and scenario or choose a different one</p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+
+    <!-- Per avere i select come bottoni possiamo usare https://www.npmjs.com/package/bootstrap-select che però supporta fino a bootstrap4 -->
+    <div class="form-row align-items-center">
+
+      <!-- <div class="col-auto my-1">
+        <label class="mr-sm-2" for="wpp" style="font-size: 10px;">Selected water Portfolio</label>
+        <select class="custom-select mr-sm-2" id="wpp" style="background-color: #026698; color: white;">
+          <option value="0" selected>Choose...</option>
+          <option value="Bau">Bau</option>
+          <option value="WPP1">WPP1</option>
+          <option value="WPP2">WPP2</option>
+          <option value="WPP3">WPP3</option>
+          <option value="WPP4">WPP4</option>
+          <option value="hist">hist</option>
+        </select>
+      </div> -->
+      <!-- <div class="col-auto my-1">
+        <label class="mr-sm-2" for="scen" style="font-size: 10px;">Selected Scenario</label>
+        <select class="custom-select mr-sm-2" id="scen" style="background-color: #026698; color: white;">
+          <option value="0" selected>Choose...</option>
+          <option value="baseline">baseline</option>
+          <option value="rcp4.5">rcp4.5</option>
+          <option value="rcp8.5">rcp8.5</option>
+        </select>
+      </div> -->
+      <div class="col-auto my-1">
+        <label class="mr-sm-2" for="ind" style="font-size: 10px;">Selected Indicator</label>
+        <select class="custom-select mr-sm-2" id="ind" style="background-color: #026698; color: white;">
+          <option value="0" selected>Choose...</option>
+          <option value="yearly_mean">yearly mean</option>
+        </select>
+      </div>
+      <!-- <div class="col-auto my-1">
+        <label class="mr-sm-2" for="loc" style="font-size: 10px;">Selected Locality</label>
+        <select class="custom-select mr-sm-2" id="loc" style="background-color: #026698; color: white;">
+          <option value="0" selected>Choose...</option>
+          <option value="Pertusillo">Pertusillo</option>
+          <option value="Locone">Locone</option>
+          <option value="Occhito">Occhito</option>
+          <option value="MonteCotugno">MonteCotugno</option>
+          <option value="Conza">Conza</option>
+        </select>
+      </div> -->
+
+    </div>
+
+  </div>
+</div>
+
+<div id="charts_wrapper"></div>
+<div class="row mt-3">
+  <div class="col">
+    <div class="card">
+      <div class="card-header">
+        WPP Graph
+      </div>
+      <div class="card-body">
+        <div id="lineplotly"></div>
+      </div>
+    </div>
+  </div>
+</div>
