@@ -28,9 +28,11 @@ class Portfolios extends ControllerBase {
     // $query_test = $connection->query("SELECT DISTINCT storage.exp AS storage_exp
     //                         FROM
     //                         {storage} storage");
-    $query_test = $connection->query("SELECT DISTINCT storage.exp AS storage_exp
-                            FROM
-                            {output.storage} storage");
+    // $query_test = $connection->query("SELECT DISTINCT storage.exp AS storage_exp
+    //                         FROM
+    //                         {storage} storage");
+
+    $query_test = $connection->query("SELECT * FROM {storage}");
 
     $rows_ins = $query_test->fetchAll();
 
