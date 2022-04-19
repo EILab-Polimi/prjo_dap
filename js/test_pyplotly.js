@@ -16,18 +16,19 @@
       $('#wpp').once().each(function() {
         $.ajax({
             type: 'GET',
-            url: 'http://fastapi:8000/portfolios',
+            // url: 'http://fastapi:8000/portfolios',
+            url: 'http://localhost:8008/indicators/graph_test',
             success: parseJson,
             // complete: setGCjsonObject,
         });
 
         // Success function callback for the ajax call
         function parseJson (data, textStatus, jqXHR) {
-          // console.log(data);
-          const obj = JSON.parse(data);
-          $.each(obj.exp, function( index, value ) {
-            $('#wpp').append('<option value="'+value+'">'+value+'</option>');
-          })
+          console.log(data);
+          // const obj = JSON.parse(data);
+          // $.each(obj.exp, function( index, value ) {
+          //   $('#wpp').append('<option value="'+value+'">'+value+'</option>');
+          // })
         }
 
       });
@@ -43,28 +44,30 @@
 
         // Success function callback for the ajax call
         function parseHTML (data, textStatus, jqXHR) {
-
+          console.log(data);
           $('#lineplotly').append(data);
         }
 
       });
 
 
-      $('#parameters').once().each(function() {
-
-        $.ajax({
-            type: 'GET',
-            url: 'http://fastapi:8000/indicators/graph_params?i_label=mean_y&i_name=yearly mean&var=s&scen=rcp8.5&loc=Locone',
-            success: parseHTML,
-            // complete: setGCjsonObject,
-        });
-
-        // Success function callback for the ajax call
-        function parseHTML (data, textStatus, jqXHR) {
-          $('#parameters').append(data);
-        }
-
-      });
+      // $('#parameters').once().each(function() {
+      //
+      //   $.ajax({
+      //       type: 'GET',
+      //       // url: 'http://fastapi:8000/indicators/graph_params?i_label=mean_y&i_name=yearly mean&var=s&scen=rcp8.5&loc=Locone',
+      //       url: 'http://fastapi:8000/indicators/graph_test',
+      //       success: parseHTML,
+      //       // complete: setGCjsonObject,
+      //   });
+      //
+      //   // Success function callback for the ajax call
+      //   function parseHTML (data, textStatus, jqXHR) {
+      //     console.log(data);
+      //     $('#parameters').append(data);
+      //   }
+      //
+      // });
 
     }
   };
