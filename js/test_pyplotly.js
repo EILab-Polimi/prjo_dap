@@ -36,7 +36,7 @@
 
         $.ajax({
             type: 'GET',
-            url: 'http://localhost:8008/indicators/graph_test',
+            url: 'http://drupal:8008/indicators/graph_test',
             success: parseHTML,
             // complete: setGCjsonObject,
         });
