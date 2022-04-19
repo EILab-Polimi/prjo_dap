@@ -23,7 +23,7 @@ class Portfolios extends ControllerBase {
   public function portfolios() {
 
     // Use external database
-    db_set_active('prjo_dap');
+    db_set_active('prjo_dap_v2');
     $query_test = db_query("SELECT DISTINCT storage.exp AS storage_exp
                             FROM
                             {storage} storage");
