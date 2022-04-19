@@ -1,9 +1,7 @@
-name: GraphQL for DAP
+name: DAP
 type: module
-description: 'DAP GraphQL module.'
-package: GraphQL
-core: 8.x
-dependencies:
-  - graphql:graphql
-  - node:node
+description: 'DAP module.'
 core_version_requirement: ^8 || ^9
+package: ProjectO
+dependencies:
+  - node:node
