@@ -88,7 +88,7 @@ class Evaluation extends ControllerBase {
     $response = $this->httpClient->request('GET',
           'http://fastapi:8000/indicators/graph_test',
           [
-          'fullPage'=> False,
+          'fullPage' => 'False',
           // 'sort' => $sort,
           ]
       );
