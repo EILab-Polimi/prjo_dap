@@ -85,7 +85,7 @@ class Evaluation extends ControllerBase {
 
   public function pyplotly() {
 
-    $request = $this->httpClient->request('GET',
+    $response = $this->httpClient->request('GET',
           'http://fastapi:8000/indicators/graph_test',
           // [
           // 'limit' => $limit,
