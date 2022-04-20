@@ -7,6 +7,8 @@ namespace Drupal\prjo_dap\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Component\Serialization\Json as Json;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use GuzzleHttp\Client;
 
 // use Drupal\Core\Language;
 // use \Drupal\Core\Entity\EntityDefinitionUpdateManager;
@@ -16,6 +18,30 @@ use Drupal\Component\Serialization\Json as Json;
  * An example controller.
  */
 class Evaluation extends ControllerBase {
+
+  // https://www.drupal.org/docs/contributed-modules/http-client-manager/introduction
+  /**
+     * Guzzle\Client instance.
+     *
+     * @var \GuzzleHttp\ClientInterface
+     */
+    protected $httpClient;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct(ClientInterface $http_client) {
+      $this->httpClient = $http_client;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function create(ContainerInterface $container) {
+      return new static(
+        $container->get('http_client')
+      );
+    }
 
   /**
    * Returns a render-able array for a test page.
@@ -54,14 +80,25 @@ class Evaluation extends ControllerBase {
   }
 
   public function pyplotly() {
+
+    $request = $this->httpClient->request('GET',
+          'http://fastapi:8000/indicators/graph_test',
+          // [
+          // 'limit' => $limit,
+          // 'sort' => $sort,
+          // ]
+      );
+
+    $data = (string) $response->getBody();
+
     $build = [
       // '#theme' => 'message_water_request',
       '#theme' => 'evaluation_pyplotly',
-      // '#portfolios' => $rows_ins,
+      '#data' => $data,
       '#attached' => [
         'library' => [
           // 'prjo_dap/jQuery-contextMenu',
-          'prjo_dap/bootstrap-multiselect',
+          // 'prjo_dap/bootstrap-multiselect',
           'prjo_dap/plotly',
           'prjo_dap/test-pyplotly',
           // 'prjo_dap/charts',

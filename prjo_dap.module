@@ -40,7 +40,9 @@ function prjo_dap_theme() {
       'variables' => [],
     ],
     'evaluation_pyplotly' => [
-      'variables' => [],
+      'variables' => [
+        'data' => NULL,
+      ],
     ],
     'evaluation_outline' => [
       'variables' => [],
