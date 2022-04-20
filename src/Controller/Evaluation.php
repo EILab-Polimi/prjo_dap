@@ -6,6 +6,7 @@
 namespace Drupal\prjo_dap\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Render\Markup;
 use Drupal\Component\Serialization\Json as Json;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use GuzzleHttp\Client;
@@ -92,11 +93,12 @@ class Evaluation extends ControllerBase {
           ]);
 
     $data = (string) $response->getBody();
+    $graph = Markup::create($data);
 
     $build = [
       // '#theme' => 'message_water_request',
       '#theme' => 'evaluation_pyplotly',
-      '#data' => $data,
+      '#data' => $graph,
       '#attached' => [
         'library' => [
           // 'prjo_dap/jQuery-contextMenu',
