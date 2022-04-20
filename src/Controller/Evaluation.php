@@ -88,10 +88,8 @@ class Evaluation extends ControllerBase {
     $response = $this->httpClient->request('GET',
           'http://fastapi:8000/indicators/graph_test',
           [
-          'fullPage' => 'False',
-          // 'sort' => $sort,
-          ]
-      );
+             'query' => ['fullPage' => False]
+          ]);
 
     $data = (string) $response->getBody();
 
@@ -104,7 +102,7 @@ class Evaluation extends ControllerBase {
           // 'prjo_dap/jQuery-contextMenu',
           // 'prjo_dap/bootstrap-multiselect',
           'prjo_dap/plotly',
-          'prjo_dap/test-pyplotly',
+          // 'prjo_dap/test-pyplotly',
           // 'prjo_dap/charts',
         ]
       ],
