@@ -33,11 +33,11 @@
 
       });
 
-      $('#lineplotly').once().each(function() {
+      $('#parameters').once().each(function() {
 
         $.ajax({
             type: 'GET',
-            url: 'http://fastapi:8000/indicators/graph_test',
+            url: 'http://fastapi:8000/indicators/graph_test?fullPage=False',
             success: parseHTML,
             // complete: setGCjsonObject,
         });
@@ -45,7 +45,7 @@
         // Success function callback for the ajax call
         function parseHTML (data, textStatus, jqXHR) {
           console.log(data);
-          $('#lineplotly').append(data);
+          $('#parameters').append(data);
         }
 
       });
