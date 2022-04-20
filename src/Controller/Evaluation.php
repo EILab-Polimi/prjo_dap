@@ -104,7 +104,7 @@ class Evaluation extends ControllerBase {
           // 'prjo_dap/jQuery-contextMenu',
           // 'prjo_dap/bootstrap-multiselect',
           'prjo_dap/plotly',
-          // 'prjo_dap/test-pyplotly',
+          'prjo_dap/test-pyplotly',
           // 'prjo_dap/charts',
         ]
       ],
