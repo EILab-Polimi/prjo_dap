@@ -37,7 +37,7 @@
 
         $.ajax({
             type: 'GET',
-            url: 'http://fastapi:8000/indicators/graph_test?fullPage=False',
+            url: 'http://localhost:8008/indicators/graph_test?fullPage=False',
             success: parseHTML,
             // complete: setGCjsonObject,
         });
