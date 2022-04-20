@@ -2,7 +2,8 @@
 plotly:
   version: 2.11.1
   js:
-    /libraries/plotly.js/dist/plotly-latest.min.js: {}
+    /libraries/plotly.js/dist/plotly.min.js: {}
+
 
 # jQuery-contextMenu:
 #   version: 3.x
