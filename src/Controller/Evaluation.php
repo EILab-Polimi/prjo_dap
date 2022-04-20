@@ -21,16 +21,21 @@ class Evaluation extends ControllerBase {
 
   // https://www.drupal.org/docs/contributed-modules/http-client-manager/introduction
   /**
-     * Guzzle\Client instance.
+     * Guzzle Http Client.
      *
-     * @var \GuzzleHttp\ClientInterface
+     * @var GuzzleHttp\Client
      */
     protected $httpClient;
 
-    /**
-     * {@inheritdoc}
+   /**
+     * Constructs a new Class.
+     *
+     * @param \GuzzleHttp\Client $http_client
+     *   The http_client.
      */
-    public function __construct(ClientInterface $http_client) {
+    public function __construct(
+      Client $http_client
+    ) {
       $this->httpClient = $http_client;
     }
 
@@ -42,7 +47,6 @@ class Evaluation extends ControllerBase {
         $container->get('http_client')
       );
     }
-
   /**
    * Returns a render-able array for a test page.
    */
