@@ -1,6 +1,7 @@
 
 plotly:
   version: 2.11.1
+  header: TRUE
   js:
     /libraries/plotly.js/dist/plotly.min.js: {}
 
