@@ -13,42 +13,42 @@
       // Drupal.behaviors.TestPyPlotlyGraph.StartPlot = Drupal.behaviors.TestPyPlotlyGraph.StartPlot || false;
       Drupal.behaviors.TestPyPlotlyGraph.SelectionArray = Drupal.behaviors.TestPyPlotlyGraph.SelectionArray || {};
 
-      $('#wpp').once().each(function() {
-        $.ajax({
-            type: 'GET',
-            // url: 'http://fastapi:8000/portfolios',
-            url: 'http://localhost:8008/indicators/graph_test',
-            success: parseJson,
-            // complete: setGCjsonObject,
-        });
-
-        // Success function callback for the ajax call
-        function parseJson (data, textStatus, jqXHR) {
-          console.log(data);
-          // const obj = JSON.parse(data);
-          // $.each(obj.exp, function( index, value ) {
-          //   $('#wpp').append('<option value="'+value+'">'+value+'</option>');
-          // })
-        }
-
-      });
-
-      $('#parameters').once().each(function() {
-
-        $.ajax({
-            type: 'GET',
-            url: 'http://localhost:8008/indicators/graph_test?fullPage=False',
-            success: parseHTML,
-            // complete: setGCjsonObject,
-        });
-
-        // Success function callback for the ajax call
-        function parseHTML (data, textStatus, jqXHR) {
-          console.log(data);
-          $('#parameters').append(data);
-        }
-
-      });
+      // $('#wpp').once().each(function() {
+      //   $.ajax({
+      //       type: 'GET',
+      //       // url: 'http://fastapi:8000/portfolios',
+      //       url: 'http://localhost:8008/indicators/graph_test',
+      //       success: parseJson,
+      //       // complete: setGCjsonObject,
+      //   });
+      //
+      //   // Success function callback for the ajax call
+      //   function parseJson (data, textStatus, jqXHR) {
+      //     console.log(data);
+      //     // const obj = JSON.parse(data);
+      //     // $.each(obj.exp, function( index, value ) {
+      //     //   $('#wpp').append('<option value="'+value+'">'+value+'</option>');
+      //     // })
+      //   }
+      //
+      // });
+      //
+      // $('#parameters').once().each(function() {
+      //
+      //   $.ajax({
+      //       type: 'GET',
+      //       url: 'http://localhost:8008/indicators/graph_test?fullPage=False',
+      //       success: parseHTML,
+      //       // complete: setGCjsonObject,
+      //   });
+      //
+      //   // Success function callback for the ajax call
+      //   function parseHTML (data, textStatus, jqXHR) {
+      //     console.log(data);
+      //     $('#parameters').append(data);
+      //   }
+      //
+      // });
 
 
       // $('#parameters').once().each(function() {
