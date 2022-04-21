@@ -3,8 +3,7 @@
   <div class="col">
     <div class="card">
       <div class="card-header">
-        WPP portfolios list
-        {# {{ dpm(portfolios) }} #}
+        WPP portfolios list {{ url }}
       </div>
       <div class="card-body">
         <table class="table">
@@ -17,35 +16,8 @@
                 <th scope="col">Evaluations</th>
               </tr>
             </thead>
-          {% for value in portfolios %}
-            {# {{ dpm(value.storage_exp) }} #}
-            <tr>
-              <td>
-                <span class="fa-stack">
-                  <i class="fas fa-circle fa-stack-2x text-primary"></i>
-                  <i class="fas fa-folder-open fa-stack-1x fa-inverse"></i>
-                </span>
-                {{ value.storage_exp }}</td>
-              <td>4</td>
-              <td>Test description</td>
-              <td>
-                <!-- <a type="button" class="btn" href="{# {{ url('prjo_dap.out_infograph', { 'wpp': 'test' }) }} #}"> -->
-
-                <!-- https://www.drupal.org/docs/theming-drupal/twig-in-drupal/functions-in-twig-templates#s-urlname-parameters-options -->
-                <a type="button" class="btn" href="{{ url('prjo_dap.out_infograph', { 'wpp': value.storage_exp }) }}">
-                  <i class="far fa-eye text-primary"></i>
-                </a>
-              </td>
-              <td>
-                <a type="button" class="btn">
-                  <i class="far fa-eye text-primary"></i>
-                </a>
-                <a type="button" class="btn">
-                  <i class="far fa-map text-primary"></i>
-                </a>
-              </td>
-            </tr>
-          {% endfor %}
+            <tbody id="portfolios">
+            </tbody>
         </table>
       </div>
     </div>

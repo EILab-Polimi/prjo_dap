@@ -1,7 +1,6 @@
 
 plotly:
   version: 2.11.1
-  header: TRUE
   js:
     /libraries/plotly.js/dist/plotly.min.js: {}
 
@@ -41,3 +40,8 @@ outline-infograph:
   version: 1.x
   js:
     js/outline_infograph.js: {}
+
+portfolios:
+  version: 1.x
+  js:
+    js/portfolios.js: {}

@@ -7,6 +7,7 @@ namespace Drupal\prjo_dap\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Component\Serialization\Json as Json;
+use Drupal\Core\Url;
 use Drupal\Core\Database\Database;
 // use Drupal\Core\Language;
 // use \Drupal\Core\Entity\EntityDefinitionUpdateManager;
@@ -22,23 +23,18 @@ class Portfolios extends ControllerBase {
    */
   public function portfolios() {
 
-    // Use external database
-    $connection = Database::getConnection('default','prjo_dap');
-    $query_test = $connection->query("SELECT DISTINCT storage.exp AS storage_exp
-                            FROM
-                            {storage} storage");
-
-    $rows_ins = $query_test->fetchAll();
+    // get the url for links
+    // $url = Url::fromRoute('prjo_dap.out_infograph');
 
     $build = [
       // '#theme' => 'message_water_request',
       '#theme' => 'portfolios',
-      '#portfolios' => $rows_ins,
-      // '#attached' => [
-      //   'library' => [
-      //     'geoviz/openlayers',
-      //   ]
-      // ],
+      // '#url' => $url,
+      '#attached' => [
+        'library' => [
+          'prjo_dap/portfolios',
+        ]
+      ],
     ];
     return $build;
 

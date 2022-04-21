@@ -33,16 +33,14 @@ function prjo_dap_theme() {
     // ],
     'portfolios' => [
       'variables' => [
-        'portfolios' => NULL,
+        'url' => NULL,
       ],
     ],
     'evaluation_infograph' => [
       'variables' => [],
     ],
     'evaluation_pyplotly' => [
-      'variables' => [
-        'data' => NULL,
-      ],
+      'variables' => [],
     ],
     'evaluation_outline' => [
       'variables' => [],
