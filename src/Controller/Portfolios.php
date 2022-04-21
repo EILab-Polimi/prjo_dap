@@ -24,7 +24,8 @@ class Portfolios extends ControllerBase {
   public function portfolios() {
 
     // get the url for links
-    // $url = Url::fromRoute('prjo_dap.out_infograph');
+    $url = Url::fromRoute('prjo_dap.out_infograph');
+
 
     $build = [
       // '#theme' => 'message_water_request',
@@ -33,8 +34,15 @@ class Portfolios extends ControllerBase {
       '#attached' => [
         'library' => [
           'prjo_dap/portfolios',
+        ],
+        'drupalSettings' => [
+          'prjo_dap' => [
+              'url_out_infograph' => $url,
+          ]
         ]
+
       ],
+
     ];
     return $build;
 

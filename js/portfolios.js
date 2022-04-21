@@ -12,6 +12,8 @@
 
       $('#portfolios').once().each(function() {
 
+        console.log(settings);
+
         $.ajax({
             type: 'GET',
             url: 'http://localhost:8008/portfolios',
@@ -36,7 +38,7 @@
                 '<td>4</td>'+
                 '<td>Test description</td>'+
                 '<td>'+
-                '<a type="button" class="btn" href="/dap_out_infograph/'+value+'">'+
+                '<a type="button" class="btn" href="/dap_out_infograph?wpp='+value+'">'+
                   '<i class="far fa-eye text-primary"></i>'+
                 '</a>'+
                 '</td>'+

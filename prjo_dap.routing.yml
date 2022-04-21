@@ -10,14 +10,14 @@ prjo_dap.portfolios:
 
 # # Outline pages
 prjo_dap.out_infograph:
-  path: '/dap_out_infograph/{wpp}'
+  path: '/dap_out_infograph'
   defaults:
     _controller: '\Drupal\prjo_dap\Controller\Outline::infograph'
-    # _title: ''
-  options:
-    parameters:
-      wpp:
-        type: string
+    _title: 'Infograph'
+  # options:
+  #   parameters:
+  #     wpp:
+  #       type: string
   requirements:
     _permission: 'access content'
 

@@ -21,26 +21,19 @@ class Outline extends ControllerBase {
    * Returns a render-able array for a test page.
    * @wpp - Name of the waterportfolio passed in route path
    */
-  public function infograph($wpp) {
-
-    // dpm($wpp);
-
+  // public function infograph($wpp) {
+  public function infograph() {
+    
     $build = [
       '#theme' => 'evaluation_outline',
       '#attached' => [
         'library' => [
           // 'prjo_dap/jQuery-contextMenu',
-          'prjo_dap/bootstrap-multiselect',
+          // 'prjo_dap/bootstrap-multiselect',
           'prjo_dap/plotly',
           'prjo_dap/outline-infograph',
           // 'prjo_dap/charts',
-        ],
-        'drupalSettings' => [
-          'prjo_dap' => [
-              'wpp' => $wpp,
-          ]
         ]
-
       ],
     ];
     return $build;
