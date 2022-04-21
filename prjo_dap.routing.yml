@@ -38,6 +38,7 @@ prjo_dap.eval_infograph:
   requirements:
     _permission: 'access content'
 
+# Used for test
 prjo_dap.eval_pyplotly:
   path: '/dap_eval_pyplotly'
   defaults:
