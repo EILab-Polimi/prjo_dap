@@ -13,13 +13,16 @@ plotly:
 #     component:
 #       /libraries/jQuery-contextMenu/dist/jquery.contextMenu.min.css: {}
 
-bootstrap-multiselect:
+bsmultiselect:
   version: 1.x
   js:
-    /libraries/bootstrap-multiselect/dist/js/bootstrap-multiselect.min.js: {}
+    /libraries/BsMultiSelect/dist/js/BsMultiSelect.min.js: {}
+    # /libraries/BsMultiSelect/dist/js/BsMultiSelect.esm.min.js: {}
+  dependencies:
+    - core/popperjs
   css:
     component:
-      /libraries/bootstrap-multiselect/dist/css/bootstrap-multiselect.min.css: {}
+      /libraries/BsMultiSelect/dist/css/BsMultiSelect.min.css: {}
 
 test:
   version: 1.x
