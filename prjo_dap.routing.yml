@@ -13,11 +13,7 @@ prjo_dap.out_infograph:
   path: '/dap_out_infograph'
   defaults:
     _controller: '\Drupal\prjo_dap\Controller\Outline::infograph'
-    _title: 'Infograph'
-  # options:
-  #   parameters:
-  #     wpp:
-  #       type: string
+    _title: 'Outline'
   requirements:
     _permission: 'access content'
 
@@ -34,7 +30,7 @@ prjo_dap.eval_infograph:
   path: '/dap_eval_infograph'
   defaults:
     _controller: '\Drupal\prjo_dap\Controller\Evaluation::infograph'
-    # _title: ''
+    _title: 'Evaluation'
   requirements:
     _permission: 'access content'
 
