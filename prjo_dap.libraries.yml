@@ -24,6 +24,12 @@ bsmultiselect:
     component:
       /libraries/BsMultiSelect/dist/css/BsMultiSelect.min.css: {}
 
+eval-infograph:
+  version: 1.x
+  js:
+    js/eval_infograph.js: {}
+
+
 test:
   version: 1.x
   js:
