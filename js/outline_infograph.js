@@ -19,6 +19,7 @@
 
         // Call portfolios list to fill the select box &&
         // set selected
+        // TODO add configuration for url in module
         $.ajax({
             type: 'GET',
             url: 'http://localhost:8008/portfolios',
@@ -42,6 +43,15 @@
 
           });
           $('#wpp').append(out);
+          // $('#wpp').bsMultiSelect({
+          //     // setSelected: function(option /*element*/, value /*true|false*/){
+          //     //     if (value)
+          //     //         option.setAttribute('selected','');
+          //     //     else
+          //     //         option.removeAttribute('selected');
+          //     //     option.selected = value;
+          //     // }
+          // });
         }
 
       });
