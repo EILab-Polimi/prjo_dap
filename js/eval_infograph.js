@@ -135,6 +135,80 @@
 
       });
 
+      /*
+      * Once on the Add indicator select box
+      */
+      $('#add_ind').once().each(function() {
+
+        // get selected wpp from url params && set in behaviors
+        var urlParams = new URLSearchParams(window.location.search);
+        // console.log(urlParams.get('wpp'));
+        Drupal.behaviors.EvalInfograph.WPP = urlParams.get('wpp');
+
+        /**
+        // Call portfolios list to fill the select box && set selected
+        */
+        $.ajax({
+            type: 'GET',
+            // url: 'http://localhost:8008/portfolios',
+            url: Drupal.behaviors.EvalInfograph.Url+'/portfolios',
+            success: parseJson,
+            // complete: setGCjsonObject,
+        });
+
+        // Success function callback for the ajax call
+        function parseJson (data, textStatus, jqXHR) {
+          // console.log(data);
+          // console.log(JSON.parse(data));
+          var portfolios = JSON.parse(data);
+          var out = '';
+          $.each(portfolios.exp, function( index, value ) {
+            if (value == Drupal.behaviors.EvalInfograph.WPP) {
+              out += '<option selected value="'+value+'">'+value+'</option>'
+            } else {
+              out += '<option value="'+value+'">'+value+'</option>'
+            }
+          });
+          $('#add_ind').append(out);
+        }
+
+        /**
+        // Attach onChange Functionalities
+        // https://stackoverflow.com/questions/12750307/jquery-select-change-event-get-selected-option
+        */
+        $( "#add_ind" ).change(function() {
+          // console.log( "Handler for .change() called." );
+          // var optionSelected = $("option:selected", this);
+          var wppSelected = this.value;
+          // console.log(wppSelected);
+
+          var out = '<div class="row mt-3">'+
+                    '<div class="col">'+
+                      '<div class="card">'+
+                        '<div class="card-header">'+ wppSelected +'</div>'+
+                        '<div class="card-body">'+
+                          '<div id="'+ wppSelected +'" class="dap_plot_no"></div>'+
+                        '</div>'+
+                      '</div>'+
+                    '</div>'+
+                  '</div>';
+
+          $("#opt_plots").append(out);
+          // // Cycle on all plots
+          // $(".dap_plot").each(function( index ) {
+          //   console.log( index + ": " + $( this ).attr('id') );
+          //   // $(this).data("i_table");
+          //   Drupal.behaviors.EvalInfograph.Redraw($(this).attr('id'),
+          //                                         $(this).attr('data-i_table'),
+          //                                         $(this).attr('data-scen'),
+          //                                         wppSelected, // The new selected WPP
+          //                                         $(this).attr('data-loc')
+          //                                       );
+          // });
+        });
+
+      });
+
     }
   };
 
