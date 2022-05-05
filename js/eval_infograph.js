@@ -19,7 +19,7 @@
         var urlParams = new URLSearchParams(window.location.search);
         // console.log(urlParams.get('wpp'));
         var wpp = urlParams.get('wpp')
-
+        console.log(wpp);
         // Call portfolios list to fill the select box &&
         // set selected
         // TODO add configuration for url in module
@@ -38,53 +38,14 @@
           var out = '';
           var options = [];
           $.each(portfolios.exp, function( index, value ) {
-            // '<option selected>Open this select menu</option>'
-            // if (value == wpp) {
-              // out += '<option selected value="'+value+'">'+value+'</option>'
-            // } else {
+            if (value == wpp) {
+              out += '<option selected value="'+value+'">'+value+'</option>'
+            } else {
               out += '<option value="'+value+'">'+value+'</option>'
-            // }
+            }
             options.push({text: value , value: value, hidden:false, disabled:false, selected:true})
           });
           $('#wpp').append(out);
-          // console.log(options);
-          $('#wpp').bsMultiSelect({
-              // options: options
-
-              // setSelected: function(option /*element*/, value /*true|false*/){
-              //   console.log(option);
-              //     // if (value)
-              //     //     option.setAttribute('selected','');
-              //     // else
-              //     //     option.removeAttribute('selected');
-              //     // option.selected = value;
-              // }
-          });
-          console.log(options);
-          // options = [
-          //           {text:"Asia", value:"C0",hidden:false,disabled:false,selected:true},
-          //           {text:"Europe",value:"C1",hidden:false,disabled:false,selected:false},
-          //           {text:"Australia",value:"C2",hidden:false,disabled:false,selected:false},
-          //           {text:"America",value:"C3",hidden:false,disabled:false,selected:false},
-          //           {text:"Africa",value:"C4",hidden:false,disabled:false,selected:false}
-          //        ]
-          // console.log(options)
-          $('div#bsMultiSelectJson').bsMultiSelect(
-              {
-                  options : options,
-                  // options : [
-                  //           {text:"Asia", value:"C0",hidden:false,disabled:false,selected:true},
-                  //           {text:"Europe",value:"C1",hidden:false,disabled:false,selected:false},
-                  //           {text:"Australia",value:"C2",hidden:false,disabled:false,selected:false},
-                  //           {text:"America",value:"C3",hidden:false,disabled:false,selected:false},
-                  //           {text:"Africa",value:"C4",hidden:false,disabled:false,selected:false}
-                  //        ],
-                  getDisabled : () => $('#optionDisable').is(":checked"),
-                  getValidity : () => null, //... or true, or false
-                  // setSelected : ... if there are no selected property in option
-              }
-          );
-
         }
 
 
