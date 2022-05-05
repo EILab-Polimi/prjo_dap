@@ -55,9 +55,9 @@
                   '<a type="button" class="btn" href="/dap_eval_infograph?wpp='+value+'">'+
                     '<i class="far fa-eye text-primary"></i>'+
                   '</a>'+
-                  '<a type="button" class="btn">'+
-                    '<i class="far fa-map text-primary"></i>'+
-                  '</a>'+
+                  // '<a type="button" class="btn">'+
+                  //   '<i class="far fa-map text-primary"></i>'+
+                  // '</a>'+
                 '</td>'+
               '</tr>';
           });
