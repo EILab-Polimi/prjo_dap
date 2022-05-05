@@ -16,32 +16,60 @@
 
       Drupal.behaviors.EvalInfograph.WPP = Drupal.behaviors.EvalInfograph.WPP || null
 
-      // Drupal.behaviors.EvalInfograph.Environment = Drupal.behaviors.EvalInfograph.Environment || []
       //
-      // // Set default grphs urls
-      // Drupal.behaviors.EvalInfograph.Environment = [
-      //   {'id': 'plot_def_cycloM', 'url': 'http://localhost:8008/indicators/plot_def_cycloM' },
-      //   {'id': 'plot_def_drw_cycloM', 'url': 'http://localhost:8008/indicators/plot_def_drw_cycloM'}
-      // ]
+      // Function to draw/redraw all the graph given the selected WPP && the graph_id
+      // Si assume che le url di fastAPI abbiano lo stesso nome del graph_id
+      // @id - the div id for this graph
+      // @table - table name
+      // @scen -scenF value
+      // @wpp - expF value // The new selected WPP
+      // @loc - locality
+      Drupal.behaviors.EvalInfograph.Redraw = function (id, table, scen, wpp, loc){
+          // console.log(id);
+          // Compose the url given the parameters
+          console.log(id, table, scen, wpp, loc);
 
+          // Set part of url only if mandatory == mnd
+          var scenF = (scen == 'mnd') ? "&scenF=s" : '';
+
+          var url = Drupal.behaviors.EvalInfograph.Url+
+                    '/indicators/'+ id +
+                    '?fullPage=False&'+
+                    'i_table='+ table +
+                    '&expF='+ wpp +
+                    scenF
+
+
+          $.ajax({
+            type: 'GET',
+            url: url,
+            success: function(data, textStatus, jqXHR){
+              // console.log(id);
+              $('#'+ id).empty()
+              $('#'+id).append(data);
+            }
+           });
+      }
 
       /*
-      * Fill the water portfolio select
+      * Once on the wpp select box
       */
       $('#wpp').once().each(function() {
 
         console.log(settings.prjo_dap);
-        // get selected wpp from url params
+
+        // get selected wpp from url params && set in behaviors
         var urlParams = new URLSearchParams(window.location.search);
         // console.log(urlParams.get('wpp'));
         Drupal.behaviors.EvalInfograph.WPP = urlParams.get('wpp');
 
-        // Call portfolios list to fill the select box &&
-        // set selected
-        // TODO add configuration for url in module
+        /**
+        // Call portfolios list to fill the select box && set selected
+        */
         $.ajax({
             type: 'GET',
-            url: 'http://localhost:8008/portfolios',
+            // url: 'http://localhost:8008/portfolios',
+            url: Drupal.behaviors.EvalInfograph.Url+'/portfolios',
             success: parseJson,
             // complete: setGCjsonObject,
         });
@@ -62,165 +90,46 @@
           $('#wpp').append(out);
         }
 
+        /**
         // Attach onChange Functionalities
         // https://stackoverflow.com/questions/12750307/jquery-select-change-event-get-selected-option
-
+        */
         $( "#wpp" ).change(function() {
           // console.log( "Handler for .change() called." );
           // var optionSelected = $("option:selected", this);
-          var valueSelected = this.value;
-          // console.log(optionSelected);
-          console.log(valueSelected);
+          var wppSelected = this.value;
+          // console.log(wppSelected);
 
-          // Get all plot ids
+          // Cycle on all plots
           $(".dap_plot").each(function( index ) {
             console.log( index + ": " + $( this ).attr('id') );
+            // $(this).data("i_table");
+            Drupal.behaviors.EvalInfograph.Redraw($(this).attr('id'),
+                                                  $(this).attr('data-i_table'),
+                                                  $(this).attr('data-scen'),
+                                                  wppSelected, // The new selected WPP
+                                                  $(this).attr('data-loc')
+                                                );
           });
-          /*
-          / Pass new value foreach graph
-          */
-          $.ajax({
-              type: 'GET',
-              // url: 'http://localhost:8008/indicators/plot_def_cycloM?fullPage=False&i_table=i_sqwdef_irrd_m&expF='+ valueSelected +'',
-              url: Drupal.behaviors.EvalInfograph.Url+'/indicators/plot_def_cycloM?fullPage=False&i_table=i_sqwdef_irrd_m&expF='+ valueSelected +'',
-              success: parseHTML,
-
-              // complete: setGCjsonObject,
-          });
-
-          // Success function callback for the ajax call
-          function parseHTML (data, textStatus, jqXHR) {
-            // console.log(data);
-            $('#plot_def_cycloM').empty()
-            $('#plot_def_cycloM').append(data);
-          }
         });
 
+        /**
+        // Set the initial graphs
+        */
+        $(".dap_plot").each(function( index ) {
+          // console.log( index + ": " + $( this ).attr('id')  );
+          // console.log($(this).data("i_table"));
+          // console.log($(this).data("scen"));
+          // // console.log($(this).data("exp")); // not used
+          // console.log($(this).data("loc"));
 
-      });
-
-      /*
-      * Fill the scenario select
-      */
-      $('#scen').once().each(function() {
-
-        // get selected wpp from url params
-        var urlParams = new URLSearchParams(window.location.search);
-        // console.log(urlParams.get('wpp'));
-        var wpp = urlParams.get('wpp')
-
-        // Call portfolios list to fill the select box &&
-        // set selected
-        // TODO add configuration for url in module
-        $.ajax({
-            type: 'GET',
-            url: Drupal.behaviors.EvalInfograph.Url+'/scenarios',
-            success: parseJson,
-            // complete: setGCjsonObject,
+          Drupal.behaviors.EvalInfograph.Redraw($(this).attr('id'),
+                                                $(this).attr('data-i_table'),
+                                                $(this).attr('data-scen'),
+                                                Drupal.behaviors.EvalInfograph.WPP,
+                                                $(this).attr('data-loc')
+                                              );
         });
-
-        // Success function callback for the ajax call
-        function parseJson (data, textStatus, jqXHR) {
-          // console.log(data);
-          // console.log(JSON.parse(data));
-          var scenarios = JSON.parse(data);
-          var out = '';
-          $.each(scenarios.scen, function( index, value ) {
-            // '<option selected>Open this select menu</option>'
-            if (value == Drupal.behaviors.EvalInfograph.WPP) {
-              out += '<option selected value="'+value+'">'+value+'</option>'
-            } else {
-              out += '<option value="'+value+'">'+value+'</option>'
-            }
-
-          });
-          $('#scen').append(out);
-          // $('#scen').bsMultiSelect({
-          //     // setSelected: function(option /*element*/, value /*true|false*/){
-          //     //     if (value)
-          //     //         option.setAttribute('selected','');
-          //     //     else
-          //     //         option.removeAttribute('selected');
-          //     //     option.selected = value;
-          //     // }
-          // });
-        }
-
-        // Attach onChange Functionalities
-        // https://stackoverflow.com/questions/12750307/jquery-select-change-event-get-selected-option
-
-
-        // $( "#scen" ).change(function() {
-        //   // console.log( "Handler for .change() called." );
-        //   // var optionSelected = $("option:selected", this);
-        //   var valueSelected = this.value;
-        //   // console.log(optionSelected);
-        //   // console.log(valueSelected);
-        //
-        //   /*
-        //   / Pass new value foreach graph
-        //   */
-        //   $.ajax({
-        //       type: 'GET',
-        //       url: 'http://localhost:8008/indicators/graph_params_new?fullPage=False&i_table=i_sqwdef_irrd_m&scenF='+ valueSelected +'&expF=s&loc=Locone',
-        //       // http://localhost:8008/indicators/graph_params_new?fullPage=false&i_table=i_sqwdef_irrd_m&expF=WPP1
-        //       success: parseHTML,
-        //       // complete: setGCjsonObject,
-        //   });
-        //
-        //   // Success function callback for the ajax call
-        //   function parseHTML (data, textStatus, jqXHR) {
-        //     // console.log(data);
-        //     $('#plot_def_cycloM').empty()
-        //     $('#plot_def_cycloM').append(data);
-        //   }
-        // });
-
-      });
-
-
-      /*
-      * INIT Graph 1
-      */
-      $('#plot_def_cycloM').once().each(function() {
-
-        $.ajax({
-            type: 'GET',
-            // url: 'http://localhost:8008/indicators/graph_params_new?fullPage=False&i_table=i_sqwdef_irrd_m&scenF=rcp8.5&expF=s&loc=Locone',
-            // url: 'http://localhost:8008/indicators/plot_def_cycloM?fullPage=False&i_table=i_sqwdef_irrd_m',
-            url: Drupal.behaviors.EvalInfograph.Url+'/indicators/plot_def_cycloM?fullPage=False&i_table=i_sqwdef_irrd_m&expF='+Drupal.behaviors.EvalInfograph.WPP,
-            success: parseHTML,
-            // complete: setGCjsonObject,
-        });
-
-        // Success function callback for the ajax call
-        function parseHTML (data, textStatus, jqXHR) {
-          // console.log(data);
-          $('#plot_def_cycloM').append(data);
-        }
-
-      });
-
-      /*
-      * Graph 2
-      */
-      $('#plot_def_drw_cycloM').once().each(function() {
-
-        $.ajax({
-            type: 'GET',
-            // url: Drupal.behaviors.EvalInfograph.Url+'/indicators/plot_def_drw_cycloM?fullPage=False&scenF=rcp8.5&expF=s',
-            url: Drupal.behaviors.EvalInfograph.Url+'/indicators/plot_def_drw_cycloM?fullPage=False&scenF=rcp8.5&expF=s',
-
-            success: parseHTML,
-
-            // complete: setGCjsonObject,
-        });
-
-        // Success function callback for the ajax call
-        function parseHTML (data, textStatus, jqXHR) {
-          // console.log(data);
-          $('#plot_def_drw_cycloM').append(data);
-        }
 
       });
 
