@@ -17,13 +17,22 @@
         $.ajax({
             type: 'GET',
             url: 'http://localhost:8008/portfolios',
+            // url: 'http://local.wp4dap_dev.it:8008/portfolios',
+
+            // Questi due non esistono in quanto non c'è un servizio su localhost:8000
+            // esiste su fastapi:8000 che forwarda la sua 8000 sulla 8008
+            // url: 'http://localhost:8000/portfolios',
+            // url: 'http://local.wp4dap_dev.it:8000/portfolios',
+
             success: parseJson,
+
+
             // complete: setGCjsonObject,
         });
 
         // Success function callback for the ajax call
         function parseJson (data, textStatus, jqXHR) {
-          console.log(data);
+          // console.log(data);
           console.log(JSON.parse(data));
           var portfolios = JSON.parse(data);
           var out = '';
@@ -43,7 +52,7 @@
                 '</a>'+
                 '</td>'+
                 '<td>'+
-                  '<a type="button" class="btn">'+
+                  '<a type="button" class="btn" href="/dap_eval_infograph?wpp='+value+'">'+
                     '<i class="far fa-eye text-primary"></i>'+
                   '</a>'+
                   '<a type="button" class="btn">'+
