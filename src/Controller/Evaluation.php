@@ -25,8 +25,7 @@ class Evaluation extends ControllerBase {
       // '#portfolios' => $rows_ins,
       '#attached' => [
         'library' => [
-          // 'prjo_dap/jQuery-contextMenu',
-          // 'prjo_dap/bootstrap-multiselect',
+          // 'prjo_dap/bsmultiselect',
           'prjo_dap/plotly',
           'prjo_dap/eval-infograph',
           // 'prjo_dap/charts',
@@ -37,7 +36,7 @@ class Evaluation extends ControllerBase {
 
   }
 
-  // TTESTING
+  // TESTING
   public function pyplotly() {
 
     $build = [
@@ -46,7 +45,6 @@ class Evaluation extends ControllerBase {
       '#data' => $graph,
       '#attached' => [
         'library' => [
-          // 'prjo_dap/jQuery-contextMenu',
           // 'prjo_dap/bootstrap-multiselect',
           'prjo_dap/plotly',
           'prjo_dap/test-pyplotly',
