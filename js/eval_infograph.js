@@ -31,13 +31,15 @@
 
           // Set part of url only if mandatory == mnd
           var scenF = (scen == 'mnd') ? "&scenF=s" : '';
+          var locality = (loc == 'mnd') ? "&loc=Locone" : '';
 
           var url = Drupal.behaviors.EvalInfograph.Url+
                     '/indicators/'+ id +
                     '?fullPage=False&'+
                     'i_table='+ table +
                     '&expF='+ wpp +
-                    scenF
+                    scenF+
+                    locality;
 
 
           $.ajax({
