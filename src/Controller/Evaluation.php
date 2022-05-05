@@ -18,6 +18,9 @@ class Evaluation extends ControllerBase {
    */
   public function infograph() {
 
+    $config = \Drupal::config('dap.settings');
+    // $config->get('fastapi_dev_url');
+    // $config->get('fastapi_prod_url');
 
     $build = [
       // '#theme' => 'message_water_request',
@@ -29,6 +32,12 @@ class Evaluation extends ControllerBase {
           'prjo_dap/plotly',
           'prjo_dap/eval-infograph',
           // 'prjo_dap/charts',
+        ],
+        'drupalSettings' => [
+          'prjo_dap' => [
+              'fastapi_dev_url' => $config->get('fastapi_dev_url'),
+              'fastapi_prod_url' => $config->get('fastapi_prod_url'),
+          ]
         ]
       ],
     ];
