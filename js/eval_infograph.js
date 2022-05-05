@@ -14,6 +14,8 @@
       Drupal.behaviors.EvalInfograph.Url = settings.prjo_dap.fastapi_dev_url
       // Drupal.behaviors.EvalInfograph.Url = settings.prjo_dap.fastapi_prod_url
 
+      Drupal.behaviors.EvalInfograph.WPP = Drupal.behaviors.EvalInfograph.WPP || null
+
       // Drupal.behaviors.EvalInfograph.Environment = Drupal.behaviors.EvalInfograph.Environment || []
       //
       // // Set default grphs urls
@@ -32,8 +34,8 @@
         // get selected wpp from url params
         var urlParams = new URLSearchParams(window.location.search);
         // console.log(urlParams.get('wpp'));
-        var wpp = urlParams.get('wpp')
-        console.log(wpp);
+        Drupal.behaviors.EvalInfograph.WPP = urlParams.get('wpp');
+
         // Call portfolios list to fill the select box &&
         // set selected
         // TODO add configuration for url in module
@@ -51,7 +53,7 @@
           var portfolios = JSON.parse(data);
           var out = '';
           $.each(portfolios.exp, function( index, value ) {
-            if (value == wpp) {
+            if (value == Drupal.behaviors.EvalInfograph.WPP) {
               out += '<option selected value="'+value+'">'+value+'</option>'
             } else {
               out += '<option value="'+value+'">'+value+'</option>'
@@ -125,7 +127,7 @@
           var out = '';
           $.each(scenarios.scen, function( index, value ) {
             // '<option selected>Open this select menu</option>'
-            if (value == wpp) {
+            if (value == Drupal.behaviors.EvalInfograph.WPP) {
               out += '<option selected value="'+value+'">'+value+'</option>'
             } else {
               out += '<option value="'+value+'">'+value+'</option>'
@@ -178,7 +180,7 @@
 
 
       /*
-      * Graph 1
+      * INIT Graph 1
       */
       $('#plot_def_cycloM').once().each(function() {
 
@@ -186,7 +188,7 @@
             type: 'GET',
             // url: 'http://localhost:8008/indicators/graph_params_new?fullPage=False&i_table=i_sqwdef_irrd_m&scenF=rcp8.5&expF=s&loc=Locone',
             // url: 'http://localhost:8008/indicators/plot_def_cycloM?fullPage=False&i_table=i_sqwdef_irrd_m',
-            url: Drupal.behaviors.EvalInfograph.Url+'/indicators/plot_def_cycloM?fullPage=False&i_table=i_sqwdef_irrd_m',
+            url: Drupal.behaviors.EvalInfograph.Url+'/indicators/plot_def_cycloM?fullPage=False&i_table=i_sqwdef_irrd_m&expF='+Drupal.behaviors.EvalInfograph.WPP,
             success: parseHTML,
             // complete: setGCjsonObject,
         });
@@ -206,8 +208,11 @@
 
         $.ajax({
             type: 'GET',
+            // url: Drupal.behaviors.EvalInfograph.Url+'/indicators/plot_def_drw_cycloM?fullPage=False&scenF=rcp8.5&expF=s',
             url: Drupal.behaviors.EvalInfograph.Url+'/indicators/plot_def_drw_cycloM?fullPage=False&scenF=rcp8.5&expF=s',
+
             success: parseHTML,
+
             // complete: setGCjsonObject,
         });
 
