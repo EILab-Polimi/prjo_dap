@@ -47,12 +47,12 @@ class DapSettingsForm extends ConfigFormBase {
     $form['fastapi_dev_url'] = [
       '#type' => 'textfield',
       '#title' => $this->t('FastAPI development url'),
-      '#default_value' => (empty($config->get('portainer_api_url'))) ? 'localhost:5000' : $config->get('fastapi_dev_url'),
+      '#default_value' => (empty($config->get('fastapi_dev_url'))) ? 'http://localhost:5000' : $config->get('fastapi_dev_url'),
     ];
     $form['fastapi_prod_url'] = [
       '#type' => 'textfield',
       '#title' => $this->t('FastAPI production url / docker'),
-      '#default_value' => (empty($config->get('portainer_api_url'))) ? 'localhost:8008' : $config->get('fastapi_prod_url'),
+      '#default_value' => (empty($config->get('fastapi_prod_url'))) ? 'http://localhost:8008' : $config->get('fastapi_prod_url'),
     ];
 
     return parent::buildForm($form, $form_state);
