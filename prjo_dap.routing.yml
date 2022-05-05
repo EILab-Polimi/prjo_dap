@@ -1,3 +1,12 @@
+# Configuration form
+prjo_dap.admin_settings:
+  path: '/admin/config/dap/settings'
+  defaults:
+    _form: '\Drupal\prjo_dap\Form\DapSettingsForm'
+    _title: 'Dap configuration'
+  requirements:
+    _permission: 'administer site configuration'
+
 
 # Portfolios page
 prjo_dap.portfolios:
