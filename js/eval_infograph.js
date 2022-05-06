@@ -10,64 +10,54 @@
   Drupal.behaviors.EvalInfograph = {
     attach: function (context, settings) {
 
-      // Set url for services
+      /**
+      // Set url for fastAPI services development or production
+      */
       Drupal.behaviors.EvalInfograph.Url = settings.prjo_dap.fastapi_dev_url
       // Drupal.behaviors.EvalInfograph.Url = settings.prjo_dap.fastapi_prod_url
 
+      /**
+      // Global variable to store selected WPP
+      */
       Drupal.behaviors.EvalInfograph.WPP = Drupal.behaviors.EvalInfograph.WPP || null
 
-      //
-      // Function to draw/redraw all the graph given the selected WPP && the graph_id
-      // Si assume che le url di fastAPI abbiano lo stesso nome del graph_id
-      // @id - the div id for this graph
-      // @table - table name
-      // @scen -scenF value
-      // @wpp - expF value // The new selected WPP
-      // @loc - locality
-      Drupal.behaviors.EvalInfograph.Redraw = function (id, table, scen, wpp, loc){
-          // console.log(id);
-          // Compose the url given the parameters
-          console.log(id, table, scen, wpp, loc);
+      /**
+      // Scenarios
+      */
+      // Global variable to store scenarios
+      Drupal.behaviors.EvalInfograph.Scen = Drupal.behaviors.EvalInfograph.Scen || ''
+      // Get the list of scenarios and tranform it to "&scenF=s&scenF=f" for append to url
+      Drupal.behaviors.EvalInfograph.getScen = function () {
+        $.ajax({
+          type: 'GET',
+          url: Drupal.behaviors.EvalInfograph.Url+'/scenarios',
+          success: function(data, textStatus, jqXHR){
+            console.log(JSON.parse(data));
+            var scenarios = JSON.parse(data)
+            $.each(scenarios.scen, function( index, value ) {
+                Drupal.behaviors.EvalInfograph.Scen += '&scenF='+value
+            });
 
-          // Set part of url only if mandatory == mnd
-          var scenF = (scen == 'mnd') ? "&scenF=s" : '';
-          var locality = (loc == 'mnd') ? "&loc=Locone" : '';
+            /**
+            // Set the initial graphs
+            */
+            $(".dap_plot").each(function( index ) {
+              Drupal.behaviors.EvalInfograph.Redraw($(this).attr('id'),
+                                                    $(this).attr('data-i_table'),
+                                                    $(this).attr('data-scen'),
+                                                    Drupal.behaviors.EvalInfograph.WPP,
+                                                    $(this).attr('data-loc')
+                                                  );
+            });
 
-          var url = Drupal.behaviors.EvalInfograph.Url+
-                    '/indicators/'+ id +
-                    '?fullPage=False&'+
-                    'i_table='+ table +
-                    '&expF='+ wpp +
-                    scenF+
-                    locality;
-
-
-          $.ajax({
-            type: 'GET',
-            url: url,
-            success: function(data, textStatus, jqXHR){
-              // console.log(id);
-              $('#'+ id).empty()
-              $('#'+id).append(data);
-            }
-           });
+          }
+         });
       }
 
-      /*
-      * Once on the wpp select box
+      /**
+      // Call portfolios list to fill the select box and set selected
       */
-      $('#wpp').once().each(function() {
-
-        console.log(settings.prjo_dap);
-
-        // get selected wpp from url params && set in behaviors
-        var urlParams = new URLSearchParams(window.location.search);
-        // console.log(urlParams.get('wpp'));
-        Drupal.behaviors.EvalInfograph.WPP = urlParams.get('wpp');
-
-        /**
-        // Call portfolios list to fill the select box && set selected
-        */
+      Drupal.behaviors.EvalInfograph.getPort = function (){
         $.ajax({
             type: 'GET',
             // url: 'http://localhost:8008/portfolios',
@@ -91,6 +81,62 @@
           });
           $('#wpp').append(out);
         }
+      }
+
+      /**
+      // Function to draw/redraw all the graph given the selected WPP and the graph_id
+      // Si assume che le url di fastAPI abbiano lo stesso nome del graph_id
+      // @id - the div id for this graph AKA the route to plot this graph eg. `/indicators/plot_def_cycloM`
+      // @table - database table name
+      // @scen - scenF  - for some routes the scen variable is mandatory
+      // @wpp - expF value // The selected WPP
+      // @loc - locality
+      */
+      Drupal.behaviors.EvalInfograph.Redraw = function (id, table, scen, wpp, loc){
+          // console.log(id);
+          // Compose the url given the parameters
+          console.log(id, table, scen, wpp, loc);
+
+          // Set part of url only if mandatory == mnd
+          var scenF = (scen == 'mnd') ? Drupal.behaviors.EvalInfograph.Scen : '';
+          var locality = (loc == 'mnd') ? "&loc=Locone" : '';
+
+          var url = Drupal.behaviors.EvalInfograph.Url+
+                    '/indicators/'+ id +
+                    '?fullPage=False&'+
+                    'i_table='+ table +
+                    '&expF='+ wpp +
+                    scenF+
+                    locality;
+
+          console.log(url);
+
+          $.ajax({
+            type: 'GET',
+            url: url,
+            success: function(data, textStatus, jqXHR){
+              // console.log(id);
+              $('#'+ id).empty()
+              $('#'+id).append(data);
+            }
+           });
+      }
+
+      /*
+      * Once on the wpp select box
+      */
+      $('#wpp').once().each(function() {
+
+        console.log(settings.prjo_dap);
+
+        // get selected wpp from url params && set in behaviors
+        var urlParams = new URLSearchParams(window.location.search);
+        // console.log(urlParams.get('wpp'));
+        Drupal.behaviors.EvalInfograph.WPP = urlParams.get('wpp');
+        // get list of scenarios
+        Drupal.behaviors.EvalInfograph.getScen();
+        // get and set Portfolios list in the WPP selectbox
+        Drupal.behaviors.EvalInfograph.getPort()
 
         /**
         // Attach onChange Functionalities
@@ -114,25 +160,6 @@
                                                 );
           });
         });
-
-        /**
-        // Set the initial graphs
-        */
-        $(".dap_plot").each(function( index ) {
-          // console.log( index + ": " + $( this ).attr('id')  );
-          // console.log($(this).data("i_table"));
-          // console.log($(this).data("scen"));
-          // // console.log($(this).data("exp")); // not used
-          // console.log($(this).data("loc"));
-
-          Drupal.behaviors.EvalInfograph.Redraw($(this).attr('id'),
-                                                $(this).attr('data-i_table'),
-                                                $(this).attr('data-scen'),
-                                                Drupal.behaviors.EvalInfograph.WPP,
-                                                $(this).attr('data-loc')
-                                              );
-        });
-
       });
 
       /*
@@ -146,28 +173,21 @@
         Drupal.behaviors.EvalInfograph.WPP = urlParams.get('wpp');
 
         /**
-        // Call portfolios list to fill the select box && set selected
+        // Call indicators list to fill the select box and set selected
         */
         $.ajax({
             type: 'GET',
-            // url: 'http://localhost:8008/portfolios',
-            url: Drupal.behaviors.EvalInfograph.Url+'/portfolios',
+            url: Drupal.behaviors.EvalInfograph.Url+'/indicators',
             success: parseJson,
-            // complete: setGCjsonObject,
         });
 
         // Success function callback for the ajax call
         function parseJson (data, textStatus, jqXHR) {
-          // console.log(data);
-          // console.log(JSON.parse(data));
-          var portfolios = JSON.parse(data);
-          var out = '';
-          $.each(portfolios.exp, function( index, value ) {
-            if (value == Drupal.behaviors.EvalInfograph.WPP) {
-              out += '<option selected value="'+value+'">'+value+'</option>'
-            } else {
-              out += '<option value="'+value+'">'+value+'</option>'
-            }
+          console.log(JSON.parse(data));
+          var indicators = JSON.parse(data);
+          var out = '<option selected value="null"></option>';
+          $.each(indicators.label, function( index, value ) {
+              out += '<option value="'+value+'">'+indicators.descr[index]+'</option>'
           });
           $('#add_ind').append(out);
         }
@@ -178,22 +198,25 @@
         */
         $( "#add_ind" ).change(function() {
           // console.log( "Handler for .change() called." );
-          // var optionSelected = $("option:selected", this);
-          var wppSelected = this.value;
+          var optionSelected = $("option:selected", this);
+          console.log(optionSelected.val());
+          var descr = optionSelected.text()
+          var indSelected = optionSelected.val();
           // console.log(wppSelected);
 
           var out = '<div class="row mt-3">'+
                     '<div class="col">'+
                       '<div class="card">'+
-                        '<div class="card-header">'+ wppSelected +'</div>'+
+                        '<div class="card-header">'+ descr +'</div>'+
                         '<div class="card-body">'+
-                          '<div id="'+ wppSelected +'" class="dap_plot_no"></div>'+
+                          '<div id="'+ indSelected +'" data-i_table="'+ indSelected +'" data-scen="opt" data-exp="nonserve" data-loc="opt" class="dap_plot_no"></div>'+
                         '</div>'+
                       '</div>'+
                     '</div>'+
                   '</div>';
 
           $("#opt_plots").append(out);
+
           // // Cycle on all plots
           // $(".dap_plot").each(function( index ) {
           //   console.log( index + ": " + $( this ).attr('id') );
