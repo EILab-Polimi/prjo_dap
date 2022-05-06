@@ -54,6 +54,15 @@ class DapSettingsForm extends ConfigFormBase {
       '#title' => $this->t('FastAPI production url / docker'),
       '#default_value' => (empty($config->get('fastapi_prod_url'))) ? 'http://localhost:8008' : $config->get('fastapi_prod_url'),
     ];
+    $form['fastapi_sel'] = array(
+      '#type' => 'radios',
+      '#title' => $this->t('Select Environment'),
+      '#default_value' => (empty($config->get('fastapi_sel'))) ? 0 : $config->get('fastapi_sel'),
+      '#options' => array(
+        0 => $this->t('Development'),
+        1 => $this->t('Production'),
+      ),
+    );
 
     return parent::buildForm($form, $form_state);
   }
@@ -67,6 +76,7 @@ class DapSettingsForm extends ConfigFormBase {
       // Set the submitted configuration setting.
       ->set('fastapi_dev_url', $form_state->getValue('fastapi_dev_url'))
       ->set('fastapi_prod_url', $form_state->getValue('fastapi_prod_url'))
+      ->set('fastapi_sel', $form_state->getValue('fastapi_sel'))
       ->save();
 
     parent::submitForm($form, $form_state);
