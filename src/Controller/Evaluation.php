@@ -19,8 +19,12 @@ class Evaluation extends ControllerBase {
   public function infograph() {
 
     $config = \Drupal::config('dap.settings');
-    // $config->get('fastapi_dev_url');
-    // $config->get('fastapi_prod_url');
+
+    if ($config->get('fastapi_sel') == 0){
+      $fastAPIurl = $config->get('fastapi_dev_url');
+    } else {
+      $fastAPIurl = $config->get('fastapi_prod_url');
+    }
 
     $build = [
       // '#theme' => 'message_water_request',
@@ -35,8 +39,7 @@ class Evaluation extends ControllerBase {
         ],
         'drupalSettings' => [
           'prjo_dap' => [
-              'fastapi_dev_url' => $config->get('fastapi_dev_url'),
-              'fastapi_prod_url' => $config->get('fastapi_prod_url'),
+              'fastapi_url' => $fastAPIurl,
           ]
         ]
       ],

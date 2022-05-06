@@ -13,7 +13,7 @@
       /**
       // Set url for fastAPI services development or production
       */
-      Drupal.behaviors.EvalInfograph.Url = settings.prjo_dap.fastapi_dev_url
+      Drupal.behaviors.EvalInfograph.Url = settings.prjo_dap.fastapi_url
       // Drupal.behaviors.EvalInfograph.Url = settings.prjo_dap.fastapi_prod_url
 
       /**
@@ -39,6 +39,7 @@
             });
 
             /**
+            // Once settled the Drupal.behaviors.EvalInfograph.Scen string wiht all the scenarios
             // Set the initial graphs
             */
             $(".dap_plot").each(function( index ) {
