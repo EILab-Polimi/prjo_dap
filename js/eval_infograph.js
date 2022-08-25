@@ -34,7 +34,7 @@
           success: function(data, textStatus, jqXHR){
             console.log(JSON.parse(data));
             var scenarios = JSON.parse(data)
-            $.each(scenarios.scen, function( index, value ) {
+            $.each(scenarios.label, function( index, value ) {
                 Drupal.behaviors.EvalInfograph.Scen += '&scenF='+value
             });
 
@@ -73,11 +73,11 @@
           // console.log(JSON.parse(data));
           var portfolios = JSON.parse(data);
           var out = '';
-          $.each(portfolios.exp, function( index, value ) {
-            if (value == Drupal.behaviors.EvalInfograph.WPP) {
-              out += '<option selected value="'+value+'">'+value+'</option>'
+          $.each(portfolios.id, function( index, value ) {
+            if (portfolios.label[index] == Drupal.behaviors.EvalInfograph.WPP) {
+              out += '<option selected value="'+portfolios.id[index]+'">'+portfolios.label[index]+'</option>'
             } else {
-              out += '<option value="'+value+'">'+value+'</option>'
+              out += '<option value="'+portfolios.id[index]+'">'+portfolios.label[index]+'</option>'
             }
           });
           $('#wpp').append(out);
@@ -88,7 +88,8 @@
       // Function to draw/redraw all the graph given the selected WPP and the graph_id
       // Si assume che le url di fastAPI abbiano lo stesso nome del graph_id
       // @id - the div id for this graph AKA the route to plot this graph eg. `/indicators/plot_def_cycloM`
-      // @table - database table name
+      // @fullPage - in drupal environment is False -> No plotlyjs and external html is added
+      // @table - database table name // NOT USED in db v3
       // @scen - scenF  - for some routes the scen variable is mandatory
       // @wpp - expF value // The selected WPP
       // @loc - locality
