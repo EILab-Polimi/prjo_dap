@@ -44,12 +44,12 @@
                 '<td>4</td>'+
                 '<td>'+ portfolios.descr_plan[index].short_descr +'</td>'+
                 '<td>'+
-                '<a type="button" class="btn" href="/dap_out_infograph?wpp='+portfolios.label[index]+'">'+
+                '<a type="button" class="btn" href="/dap_out_infograph?wpp='+portfolios.id[index]+'">'+
                   '<i class="far fa-eye text-primary"></i>'+
                 '</a>'+
                 '</td>'+
                 '<td>'+
-                  '<a type="button" class="btn" href="/dap_eval_infograph?wpp='+portfolios.label[index]+'">'+
+                  '<a type="button" class="btn" href="/dap_eval_infograph?wpp='+portfolios.id[index]+'">'+
                     '<i class="far fa-eye text-primary"></i>'+
                   '</a>'+
                   // '<a type="button" class="btn">'+
