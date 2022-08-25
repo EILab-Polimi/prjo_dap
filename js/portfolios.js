@@ -16,13 +16,8 @@
 
         $.ajax({
             type: 'GET',
-            url: 'http://localhost:8008/portfolios',
-            // url: 'http://local.wp4dap_dev.it:8008/portfolios',
-
-            // Questi due non esistono in quanto non c'è un servizio su localhost:8000
-            // esiste su fastapi:8000 che forwarda la sua 8000 sulla 8008
-            // url: 'http://localhost:8000/portfolios',
-            // url: 'http://local.wp4dap_dev.it:8000/portfolios',
+            // url: 'http://localhost:8008/portfolios', // Dev on Docker FastAPI
+            url: 'http://localhost:5000/portfolios', // Dev on Pycharm FastAPI
 
             success: parseJson,
 
@@ -36,23 +31,25 @@
           console.log(JSON.parse(data));
           var portfolios = JSON.parse(data);
           var out = '';
-          $.each(portfolios.exp, function( index, value ) {
+          $.each(portfolios.id, function( index, value ) {
+            console.log(index +' '+value );
+            console.log(portfolios.label[index]);
             out += '<tr>'+
               '<td>'+
                 '<span class="fa-stack">'+
                   '<i class="fas fa-circle fa-stack-2x text-primary"></i>'+
                   '<i class="fas fa-folder-open fa-stack-1x fa-inverse"></i>'+
                 '</span>'+
-                value +'</td>'+
+                portfolios.label[index] +'</td>'+
                 '<td>4</td>'+
-                '<td>Test description</td>'+
+                '<td>'+ portfolios.descr_plan[index].short_descr +'</td>'+
                 '<td>'+
-                '<a type="button" class="btn" href="/dap_out_infograph?wpp='+value+'">'+
+                '<a type="button" class="btn" href="/dap_out_infograph?wpp='+portfolios.label[index]+'">'+
                   '<i class="far fa-eye text-primary"></i>'+
                 '</a>'+
                 '</td>'+
                 '<td>'+
-                  '<a type="button" class="btn" href="/dap_eval_infograph?wpp='+value+'">'+
+                  '<a type="button" class="btn" href="/dap_eval_infograph?wpp='+portfolios.label[index]+'">'+
                     '<i class="far fa-eye text-primary"></i>'+
                   '</a>'+
                   // '<a type="button" class="btn">'+
@@ -60,6 +57,7 @@
                   // '</a>'+
                 '</td>'+
               '</tr>';
+
           });
           $('#portfolios').append(out);
         }

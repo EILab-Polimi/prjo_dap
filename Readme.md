@@ -1,10 +1,15 @@
 # TODO
-- Prendere la lista dei Portfolios non da db interno ma usando fastapi service
+- <strike> Prendere la lista dei Portfolios non da db interno ma usando fastapi service </strike>
+- Portfolios controller $url = Url::fromRoute('prjo_dap.out_infograph'); Prendere la url dalla route per evitare problemi di deploy - Visto che tutto funziona via js conviene salvare i portfolios in una sessionStorage variable e lavorare tutto da lì invece che implementare le url parametrizzate
+
+# Drupal
+
+- Configurazione della url di development e di produzione per il servizio fastapi
 
 # Implementazione
 Dato che anche la piattaforma drupal è dockerizzata pensavo di utilizzare il routing interno (eg. drupal <-> fastapi) per le chiamate ai servizi per cui ho guardato HTTP client.
 
-Utilizzando però l'ip della macchina host possiamo fare le chiamate ai servizi anche da drupal container (eg. se facciamo un wget http://192.168.17.154:8008 dalla console del docker container drupal riceviamo i dat dal servizio fastapi) 
+Utilizzando però l'ip della macchina host possiamo fare le chiamate ai servizi anche da drupal container (eg. se facciamo un wget http://192.168.17.154:8008 dalla console del docker container drupal riceviamo i dati dal servizio fastapi)
 
 ## GuzzleHttp
 L'ho usato per usare i servizi dalla rete interna di docker, l'idea di utilizzare le porte e i nomi interni può aver senso ma, nel nostro caso, dove le chiamate devono essere paretrizzate lato interfaccia, diventa troppo lungo da implementare.
@@ -43,3 +48,48 @@ plotly:
   js:
     /libraries/plotly.js/dist/plotly.min.js: {}
 ```      
+
+## Passing parameters to drupalSettings
+
+Per passare i parametri dal controller in javascript
+```
+class Outline extends ControllerBase {
+
+  /**
+   * Returns a render-able array for a test page.
+   * @wpp - Name of the waterportfolio passed in route path
+   */
+  // public function infograph($wpp) {
+  public function infograph() {
+
+    // dpm($wpp);
+    $wpp = 'test';
+
+    $build = [
+      '#theme' => 'evaluation_outline',
+      '#attached' => [
+        'library' => [
+          // 'prjo_dap/jQuery-contextMenu',
+          // 'prjo_dap/bootstrap-multiselect',
+          'prjo_dap/plotly',
+          'prjo_dap/outline-infograph',
+          // 'prjo_dap/charts',
+        ],
+        'drupalSettings' => [
+          'prjo_dap' => [
+              'wpp' => $wpp,
+          ]
+        ]
+
+      ],
+    ];
+    return $build;
+
+  }
+
+}
+```
+
+# libraries
+
+https://github.com/DashboardCode/BsMultiSelect
