@@ -43,12 +43,42 @@
             // Set the initial graphs
             */
             $(".dap_plot").each(function( index ) {
-              Drupal.behaviors.EvalInfograph.Redraw($(this).attr('id'),
-                                                    $(this).attr('data-i_table'),
-                                                    $(this).attr('data-scen'),
-                                                    Drupal.behaviors.EvalInfograph.WPP,
-                                                    $(this).attr('data-loc')
-                                                  );
+              var id = $(this).attr('id')
+              var plot_id = $(this).attr('data-plot_id')
+              var plot_type = $(this).attr('data-plot_type') || null
+              var scen = $(this).attr('data-scen')
+              var loc = $(this).attr('data-loc')
+              $.ajax({
+                type: 'GET',
+                url: Drupal.behaviors.EvalInfograph.Url+'/graph_api_url?plot_id='+$(this).attr('data-plot_id'),
+                success: function(data, textStatus, jqXHR){
+                  var plot = JSON.parse(data)
+                  console.log(plot);
+
+                  console.log('ID - da modificare ' + id);
+
+                  if (plot_type === null) {
+                    // $(this) non è più disponibile nella success function
+                    Drupal.behaviors.EvalInfograph.Redraw(id,
+                                                          plot.api_root[0],
+                                                          plot_id,
+                                                          scen,
+                                                          Drupal.behaviors.EvalInfograph.WPP,
+                                                          loc
+                                                        );
+                  } else {
+                    Drupal.behaviors.EvalInfograph.Redraw(id,
+                                                          plot_type,
+                                                          plot_id,
+                                                          scen,
+                                                          Drupal.behaviors.EvalInfograph.WPP,
+                                                          loc
+                                                        );
+
+                  }
+
+                }
+              });
             });
 
           }
@@ -87,26 +117,27 @@
       /**
       // Function to draw/redraw all the graph given the selected WPP and the graph_id
       // Si assume che le url di fastAPI abbiano lo stesso nome del graph_id
-      // @id - the div id for this graph AKA the route to plot this graph eg. `/indicators/plot_def_cycloM`
-      // @fullPage - in drupal environment is False -> No plotlyjs and external html is added
+      // @id - the div id for this graph
+      // @route - the fastAPI route to call to get the graph
       // @table - database table name // NOT USED in db v3
       // @scen - scenF  - for some routes the scen variable is mandatory
       // @wpp - expF value // The selected WPP
       // @loc - locality
       */
-      Drupal.behaviors.EvalInfograph.Redraw = function (id, table, scen, wpp, loc){
+      Drupal.behaviors.EvalInfograph.Redraw = function (id, route, table, scen, wpp, loc){
           // console.log(id);
           // Compose the url given the parameters
-          console.log(id, table, scen, wpp, loc);
+          console.log(id, route, table, scen, wpp, loc);
 
           // Set part of url only if mandatory == mnd
           var scenF = (scen == 'mnd') ? Drupal.behaviors.EvalInfograph.Scen : '';
           var locality = (loc == 'mnd') ? "&loc=Locone" : '';
 
+          // Add the fullPage=False to get the right answer from fastAPI
           var url = Drupal.behaviors.EvalInfograph.Url+
-                    '/indicators/'+ id +
+                    '/indicators/'+ route +
                     '?fullPage=False&'+
-                    'i_table='+ table +
+                    'plot_id='+ table +
                     '&expF='+ wpp +
                     scenF+
                     locality;
@@ -147,19 +178,46 @@
         $( "#wpp" ).change(function() {
           // console.log( "Handler for .change() called." );
           // var optionSelected = $("option:selected", this);
-          var wppSelected = this.value;
+          // var wppSelected = this.value;
+          Drupal.behaviors.EvalInfograph.WPP = this.value
           // console.log(wppSelected);
-
-          // Cycle on all plots
           $(".dap_plot").each(function( index ) {
-            console.log( index + ": " + $( this ).attr('id') );
-            // $(this).data("i_table");
-            Drupal.behaviors.EvalInfograph.Redraw($(this).attr('id'),
-                                                  $(this).attr('data-i_table'),
-                                                  $(this).attr('data-scen'),
-                                                  wppSelected, // The new selected WPP
-                                                  $(this).attr('data-loc')
-                                                );
+            var id = $(this).attr('id')
+            var plot_id = $(this).attr('data-plot_id')
+            var plot_type = $(this).attr('data-plot_type') || null
+            var scen = $(this).attr('data-scen')
+            var loc = $(this).attr('data-loc')
+            $.ajax({
+              type: 'GET',
+              url: Drupal.behaviors.EvalInfograph.Url+'/graph_api_url?plot_id='+$(this).attr('data-plot_id'),
+              success: function(data, textStatus, jqXHR){
+                var plot = JSON.parse(data)
+                console.log(plot);
+
+                console.log('ID - da modificare ' + id);
+
+                if (plot_type === null) {
+                  // $(this) non è più disponibile nella success function
+                  Drupal.behaviors.EvalInfograph.Redraw(id,
+                                                        plot.api_root[0],
+                                                        plot_id,
+                                                        scen,
+                                                        Drupal.behaviors.EvalInfograph.WPP,
+                                                        loc
+                                                      );
+                } else {
+                  Drupal.behaviors.EvalInfograph.Redraw(id,
+                                                        plot_type,
+                                                        plot_id,
+                                                        scen,
+                                                        Drupal.behaviors.EvalInfograph.WPP,
+                                                        loc
+                                                      );
+
+                }
+
+              }
+            });
           });
         });
       });
@@ -177,22 +235,22 @@
         /**
         // Call indicators list to fill the select box and set selected
         */
-        $.ajax({
-            type: 'GET',
-            url: Drupal.behaviors.EvalInfograph.Url+'/indicators',
-            success: parseJson,
-        });
-
-        // Success function callback for the ajax call
-        function parseJson (data, textStatus, jqXHR) {
-          console.log(JSON.parse(data));
-          var indicators = JSON.parse(data);
-          var out = '<option selected value="null"></option>';
-          $.each(indicators.label, function( index, value ) {
-              out += '<option value="'+value+'">'+indicators.descr[index]+'</option>'
-          });
-          $('#add_ind').append(out);
-        }
+        // $.ajax({
+        //     type: 'GET',
+        //     url: Drupal.behaviors.EvalInfograph.Url+'/indicators',
+        //     success: parseJson,
+        // });
+        //
+        // // Success function callback for the ajax call
+        // function parseJson (data, textStatus, jqXHR) {
+        //   console.log(JSON.parse(data));
+        //   var indicators = JSON.parse(data);
+        //   var out = '<option selected value="null"></option>';
+        //   $.each(indicators.label, function( index, value ) {
+        //       out += '<option value="'+value+'">'+indicators.descr[index]+'</option>'
+        //   });
+        //   $('#add_ind').append(out);
+        // }
 
         /**
         // Attach onChange Functionalities
@@ -211,7 +269,7 @@
                       '<div class="card">'+
                         '<div class="card-header">'+ descr +'</div>'+
                         '<div class="card-body">'+
-                          '<div id="'+ indSelected +'" data-i_table="'+ indSelected +'" data-scen="opt" data-exp="nonserve" data-loc="opt" class="dap_plot_no"></div>'+
+                          '<div id="'+ indSelected +'" data-plot_id="'+ indSelected +'" data-scen="opt" data-exp="nonserve" data-loc="opt" class="dap_plot_no"></div>'+
                         '</div>'+
                       '</div>'+
                     '</div>'+
@@ -222,9 +280,9 @@
           // // Cycle on all plots
           // $(".dap_plot").each(function( index ) {
           //   console.log( index + ": " + $( this ).attr('id') );
-          //   // $(this).data("i_table");
+          //   // $(this).data("plot_id");
           //   Drupal.behaviors.EvalInfograph.Redraw($(this).attr('id'),
-          //                                         $(this).attr('data-i_table'),
+          //                                         $(this).attr('data-plot_id'),
           //                                         $(this).attr('data-scen'),
           //                                         wppSelected, // The new selected WPP
           //                                         $(this).attr('data-loc')
