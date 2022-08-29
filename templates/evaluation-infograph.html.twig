@@ -11,46 +11,41 @@
       <div class="card-body">
 
         <!-- Per avere i select come bottoni possiamo usare https://www.npmjs.com/package/bootstrap-select che però supporta fino a bootstrap4 -->
+        <!-- <div class="row position-fixed" style="z-index: 2000; width:100%"> -->
         <div class="row">
-          <div class="col-3 my-1">
-            <div class="form-floating">
-              <select class="form-select" id="wpp"></select>
-              <!-- <div class="form-select" id="wpp"></div> -->
-              <label for="wpp">Selected Water portfolio</label>
+
+          <div class="col">
+            <div id="fixed" class="card position-fixed bg-primary bg-opacity-75" style="z-index: 2000;">
+              <div class="card-body">
+                <div class="col-3 my-1">
+                  <div class="form-floating">
+                    <select class="form-select" id="wpp"></select>
+                    <!-- <div class="form-select" id="wpp"></div> -->
+                    <label for="wpp">Selected Water portfolio</label>
+                  </div>
+                </div>
+                <!-- <div class="col-3 my-1">
+                  <div class="form-floating">
+                    <select class="form-select" id="scen"></select>
+                    <label for="scen">Selected scenario</label>
+                  </div>
+                </div> -->
+                <!-- <div class="col-3 my-1">
+                  <div class="form-floating">
+                    <select class="form-select" id="ind"></select>
+                    <label for="scen">Selected indicator</label>
+                  </div>
+                </div> -->
+              </div>
             </div>
           </div>
-          <!-- <div class="col-3 my-1">
-            <div class="form-floating">
-              <select class="form-select" id="scen"></select>
-              <label for="scen">Selected scenario</label>
-            </div>
-          </div> -->
-          <!-- <div class="col-3 my-1">
-            <div class="form-floating">
-              <select class="form-select" id="ind"></select>
-              <label for="scen">Selected indicator</label>
-            </div>
-          </div> -->
-
         </div>
 
         <!-- Charts -->
-        <!-- <div class="row mt-3">
-          <div class="col">
-            <div class="card">
-              <div class="card-header">
-                Water deficit ciclostazionario a passo mensile (line plot + range)
-              </div>
-              <div class="card-body">
-                <div id="plot_def_cycloM" data-plot_type="i_sqwdef_irrd_m" data-scen="opt" data-exp="nonserve" data-loc="opt" class="dap_plot"></div>
-              </div>
-            </div>
-          </div>
-        </div> -->
 
-        <div class="row mt-3">
+        <div class="row" style="margin-top: 7rem !important;">
           <div class="col">
-            <div class="card">
+            <div class="card" id="size">
               <div class="card-header">
               </div>
               <div class="card-body">
@@ -85,59 +80,6 @@
             </div>
           </div>
         </div>
-
-        <!-- <div class="row mt-3">
-          <div class="col">
-            <div class="card">
-              <div class="card-header">
-                Test graph 4
-              </div>
-              <div class="card-body">
-                <div id="cyclost_lineplot" data-plot_type="i_cyclo_mean_ind_def_M" data-scen="opt" data-exp="nonserve" data-loc="opt" class="dap_plot"></div>
-              </div>
-            </div>
-          </div>
-        </div> -->
-
-
-        <!-- <div class="row mt-3">
-          <div class="col">
-            <div class="card">
-              <div class="card-header">
-                Water deficit ciclostazionario a passo mensile (heatmap?)
-              </div>
-              <div class="card-body">
-                <div id="plot_def_drw_cycloM" data-plot_type="i_sqwdef_irrd_m" data-scen="mnd" data-exp="nonserve" data-loc="opt" class="dap_plot"></div>
-              </div>
-            </div>
-          </div>
-        </div> -->
-
-        <!-- <div class="row mt-3">
-          <div class="col">
-            <div class="card">
-              <div class="card-header">
-                Drinking water distribution cost (heatmap?)
-              </div>
-              <div class="card-body">
-                <div id="plot_def_distribution_cost" class="dap_plot_no"></div>
-              </div>
-            </div>
-          </div>
-        </div> -->
-
-        <!-- <div class="row mt-3">
-          <div class="col">
-            <div class="card">
-              <div class="card-header">
-                Water deficit ciclostazionario a passo mensile (line plot + range), per industriale (1 sola utenza)
-              </div>
-              <div class="card-body">
-                <div id="plot_def_industriale" class="dap_plot_no"></div>
-              </div>
-            </div>
-          </div>
-        </div> -->
 
         <div id="opt_plots"></div>
 

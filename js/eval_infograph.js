@@ -168,6 +168,10 @@
 
         console.log(settings.prjo_dap);
 
+        // Set size of fixed card to other cards size
+        var new_width = $('#size').width();
+        $('#fixed').width(new_width);
+
         // get selected wpp from url params && set in behaviors
         var urlParams = new URLSearchParams(window.location.search);
         // console.log(urlParams.get('wpp'));
