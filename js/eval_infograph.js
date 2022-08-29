@@ -10,7 +10,9 @@
   Drupal.behaviors.EvalInfograph = {
     attach: function (context, settings) {
 
-
+      /**
+      // Define an object wich contain the available graph to be selected in the Add indicator select box
+      */
       Drupal.behaviors.EvalInfograph.apiObj = Drupal.behaviors.EvalInfograph.apiObj || null
       /**
       // Set url for fastAPI services development or production
@@ -324,17 +326,21 @@
       }
 
 
+      /**
+      // Function to compose the entry inside the Add Indicator select box
+      //
+      // @Drupal.behaviors.EvalInfograph.apiObj - the object filled
+      */
       Drupal.behaviors.EvalInfograph.fillAddInd = function (){
-        console.log(Drupal.behaviors.EvalInfograph.apiObj);
+        // console.log(Drupal.behaviors.EvalInfograph.apiObj);
         var out = '<option selected value="null"></option>';
         $.each(Drupal.behaviors.EvalInfograph.apiObj, function( i, v ) {
-          console.log("INNER EACH");
-          console.log(i);
-          console.log(v);
+          // console.log("INNER EACH");
+          // console.log(i);
+          // console.log(v);
           out += '<option value="'+i+'">'+v.descr+'</option>'
         });
         $('#add_ind').append(out);
-
       }
 
 
@@ -343,6 +349,7 @@
       */
       $('#add_ind').once().each(function() {
 
+        // Fill the Drupal.behaviors.EvalInfograph.apiObj calling
         Drupal.behaviors.EvalInfograph.AddIndicatorObject();
 
         /**
@@ -356,6 +363,9 @@
           console.log(Drupal.behaviors.EvalInfograph.apiObj[optionSelected.val()])
 
           if( Object.keys(Drupal.behaviors.EvalInfograph.apiObj[optionSelected.val()].api_root).length > 1 ){
+            // TODO
+            // Add multistep graph creation if we have more than one data-plot_type/api_root
+
 
           } else {
             // var descr = optionSelected.text()
@@ -416,6 +426,7 @@
             });
           }
 
+          // Empty the select box and refill it
           $('#add_ind').empty();
           Drupal.behaviors.EvalInfograph.AddIndicatorObject();
         });
