@@ -148,9 +148,15 @@
             type: 'GET',
             url: url,
             success: function(data, textStatus, jqXHR){
+
+              // console.log('DATA BACK FROM GRAPH')
+              // console.log(data)
               // console.log(id);
               $('#'+ id).empty()
-              $('#'+id).append(data);
+              // console.log( $('#'+ id).closest('.card').children(".card-header") )
+              $('#'+ id).closest('.card').children(".card-header").empty()
+              $('#'+ id).closest('.card').children(".card-header").html(data.title)
+              $('#'+id).append(data.graph);
             }
            });
       }
