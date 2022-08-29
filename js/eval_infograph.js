@@ -119,7 +119,7 @@
 
       /**
       // Function to draw/redraw all the graph given the selected WPP and the graph_id
-      // Si assume che le url di fastAPI abbiano lo stesso nome del graph_id
+      //
       // @id - the div id for this graph
       // @route - the fastAPI route to call to get the graph
       // @table - database table name // NOT USED in db v3
@@ -235,11 +235,10 @@
         });
       });
 
-      /*
-      * Once on the Add indicator select box
-      */
-      $('#add_ind').once().each(function() {
 
+      // Define a function to get an object with diff elements between
+      // Possible indicators and plotted indicators
+      Drupal.behaviors.EvalInfograph.AddIndicatorObject = function (){
         // get selected wpp from url params && set in behaviors
         var urlParams = new URLSearchParams(window.location.search);
         // console.log(urlParams.get('wpp'));
@@ -291,8 +290,14 @@
                         delete plot['id'][ind]
                       }
                     });
-                    apiObj[value] = plot
-                    apiObj[value]['descr'] = indicators.descr[index]
+
+                    // Se abbiamo tolto tutti i data-plot_type rimuovi anche api_root
+                    if(Object.keys(plot['api_root']).length == 0) {
+                      delete plot['api_root']
+                    } else {
+                      apiObj[value] = plot
+                      apiObj[value]['descr'] = indicators.descr[index]
+                    }
                   }
                 } else {
                   // data-plot_id NON esiste in interfaccia inseriamo l'oggetto
@@ -316,19 +321,29 @@
           });
 
         }
+      }
 
-        Drupal.behaviors.EvalInfograph.fillAddInd = function (){
-          console.log(Drupal.behaviors.EvalInfograph.apiObj);
-          var out = '<option selected value="null"></option>';
-          $.each(Drupal.behaviors.EvalInfograph.apiObj, function( i, v ) {
-            console.log("INNER EACH");
-            console.log(i);
-            console.log(v);
-            out += '<option value="'+i+'">'+v.descr+'</option>'
-          });
-          $('#add_ind').append(out);
 
-        }
+      Drupal.behaviors.EvalInfograph.fillAddInd = function (){
+        console.log(Drupal.behaviors.EvalInfograph.apiObj);
+        var out = '<option selected value="null"></option>';
+        $.each(Drupal.behaviors.EvalInfograph.apiObj, function( i, v ) {
+          console.log("INNER EACH");
+          console.log(i);
+          console.log(v);
+          out += '<option value="'+i+'">'+v.descr+'</option>'
+        });
+        $('#add_ind').append(out);
+
+      }
+
+
+      /*
+      * Once on the Add indicator select box
+      */
+      $('#add_ind').once().each(function() {
+
+        Drupal.behaviors.EvalInfograph.AddIndicatorObject();
 
         /**
         // Attach onChange Functionalities
@@ -400,6 +415,9 @@
               });
             });
           }
+
+          $('#add_ind').empty();
+          Drupal.behaviors.EvalInfograph.AddIndicatorObject();
         });
 
       });
