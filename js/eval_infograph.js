@@ -10,6 +10,8 @@
   Drupal.behaviors.EvalInfograph = {
     attach: function (context, settings) {
 
+
+      Drupal.behaviors.EvalInfograph.apiObj = Drupal.behaviors.EvalInfograph.apiObj || null
       /**
       // Set url for fastAPI services development or production
       */
@@ -53,6 +55,7 @@
                 url: Drupal.behaviors.EvalInfograph.Url+'/graph_api_url?plot_id='+$(this).attr('data-plot_id'),
                 success: function(data, textStatus, jqXHR){
                   var plot = JSON.parse(data)
+                  console.log("------ graph api url -------");
                   console.log(plot);
 
                   console.log('ID - da modificare ' + id);
@@ -245,22 +248,87 @@
         /**
         // Call indicators list to fill the select box and set selected
         */
-        // $.ajax({
-        //     type: 'GET',
-        //     url: Drupal.behaviors.EvalInfograph.Url+'/indicators',
-        //     success: parseJson,
-        // });
-        //
-        // // Success function callback for the ajax call
-        // function parseJson (data, textStatus, jqXHR) {
-        //   console.log(JSON.parse(data));
-        //   var indicators = JSON.parse(data);
-        //   var out = '<option selected value="null"></option>';
-        //   $.each(indicators.label, function( index, value ) {
-        //       out += '<option value="'+value+'">'+indicators.descr[index]+'</option>'
-        //   });
-        //   $('#add_ind').append(out);
-        // }
+        $.ajax({
+            type: 'GET',
+            url: Drupal.behaviors.EvalInfograph.Url+'/indicators',
+            success: parseJson,
+        });
+
+        // Success function callback for the ajax call
+        function parseJson (data, textStatus, jqXHR) {
+          console.log('INDICATORS LIST');
+          console.log(JSON.parse(data));
+          var indicators = JSON.parse(data);
+
+          // Make a diff array between what we have in interface
+          var apiObj = {}
+          var count = Object.keys(indicators['type']).length
+          console.log(count);
+          $.each(indicators.type, function( index, value ) {
+            $.ajax({
+              type: 'GET',
+              url: Drupal.behaviors.EvalInfograph.Url+'/graph_api_url?plot_id='+value,
+              success: function(data, textStatus, jqXHR){
+                var plot = JSON.parse(data)
+                // console.log("------ OOOOOOOO -------");
+                // console.log(plot);
+                // data-plot_id="i_cyclo_mean_dw_def_M" data-plot_type="cyclost_heatmap"
+
+                // filter by data-plot_id
+                // Se abbiamo l'indicatore in interfaccia
+                if( $('[data-plot_id="'+value+'"]').length ){
+                  // console.log($('[data-plot_id="'+value+'"]'))
+                  // console.log(Object.keys(plot['api_root']).length);
+                  // Verifichiamo che l'oggetto plot abbia o meno più di un api_root
+                  if( Object.keys(plot['api_root']).length > 1 ){
+                    // console.log('MORE THAN ONE');
+
+                    $.each(plot['api_root'], function( ind, val ) {
+                      if( $('[data-plot_id="'+value+'"][data-plot_type="'+val+'"]').length ){
+                        // console.log('ECCO : ' + ind);
+                        delete plot['api_root'][ind]
+                        delete plot['descr'][ind]
+                        delete plot['id'][ind]
+                      }
+                    });
+                    apiObj[value] = plot
+                    apiObj[value]['descr'] = indicators.descr[index]
+                  }
+                } else {
+                  // data-plot_id NON esiste in interfaccia inseriamo l'oggetto
+                  // plot completo
+                  // che può avere più di un api_root
+                  apiObj[value] = plot
+                  apiObj[value]['descr'] = indicators.descr[index]
+                }
+
+                console.log('INDEX');
+                console.log(parseInt(index)+1);
+                if (parseInt(index)+1 === count){
+                  console.log('EACH TERMINATED');
+                  console.log(apiObj)
+                  Drupal.behaviors.EvalInfograph.apiObj = apiObj
+                  Drupal.behaviors.EvalInfograph.fillAddInd()
+                }
+
+              }
+            });
+          });
+
+        }
+
+        Drupal.behaviors.EvalInfograph.fillAddInd = function (){
+          console.log(Drupal.behaviors.EvalInfograph.apiObj);
+          var out = '<option selected value="null"></option>';
+          $.each(Drupal.behaviors.EvalInfograph.apiObj, function( i, v ) {
+            console.log("INNER EACH");
+            console.log(i);
+            console.log(v);
+            out += '<option value="'+i+'">'+v.descr+'</option>'
+          });
+          $('#add_ind').append(out);
+
+        }
 
         /**
         // Attach onChange Functionalities
@@ -270,34 +338,68 @@
           // console.log( "Handler for .change() called." );
           var optionSelected = $("option:selected", this);
           console.log(optionSelected.val());
-          var descr = optionSelected.text()
-          var indSelected = optionSelected.val();
-          // console.log(wppSelected);
+          console.log(Drupal.behaviors.EvalInfograph.apiObj[optionSelected.val()])
 
-          var out = '<div class="row mt-3">'+
-                    '<div class="col">'+
-                      '<div class="card">'+
-                        '<div class="card-header">'+ descr +'</div>'+
-                        '<div class="card-body">'+
-                          '<div id="'+ indSelected +'" data-plot_id="'+ indSelected +'" data-scen="opt" data-exp="nonserve" data-loc="opt" class="dap_plot_no"></div>'+
+          if( Object.keys(Drupal.behaviors.EvalInfograph.apiObj[optionSelected.val()].api_root).length > 1 ){
+
+          } else {
+            // var descr = optionSelected.text()
+            var indSelected = optionSelected.val();
+            // console.log(wppSelected);
+
+            var out = '<div class="row mt-3">'+
+                      '<div class="col">'+
+                        '<div class="card">'+
+                          '<div class="card-header"></div>'+
+                          '<div class="card-body">'+
+                            '<div id="'+ Date.now() +'" data-plot_id="'+optionSelected.val()+'" data-plot_type="'+Drupal.behaviors.EvalInfograph.apiObj[optionSelected.val()].api_root[0]+'" data-scen="opt" data-exp="nonserve" data-loc="opt" class="dap_plot"></div>'+
+                          '</div>'+
                         '</div>'+
                       '</div>'+
-                    '</div>'+
-                  '</div>';
+                    '</div>';
 
-          $("#opt_plots").append(out);
+            $("#opt_plots").append(out);
 
-          // // Cycle on all plots
-          // $(".dap_plot").each(function( index ) {
-          //   console.log( index + ": " + $( this ).attr('id') );
-          //   // $(this).data("plot_id");
-          //   Drupal.behaviors.EvalInfograph.Redraw($(this).attr('id'),
-          //                                         $(this).attr('data-plot_id'),
-          //                                         $(this).attr('data-scen'),
-          //                                         wppSelected, // The new selected WPP
-          //                                         $(this).attr('data-loc')
-          //                                       );
-          // });
+            // // Cycle on all plots
+            $(".dap_plot").each(function( index ) {
+              var id = $(this).attr('id')
+              var plot_id = $(this).attr('data-plot_id')
+              var plot_type = $(this).attr('data-plot_type') || null
+              var scen = $(this).attr('data-scen')
+              var loc = $(this).attr('data-loc')
+              $.ajax({
+                type: 'GET',
+                url: Drupal.behaviors.EvalInfograph.Url+'/graph_api_url?plot_id='+$(this).attr('data-plot_id'),
+                success: function(data, textStatus, jqXHR){
+                  var plot = JSON.parse(data)
+                  console.log(plot);
+
+                  console.log('ID - da modificare ' + id);
+
+                  if (plot_type === null) {
+                    // $(this) non è più disponibile nella success function
+                    Drupal.behaviors.EvalInfograph.Redraw(id,
+                                                          plot.api_root[0],
+                                                          plot_id,
+                                                          scen,
+                                                          Drupal.behaviors.EvalInfograph.WPP,
+                                                          loc
+                                                        );
+                  } else {
+                    Drupal.behaviors.EvalInfograph.Redraw(id,
+                                                          plot_type,
+                                                          plot_id,
+                                                          scen,
+                                                          Drupal.behaviors.EvalInfograph.WPP,
+                                                          loc
+                                                        );
+
+                  }
+
+                }
+              });
+            });
+          }
         });
 
       });
