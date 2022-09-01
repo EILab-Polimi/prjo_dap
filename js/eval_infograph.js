@@ -15,7 +15,7 @@
       */
       Drupal.behaviors.EvalInfograph.apiObj = Drupal.behaviors.EvalInfograph.apiObj || null
       /**
-      // Set url for fastAPI services development or production
+      // Set url for fastAPI services development or production - TODO generalize
       */
       Drupal.behaviors.EvalInfograph.Url = settings.prjo_dap.fastapi_url
       // Drupal.behaviors.EvalInfograph.Url = settings.prjo_dap.fastapi_prod_url
@@ -91,7 +91,7 @@
       }
 
       /**
-      // Call portfolios list to fill the select box and set selected
+      // Call portfolios list to fill the select box and set selected - TODO generalize
       */
       Drupal.behaviors.EvalInfograph.getPort = function (){
         $.ajax({
@@ -172,10 +172,6 @@
       $('#wpp').once().each(function() {
 
         console.log(settings.prjo_dap);
-
-        // Set size of fixed card to other cards size
-        var new_width = $('#size').width();
-        $('#fixed').width(new_width);
 
         // get selected wpp from url params && set in behaviors
         var urlParams = new URLSearchParams(window.location.search);
