@@ -48,6 +48,39 @@ class Evaluation extends ControllerBase {
 
   }
 
+
+  public function map() {
+
+    $config = \Drupal::config('dap.settings');
+
+    if ($config->get('fastapi_sel') == 0){
+      $fastAPIurl = $config->get('fastapi_dev_url');
+    } else {
+      $fastAPIurl = $config->get('fastapi_prod_url');
+    }
+
+    $build = [
+      // '#theme' => 'message_water_request',
+      '#theme' => 'evaluation_infograph',
+      // '#portfolios' => $rows_ins,
+      '#attached' => [
+        'library' => [
+          // 'prjo_dap/bsmultiselect',
+          'prjo_dap/plotly',
+          'prjo_dap/eval-infograph',
+          // 'prjo_dap/charts',
+        ],
+        'drupalSettings' => [
+          'prjo_dap' => [
+              'fastapi_url' => $fastAPIurl,
+          ]
+        ]
+      ],
+    ];
+    return $build;
+
+  }
+
   // TESTING
   public function pyplotly() {
 
