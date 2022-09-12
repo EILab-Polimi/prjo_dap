@@ -23,16 +23,29 @@ class Outline extends ControllerBase {
    */
   // public function infograph($wpp) {
   public function infograph() {
-    
+
+    $config = \Drupal::config('dap.settings');
+
+    if ($config->get('fastapi_sel') == 0){
+      $fastAPIurl = $config->get('fastapi_dev_url');
+    } else {
+      $fastAPIurl = $config->get('fastapi_prod_url');
+    }
+
     $build = [
       '#theme' => 'evaluation_outline',
       '#attached' => [
         'library' => [
           // 'prjo_dap/jQuery-contextMenu',
-          // 'prjo_dap/bootstrap-multiselect',
+          // 'prjo_dap/bsmultiselect',
           'prjo_dap/plotly',
           'prjo_dap/outline-infograph',
           // 'prjo_dap/charts',
+        ],
+        'drupalSettings' => [
+          'prjo_dap' => [
+              'fastapi_url' => $fastAPIurl,
+          ]
         ]
       ],
     ];
