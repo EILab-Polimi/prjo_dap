@@ -17,13 +17,13 @@
       /**
       // Set url for fastAPI services development or production - TODO generalize
       */
-      Drupal.behaviors.EvalInfograph.Url = settings.prjo_dap.fastapi_url
-      // Drupal.behaviors.EvalInfograph.Url = settings.prjo_dap.fastapi_prod_url
+      Drupal.behaviors.EvalInfograph.FastApiUrl = settings.prjo_dap.fastapi_url
+      // Drupal.behaviors.EvalInfograph.FastApiUrl = settings.prjo_dap.fastapi_prod_url
 
       /**
       // Global variable to store selected WPP
       */
-      Drupal.behaviors.EvalInfograph.WPP = Drupal.behaviors.EvalInfograph.WPP || null
+      Drupal.behaviors.EvalInfograph.WPP = Drupal.behaviors.EvalInfograph.WPP || 0
 
       /**
       // Scenarios
@@ -34,7 +34,7 @@
       Drupal.behaviors.EvalInfograph.getScen = function () {
         $.ajax({
           type: 'GET',
-          url: Drupal.behaviors.EvalInfograph.Url+'/scenarios',
+          url: Drupal.behaviors.EvalInfograph.FastApiUrl+'/scenarios',
           success: function(data, textStatus, jqXHR){
             console.log(JSON.parse(data));
             var scenarios = JSON.parse(data)
@@ -54,7 +54,7 @@
               var loc = $(this).attr('data-loc')
               $.ajax({
                 type: 'GET',
-                url: Drupal.behaviors.EvalInfograph.Url+'/graph_api_url?plot_id='+$(this).attr('data-plot_id'),
+                url: Drupal.behaviors.EvalInfograph.FastApiUrl+'/graph_api_url?plot_id='+$(this).attr('data-plot_id'),
                 success: function(data, textStatus, jqXHR){
                   var plot = JSON.parse(data)
                   console.log("------ graph api url -------");
@@ -97,7 +97,7 @@
         $.ajax({
             type: 'GET',
             // url: 'http://localhost:8008/portfolios',
-            url: Drupal.behaviors.EvalInfograph.Url+'/portfolios',
+            url: Drupal.behaviors.EvalInfograph.FastApiUrl+'/portfolios',
             success: parseJson,
             // complete: setGCjsonObject,
         });
@@ -139,7 +139,7 @@
           var locality = (loc == 'mnd') ? "&loc=Locone" : '';
 
           // Add the fullPage=False to get the right answer from fastAPI
-          var url = Drupal.behaviors.EvalInfograph.Url+
+          var url = Drupal.behaviors.EvalInfograph.FastApiUrl+
                     '/indicators/'+ route +
                     '?fullPage=False&'+
                     'plot_id='+ table +
@@ -178,9 +178,10 @@
         console.log(urlParams.get('wpp'));
         if (urlParams.get('wpp') !== null) {
           Drupal.behaviors.EvalInfograph.WPP = urlParams.get('wpp');
-        } else {
-          Drupal.behaviors.EvalInfograph.WPP = 0;
         }
+        // else {
+        //   Drupal.behaviors.EvalInfograph.WPP = 0;
+        // }
         // get list of scenarios
         Drupal.behaviors.EvalInfograph.getScen();
         // get and set Portfolios list in the WPP selectbox
@@ -204,7 +205,7 @@
             var loc = $(this).attr('data-loc')
             $.ajax({
               type: 'GET',
-              url: Drupal.behaviors.EvalInfograph.Url+'/graph_api_url?plot_id='+$(this).attr('data-plot_id'),
+              url: Drupal.behaviors.EvalInfograph.FastApiUrl+'/graph_api_url?plot_id='+$(this).attr('data-plot_id'),
               success: function(data, textStatus, jqXHR){
                 var plot = JSON.parse(data)
                 console.log(plot);
@@ -251,7 +252,7 @@
         */
         $.ajax({
             type: 'GET',
-            url: Drupal.behaviors.EvalInfograph.Url+'/indicators',
+            url: Drupal.behaviors.EvalInfograph.FastApiUrl+'/indicators',
             success: parseJson,
         });
 
@@ -268,7 +269,7 @@
           $.each(indicators.type, function( index, value ) {
             $.ajax({
               type: 'GET',
-              url: Drupal.behaviors.EvalInfograph.Url+'/graph_api_url?plot_id='+value,
+              url: Drupal.behaviors.EvalInfograph.FastApiUrl+'/graph_api_url?plot_id='+value,
               success: function(data, textStatus, jqXHR){
                 var plot = JSON.parse(data)
                 // console.log("------ OOOOOOOO -------");
@@ -394,7 +395,7 @@
               var loc = $(this).attr('data-loc')
               $.ajax({
                 type: 'GET',
-                url: Drupal.behaviors.EvalInfograph.Url+'/graph_api_url?plot_id='+$(this).attr('data-plot_id'),
+                url: Drupal.behaviors.EvalInfograph.FastApiUrl+'/graph_api_url?plot_id='+$(this).attr('data-plot_id'),
                 success: function(data, textStatus, jqXHR){
                   var plot = JSON.parse(data)
                   console.log(plot);
