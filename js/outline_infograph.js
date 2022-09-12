@@ -204,11 +204,31 @@
       */
       $('#wpp').once().each(function() {
 
+        // Set size of fixed card to other cards size
+        // var new_width = $('#size').width();
+        // $('#fixed').width(new_width);
+        // console.log($("#dap_controls").offset().top);
+        // var dap_controls = $("#dap_controls");
+        // var startpos = dap_controls.offset().top;
+        // $(window).scroll(function() {
+        //     var b = $(window).scrollTop();
+        //     dap_controls.toggleClass("", b > startpos);
+        //     // if (b > startpos){
+        //     //   dap_controls.removeClass(position-fi).addClass()
+        //     // }
+        //     console.log(b);
+        //
+        // })
+
         // get selected wpp from url params
         var urlParams = new URLSearchParams(window.location.search);
         console.log(urlParams.get('wpp'));
         // set selected wpp id
-        Drupal.behaviors.OutlineInfograph.WPP = urlParams.get('wpp');
+        if (urlParams.get('wpp') !== null) {
+          Drupal.behaviors.OutlineInfograph.WPP = urlParams.get('wpp');
+        } else {
+          Drupal.behaviors.OutlineInfograph.WPP = 0;
+        }
         // get and set Portfolios list in the WPP selectbox
         Drupal.behaviors.OutlineInfograph.getPort()
 
