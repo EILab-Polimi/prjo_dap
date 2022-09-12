@@ -175,8 +175,12 @@
 
         // get selected wpp from url params && set in behaviors
         var urlParams = new URLSearchParams(window.location.search);
-        // console.log(urlParams.get('wpp'));
-        Drupal.behaviors.EvalInfograph.WPP = urlParams.get('wpp');
+        console.log(urlParams.get('wpp'));
+        if (urlParams.get('wpp') !== null) {
+          Drupal.behaviors.EvalInfograph.WPP = urlParams.get('wpp');
+        } else {
+          Drupal.behaviors.EvalInfograph.WPP = 0;
+        }
         // get list of scenarios
         Drupal.behaviors.EvalInfograph.getScen();
         // get and set Portfolios list in the WPP selectbox
@@ -238,9 +242,9 @@
       // Possible indicators and plotted indicators
       Drupal.behaviors.EvalInfograph.AddIndicatorObject = function (){
         // get selected wpp from url params && set in behaviors
-        var urlParams = new URLSearchParams(window.location.search);
-        // console.log(urlParams.get('wpp'));
-        Drupal.behaviors.EvalInfograph.WPP = urlParams.get('wpp');
+        // var urlParams = new URLSearchParams(window.location.search);
+        // // console.log(urlParams.get('wpp'));
+        // Drupal.behaviors.EvalInfograph.WPP = urlParams.get('wpp');
 
         /**
         // Call indicators list to fill the select box and set selected
