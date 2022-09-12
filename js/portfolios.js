@@ -16,8 +16,8 @@
 
         $.ajax({
             type: 'GET',
-            // url: 'http://localhost:8008/portfolios', // Dev on Docker FastAPI
-            url: 'http://localhost:5000/portfolios', // Dev on Pycharm FastAPI
+            url: 'http://localhost:8008/portfolios', // Docker FastAPI
+            // url: 'http://localhost:5000/portfolios', // Dev on Pycharm FastAPI
 
             success: parseJson,
 
