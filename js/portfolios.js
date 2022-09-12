@@ -10,13 +10,17 @@
   Drupal.behaviors.Portfolios = {
     attach: function (context, settings) {
 
+
+      Drupal.behaviors.Portfolios.Url = settings.prjo_dap.fastapi_url
+
       $('#portfolios').once().each(function() {
 
         console.log(settings);
 
         $.ajax({
             type: 'GET',
-            url: 'http://85.94.200.117:8008/portfolios', // Docker FastAPI Production server
+            url: Drupal.behaviors.Portfolios.Url+'/portfolios',
+            // url: 'http://85.94.200.117:8008/portfolios', // Docker FastAPI Production server
             // url: 'http://localhost:8008/portfolios', // Docker FastAPI development
             // url: 'http://localhost:5000/portfolios', // Dev on Pycharm FastAPI
 

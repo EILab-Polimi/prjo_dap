@@ -27,6 +27,14 @@ class Portfolios extends ControllerBase {
     $url = Url::fromRoute('prjo_dap.out_infograph');
     // TODO on javascript side we don't have output
 
+    $config = \Drupal::config('dap.settings');
+
+    if ($config->get('fastapi_sel') == 0){
+      $fastAPIurl = $config->get('fastapi_dev_url');
+    } else {
+      $fastAPIurl = $config->get('fastapi_prod_url');
+    }
+
     $build = [
       // '#theme' => 'message_water_request',
       '#theme' => 'portfolios',
@@ -38,6 +46,7 @@ class Portfolios extends ControllerBase {
         'drupalSettings' => [
           'prjo_dap' => [
               'url_out_infograph' => $url,
+              'fastapi_url' => $fastAPIurl,
           ]
         ]
 
