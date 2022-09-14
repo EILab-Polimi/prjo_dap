@@ -13,7 +13,8 @@
       Drupal.behaviors.OLCommon.qgsUrl = Drupal.behaviors.OLCommon.qgsUrl || settings.prjo_dap.qgis_url;
       Drupal.behaviors.OLCommon.qgisProject = Drupal.behaviors.OLCommon.qgisProject || null;
 
-      Drupal.behaviors.OLCommon.Map = Drupal.behaviors.OLCommon.Map || null;
+      // Drupal.behaviors.OLCommon.Map = Drupal.behaviors.OLCommon.Map || null;
+      Drupal.behaviors.OLCommon.Map = Drupal.behaviors.OLCommon.Map || {};
 
       // var mapCenter = [1833763.52, 5021650.70];
       // var mapZoom = 8;
@@ -33,11 +34,13 @@
       // // });
       //
       // Create the empty baseGroup and get it's layers
-      var baseGroup = new ol.layer.Group({
-        'title': 'Basemaps',
-        layers: [],
-      })
-      var baseLayers = baseGroup.getLayers();
+      // var baseGroup = new ol.layer.Group({
+      //   'title': 'Basemaps',
+      //   layers: [],
+      // })
+      // // Sembra che i baselayers vengano raddoppiati sul wpp=1 -> mappa dw_waterloops
+      // // Perchè è la seconda mappa e la variable baseLayers ha già i due base layers della prima
+      // var baseLayers = baseGroup.getLayers();
 
       // Create the empty overGroup and get it's layers
       var overGroup = new ol.layer.Group({
@@ -51,11 +54,12 @@
       // OK exploited
       // recursive function to create json tree
       Drupal.behaviors.OLCommon.jsonTreeString = function (key, val) {
-        // console.log(key);
-        // console.log(val);
+        console.log('jsonTreeString ' + key);
+        console.log(val);
         // TODO to be tested for layer groups
         if (val.Layer instanceof Array) {
-          $.each(val.Layer, jsonTreeString);
+          console.log("ENTERED ITERATION");
+          $.each(val.Layer, Drupal.behaviors.OLCommon.jsonTreeString);
         } else {
             var t = new ol.layer.Image({
               // visible: true,
@@ -99,7 +103,7 @@
                 zoom: mapZoom
           })
           // var olMap = new ol.Map({
-          Drupal.behaviors.OLCommon.Map = new ol.Map({
+          Drupal.behaviors.OLCommon.Map[id] = new ol.Map({
             layers: [],
             // target: 'map',
             // target: 'outl_m2',
@@ -135,6 +139,14 @@
           }
 
           function setGCjsonObject (data, textStatus, jqXHR) {
+            var baseGroup = new ol.layer.Group({
+              'title': 'Basemaps',
+              layers: [],
+            })
+            // Sembra che i baselayers vengano raddoppiati sul wpp=1 -> mappa dw_waterloops
+            // Perchè è la seconda mappa e la variable baseLayers ha già i due base layers della prima
+            var baseLayers = baseGroup.getLayers();
+
             // ADD base layers
             baseLayers.push(
               new ol.layer.Tile({
@@ -163,12 +175,13 @@
             overGroup.setLayers(overLayers);
             baseGroup.setLayers(baseLayers);
 
-            Drupal.behaviors.OLCommon.Map.addLayer(baseGroup);
-            Drupal.behaviors.OLCommon.Map.addLayer(overGroup);
+            Drupal.behaviors.OLCommon.Map[id].addLayer(baseGroup);
+            Drupal.behaviors.OLCommon.Map[id].addLayer(overGroup);
 
-            Drupal.behaviors.OLCommon.Map.getLayers().forEach(layer => {
-    					console.log(layer.type);
-    					console.log(layer.get('title'));
+            Drupal.behaviors.OLCommon.Map[id].getLayers().forEach(layer => {
+              console.log('--- Drupal.behaviors.OLCommon.Map.getLayers() ---');
+    					// console.log(layer.type);// Always undefined
+    					console.log('    LAYER NAME : '+ layer.get('title'));
               console.log(layer.getProperties());
               // console.log(layer.getSource());
 
@@ -178,25 +191,27 @@
               // console.log(source);
               // console.log(params);
 
-    					if (layer.get('title') == 'All Layers'){
-    						layer.getLayers().forEach(layer => {
-    							// console.log(layer.get('title'));
-    							var source = layer.getSource();
-    							var params = source.getParams();
-
-                  console.log(source);
-                  console.log(params);
-    							if (params.LAYERS == 'new_wells'){
-    							     // params.FILTER = ''+layer.get('title')+':"exp_id" = 0'; // Funziona
-                       params.FILTER = ''+layer.get('title')+':"exp_id" = 1'; // Sembra non funzionare anche se a db sembra che abbimao dati
-    							}
-    							// if (Drupal.behaviors.Siric.SelectedTable == 'bacini_afferenti'){
-    							// 	params.FILTER = ''+layer.get('title')+':"bacini_id" = '+newString;
-    							// }
-    							// // console.log(params);
-    							source.updateParams(params);
-    						});
-    					}
+    					// if (layer.get('title') == 'All Layers'){
+    					// 	layer.getLayers().forEach(layer => {
+              //     console.log('--- ALL LAYERS ---');
+    					// 		// console.log('    LAYER NAME : '+ layer.get('title'));
+    					// 		var source = layer.getSource();
+    					// 		var params = source.getParams();
+              //
+              //     console.log(source);
+              //     console.log(params);
+    					// 		if (params.LAYERS == 'new_wells'){
+              //       console.log("--- FILTERING new_wells ---");
+    					// 		     params.FILTER = ''+layer.get('title')+':"exp_id" = 0'; // Funziona
+              //          // params.FILTER = ''+layer.get('title')+':"exp_id" = 1'; // Sembra non funzionare anche se a db sembra che abbimao dati
+    					// 		}
+    					// 		// if (Drupal.behaviors.Siric.SelectedTable == 'bacini_afferenti'){
+    					// 		// 	params.FILTER = ''+layer.get('title')+':"bacini_id" = '+newString;
+    					// 		// }
+    					// 		// // console.log(params);
+    					// 		source.updateParams(params);
+    					// 	});
+    					// }
     				});
 
             /**
@@ -207,44 +222,43 @@
                     // groupSelectStyle: 'group' // Can be 'children' [default], 'group' or 'none'
                     groupSelectStyle: 'children',
             });
-            Drupal.behaviors.OLCommon.Map.addControl(layerSwitcher);
+            Drupal.behaviors.OLCommon.Map[id].addControl(layerSwitcher);
 
           }
 
       }
 
-      $( "#target" ).click(function() {
-        Drupal.behaviors.OLCommon.Map.getLayers().forEach(layer => {
-          // console.log(layer.type);
-          console.log(layer.get('title'));
-          console.log(layer.getProperties());
-          // console.log(layer.getSource());
-
-          // PER I BASELAYERS LE DUE FUNZIONI QUI SOTTO DANNO ERRORE
-          // var source = layer.getSource();
-          // var params = source.getParams();
-          // console.log(source);
-          // console.log(params);
-
-          // if (glayer.type == 'group'){
-          // 	glayer.getLayers().forEach(layer => {
-          // 		// console.log(layer.get('title'));
-          // 		var source = layer.getSource();
-          // 		var params = source.getParams();
-          //
-          // 		if (Drupal.behaviors.Siric.SelectedTable == 'rl_comuni_selezione'){
-          // 			params.FILTER = ''+layer.get('title')+':"com_istat" = '+newString;
-          // 		}
-          // 		if (Drupal.behaviors.Siric.SelectedTable == 'bacini_afferenti'){
-          // 			params.FILTER = ''+layer.get('title')+':"bacini_id" = '+newString;
-          // 		}
-          // 		// console.log(params);
-          // 		source.updateParams(params);
-          // 	});
-          // }
-        });
-
-      });
+      // $( "#target" ).click(function() {
+      //   Drupal.behaviors.OLCommon.Map.getLayers().forEach(layer => {
+      //     // console.log(layer.type);
+      //     console.log(layer.get('title'));
+      //     console.log(layer.getProperties());
+      //     // console.log(layer.getSource());
+      //
+      //     // PER I BASELAYERS LE DUE FUNZIONI QUI SOTTO DANNO ERRORE
+      //     // var source = layer.getSource();
+      //     // var params = source.getParams();
+      //     // console.log(source);
+      //     // console.log(params);
+      //
+      //     // if (glayer.type == 'group'){
+      //     // 	glayer.getLayers().forEach(layer => {
+      //     // 		// console.log(layer.get('title'));
+      //     // 		var source = layer.getSource();
+      //     // 		var params = source.getParams();
+      //     //
+      //     // 		if (Drupal.behaviors.Siric.SelectedTable == 'rl_comuni_selezione'){
+      //     // 			params.FILTER = ''+layer.get('title')+':"com_istat" = '+newString;
+      //     // 		}
+      //     // 		if (Drupal.behaviors.Siric.SelectedTable == 'bacini_afferenti'){
+      //     // 			params.FILTER = ''+layer.get('title')+':"bacini_id" = '+newString;
+      //     // 		}
+      //     // 		// console.log(params);
+      //     // 		source.updateParams(params);
+      //     // 	});
+      //     // }
+      //   });
+      // });
 
 
     }
