@@ -4,6 +4,34 @@ plotly:
   js:
     /libraries/plotly.js/dist/plotly.min.js: {}
 
+openlayers:
+  version: 6.x
+  js:
+    # /libraries/ol6/ol.js: {}
+    /libraries/openlayers_from_module/ol.js: {}
+  css:
+    theme:
+      # /libraries/ol6/ol.css: {}
+      /libraries/openlayers_from_module/ol.css: {}
+
+
+# openlayers:
+#   version: 7.1.0
+#   js:
+#     /libraries/openlayers/dist/ol.js: {}
+#   css:
+#     /libraries/openlayers/ol.css: {}
+
+ol-layerswitcher:
+  version: 1.x
+  remote: https://github.com/ilpise/ol-layerswitcher
+  license:
+    name: MIT Licence
+  js:
+    /libraries/ol-layerswitcher/dist/ol-layerswitcher.js: {}
+  css:
+    theme:
+      /libraries/ol-layerswitcher/src/ol-layerswitcher.css: {}
 
 # jQuery-contextMenu:
 #   version: 3.x
@@ -24,6 +52,11 @@ bsmultiselect:
     component:
       /libraries/BsMultiSelect/dist/css/BsMultiSelect.min.css: {}
 
+# Common function for Evaluation and Outline page
+# TODO port the Drupal.behaviors.OutlineInfograph.Url - the Url production or develepment for fastAPI
+# TODO port the Drupal.behaviors.EvalInfograph.getPort() - Portfolios list
+
+# Evaluation page
 eval-infograph:
   version: 1.x
   js:
@@ -45,12 +78,33 @@ charts:
   js:
     js/multi_card_charts.js: {}
 
+# Outline page
 outline-infograph:
   version: 1.x
   js:
+    # js/common_chart.js: {}
+    js/common_map.js: {}
     js/outline_infograph.js: {}
 
+# Portfolios page
 portfolios:
   version: 1.x
   js:
     js/portfolios.js: {}
+
+
+afclm:
+  version: 1.x
+  js:
+    js/afclm.js: {}
+
+
+hiplot_one:
+  version: 1.x
+  js:
+    js/hp_src_one.js: {}
+
+hiplot_two:
+  version: 1.x
+  js:
+    js/hp_src_two.js: {}

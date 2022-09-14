@@ -24,6 +24,7 @@ class Outline extends ControllerBase {
   // public function infograph($wpp) {
   public function infograph() {
 
+    // Get the configured url for fastAPI
     $config = \Drupal::config('dap.settings');
 
     if ($config->get('fastapi_sel') == 0){
@@ -32,12 +33,23 @@ class Outline extends ControllerBase {
       $fastAPIurl = $config->get('fastapi_prod_url');
     }
 
+    // Get the configured url for Qgis server
+    $config = \Drupal::config('geoviz.settings');
+
+    if ($config->get('qgis_server_sel') == 0){
+      $QgisUrl = $config->get('qgis_server_dev_url');
+    } else {
+      $QgisUrl = $config->get('qgis_server_prod_url');
+    }
+
     $build = [
       '#theme' => 'evaluation_outline',
       '#attached' => [
         'library' => [
           // 'prjo_dap/jQuery-contextMenu',
           // 'prjo_dap/bsmultiselect',
+          'prjo_dap/openlayers',
+          'prjo_dap/ol-layerswitcher',
           'prjo_dap/plotly',
           'prjo_dap/outline-infograph',
           // 'prjo_dap/charts',
@@ -45,6 +57,7 @@ class Outline extends ControllerBase {
         'drupalSettings' => [
           'prjo_dap' => [
               'fastapi_url' => $fastAPIurl,
+              'qgis_url' => $QgisUrl,
           ]
         ]
       ],

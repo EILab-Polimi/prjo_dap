@@ -10,6 +10,9 @@
   Drupal.behaviors.OutlineInfograph = {
     attach: function (context, settings) {
 
+
+      // import WMSCapabilities from 'ol/format/WMSCapabilities';
+
       /**
       // GLOBAL VARIABLES
       */
@@ -100,15 +103,23 @@
           });
           $('#wpp').append(out);
 
+          /**
           // fill the explanation Cards
-          var out = '';
-          var graph = '';
+          **/
+          // var cards = '';
+          // var graph = '';
+          // var map = '';
           // console.log(Drupal.behaviors.OutlineInfograph.WPP);
           // console.log(Drupal.behaviors.OutlineInfograph.WPPList.descr_plan[Drupal.behaviors.OutlineInfograph.WPP]);
           // console.log(Drupal.behaviors.OutlineInfograph.WPPList.descr_plan[Drupal.behaviors.OutlineInfograph.WPP].cards);
           $.each(Drupal.behaviors.OutlineInfograph.WPPList.descr_plan[Drupal.behaviors.OutlineInfograph.WPP].cards, function( index, card ){
             console.log(card);
-            out += '<div class="col d-flex align-items-stretch">'+
+            var cards = '';
+            var graph = '';
+            var map = '';
+
+            // TODO - aggiungere il bottone nella card che porta al relativo grafico o mappa
+            cards += '<div class="col d-flex align-items-stretch">'+
                      '<div class="card mb-3 shadow" style="min-width: -webkit-fill-available;">'+
                        '<div class="card-body px-4">'+
                        '<div class="d-flex justify-content-start align-items-center mb-2">'+
@@ -141,13 +152,52 @@
                               '</div>'+
                             '</div>'+
                           '</div>';
-              }
-          });
-          // Fill cards with explanations
-          $('#expl_cards').append(out);
-          // fill charts
-          $('#outline_charts').append(graph);
+              } else if (card.hasOwnProperty('map')){
+                // Insert map instead of graph
 
+                // Chiamiamo una funzione che passa il nome del progetto qgis
+                //
+
+                // Drupal.behaviors.OLCommon.SetUp('outl_m'+index, card.map)
+
+                map += '<div class="row mt-3">'+
+                            '<div class="col">'+
+                              '<div class="card">'+
+                                '<div class="card-header">'+
+                                card.title +
+                                '</div>'+
+                                '<div class="card-body">'+
+                                  '<div id="outl_m'+index+'" data-qgis_map="'+card.map+'" data-scen="opt" data-exp="nonserve" data-loc="opt" class="dap_map" style="height:400px;"></div>'+
+                                '</div>'+
+                              '</div>'+
+                            '</div>'+
+                          '</div>';
+
+
+              }
+
+              // Fill cards with explanations
+              $('#expl_cards').append(cards);
+              // fill map
+              $('#outline_charts').append(map);
+              // fill charts
+              $('#outline_charts').append(graph);
+
+          });
+          // // Fill cards with explanations
+          // $('#expl_cards').append(cards);
+          // // fill map
+          // $('#outline_charts').append(map);
+          // // fill charts
+          // $('#outline_charts').append(graph);
+
+
+          // CALL function to draw the maps
+          $(".dap_map").each(function( index ) {
+            var id = $(this).attr('id')
+            var map = $(this).attr('data-qgis_map')
+            Drupal.behaviors.OLCommon.SetUp(id, map)
+          });
 
           // CALL function to draw the graphs
           /**
