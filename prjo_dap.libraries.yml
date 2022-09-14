@@ -22,9 +22,11 @@ openlayers:
 #   css:
 #     /libraries/openlayers/ol.css: {}
 
+
+# Use the original lyer switcher for maps in cards
 ol-layerswitcher:
   version: 1.x
-  remote: https://github.com/ilpise/ol-layerswitcher
+  remote: https://github.com/walkermatt/ol-layerswitcher.git
   license:
     name: MIT Licence
   js:
