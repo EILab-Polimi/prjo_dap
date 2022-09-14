@@ -136,12 +136,16 @@
                                '<div class="card-text">'+
                                   card.body +
                                '</div>'+
+                               '<div class="card-text">'+
+                                  '<a href="#rowcard_'+index+'" class="stretched-link">More</a>' +
+                               '</div>'+
                        '</div>'+
                      '</div>'+
                    '</div>';
 
               if ( card.hasOwnProperty('chart_api') && card.hasOwnProperty('item_type') ) {
-                graph += '<div class="row mt-3">'+
+                graph += '<div id="rowcard_'+index+'" class="row mt-3" style="scroll-margin-top: 100px;">'+
+                            '<p ></p>'+
                             '<div class="col">'+
                               '<div class="card">'+
                                 '<div class="card-header">'+
@@ -160,7 +164,7 @@
 
                 // Drupal.behaviors.OLCommon.SetUp('outl_m'+index, card.map)
 
-                map += '<div class="row mt-3">'+
+                map += '<div id="rowcard_'+index+'" class="row mt-3" style="scroll-margin-top: 100px;">'+
                             '<div class="col">'+
                               '<div class="card">'+
                                 '<div class="card-header">'+
