@@ -115,7 +115,7 @@
                     '&REQUEST=GetCapabilities'+
                     '&map=/project/'+ qgisProject +'.qgs';
           //
-          // console.log(url);
+          console.log(url);
           //
           $.ajax({
             type: 'GET',
@@ -128,6 +128,7 @@
           function parseGetCapabilities (data, textStatus, jqXHR) {
             var capability = jqXHR.responseText;
             var jsonCap = new ol.format.WMSCapabilities().read(capability);
+            console.log(jsonCap);
             $.each( jsonCap.Capability.Layer.Layer.reverse(), Drupal.behaviors.OLCommon.jsonTreeString);
             // Get the extent form the getCapability result the EPSG:3857 bbox
             // console.log(capability.Layer.BoundingBox);
@@ -165,6 +166,38 @@
             Drupal.behaviors.OLCommon.Map.addLayer(baseGroup);
             Drupal.behaviors.OLCommon.Map.addLayer(overGroup);
 
+            Drupal.behaviors.OLCommon.Map.getLayers().forEach(layer => {
+    					console.log(layer.type);
+    					console.log(layer.get('title'));
+              console.log(layer.getProperties());
+              // console.log(layer.getSource());
+
+              // PER I BASELAYERS LE DUE FUNZIONI QUI SOTTO DANNO ERRORE
+              // var source = layer.getSource();
+							// var params = source.getParams();
+              // console.log(source);
+              // console.log(params);
+
+    					if (layer.get('title') == 'All Layers'){
+    						layer.getLayers().forEach(layer => {
+    							// console.log(layer.get('title'));
+    							var source = layer.getSource();
+    							var params = source.getParams();
+
+                  console.log(source);
+                  console.log(params);
+    							if (params.LAYERS == 'new_wells'){
+    							     // params.FILTER = ''+layer.get('title')+':"exp_id" = 0'; // Funziona
+                       params.FILTER = ''+layer.get('title')+':"exp_id" = 1'; // Sembra non funzionare anche se a db sembra che abbimao dati
+    							}
+    							// if (Drupal.behaviors.Siric.SelectedTable == 'bacini_afferenti'){
+    							// 	params.FILTER = ''+layer.get('title')+':"bacini_id" = '+newString;
+    							// }
+    							// // console.log(params);
+    							source.updateParams(params);
+    						});
+    					}
+    				});
 
             /**
             / Default implementation for LayerSwitcher
@@ -180,6 +213,38 @@
 
       }
 
+      $( "#target" ).click(function() {
+        Drupal.behaviors.OLCommon.Map.getLayers().forEach(layer => {
+          // console.log(layer.type);
+          console.log(layer.get('title'));
+          console.log(layer.getProperties());
+          // console.log(layer.getSource());
+
+          // PER I BASELAYERS LE DUE FUNZIONI QUI SOTTO DANNO ERRORE
+          // var source = layer.getSource();
+          // var params = source.getParams();
+          // console.log(source);
+          // console.log(params);
+
+          // if (glayer.type == 'group'){
+          // 	glayer.getLayers().forEach(layer => {
+          // 		// console.log(layer.get('title'));
+          // 		var source = layer.getSource();
+          // 		var params = source.getParams();
+          //
+          // 		if (Drupal.behaviors.Siric.SelectedTable == 'rl_comuni_selezione'){
+          // 			params.FILTER = ''+layer.get('title')+':"com_istat" = '+newString;
+          // 		}
+          // 		if (Drupal.behaviors.Siric.SelectedTable == 'bacini_afferenti'){
+          // 			params.FILTER = ''+layer.get('title')+':"bacini_id" = '+newString;
+          // 		}
+          // 		// console.log(params);
+          // 		source.updateParams(params);
+          // 	});
+          // }
+        });
+
+      });
 
 
     }
