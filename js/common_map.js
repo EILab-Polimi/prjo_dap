@@ -212,16 +212,17 @@
 
                   console.log('--- ALL LAYERS ---');
     							console.log('    LAYER NAME : '+ layer.get('title'));
-    							// var source = layer.getSource();
-    							// var params = source.getParams();
-                  //
-                  // console.log(source);
-                  // console.log(params);
-    							// if (params.LAYERS == 'new_wells'){
-                  //   console.log("--- FILTERING new_wells ---");
-    							//      params.FILTER = ''+layer.get('title')+':"exp_id" = 0'; // Funziona
-                  //      // params.FILTER = ''+layer.get('title')+':"exp_id" = 1'; // Sembra non funzionare anche se a db sembra che abbimao dati
-    							// }
+    							var source = layer.getSource();
+    							var params = source.getParams();
+
+                  console.log(source);
+                  console.log(params);
+    							if (params.LAYERS == 'new_wells'){
+                    console.log("--- FILTERING new_wells ---");
+                    params.FILTER = ''+layer.get('title')+':"exp_id" = '+Drupal.behaviors.OutlineInfograph.WPP; // Funziona
+    							     // params.FILTER = ''+layer.get('title')+':"exp_id" = 0'; // Funziona
+                       // params.FILTER = ''+layer.get('title')+':"exp_id" = 1'; // Sembra non funzionare anche se a db sembra che abbimao dati
+    							}
     							// if (params.LAYERS == 'i_irr_def_mean_h'){
     							// 	// params.FILTER = ''+layer.get('title')+':"exp_id" = 0';
                   //   // params.FILTER = ''+layer.get('title')+':"exp_id" = 1';
@@ -232,8 +233,8 @@
                   //   // params.FILTER = ''+layer.get('title')+':"exp_id" = 2';
                   //
     							// }
-    							// // // console.log(params);
-    							// source.updateParams(params);
+    							// // console.log(params);
+    							source.updateParams(params);
 
     						});
     					}
