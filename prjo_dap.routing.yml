@@ -17,7 +17,7 @@ prjo_dap.portfolios:
   requirements:
     _permission: 'access content'
 
-# # Outline pages
+# Outline page
 prjo_dap.out_infograph:
   path: '/dap_out_infograph'
   defaults:
