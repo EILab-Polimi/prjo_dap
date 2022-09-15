@@ -15,47 +15,26 @@
 
       // Drupal.behaviors.OLCommon.Map = Drupal.behaviors.OLCommon.Map || null;
       Drupal.behaviors.OLCommon.Map = Drupal.behaviors.OLCommon.Map || {};
-
-      // var mapCenter = [1833763.52, 5021650.70];
-      // var mapZoom = 8;
-      //
-      // // Instantiate the map
-      // var view = new ol.View({
-      //       // projection: 'EPSG:4326',
-      //       center: mapCenter,
-      //       zoom: mapZoom
-      // })
-      // // var olMap = new ol.Map({
-      // // Drupal.behaviors.OlCommon.OlMap = new ol.Map({
-      // //   layers: [],
-      // //   // target: 'map',
-      // //   target: 'outl_m2',
-      // //   view: view
-      // // });
-      //
-      // Create the empty baseGroup and get it's layers
-      // var baseGroup = new ol.layer.Group({
-      //   'title': 'Basemaps',
-      //   layers: [],
-      // })
-      // // Sembra che i baselayers vengano raddoppiati sul wpp=1 -> mappa dw_waterloops
-      // // Perchè è la seconda mappa e la variable baseLayers ha già i due base layers della prima
-      // var baseLayers = baseGroup.getLayers();
+      Drupal.behaviors.OLCommon.overGroup = Drupal.behaviors.OLCommon.overGroup || {};
+      Drupal.behaviors.OLCommon.overLayers = Drupal.behaviors.OLCommon.overLayers || {};
 
       // Create the empty overGroup and get it's layers
-      var overGroup = new ol.layer.Group({
-        'title': 'All Layers',
-        layers: [],
-        // fold: 'open',
-      })
-      var overLayers = overGroup.getLayers();
+      // Drupal.behaviors.OLCommon.overGroup[Drupal.behaviors.OLCommon.id]
+      // var overGroup = new ol.layer.Group({
+      //   'title': 'All Layers',
+      //   layers: [],
+      //   // fold: 'open',
+      // })
+      // var overLayers = overGroup.getLayers();
+      // Drupal.behaviors.OLCommon.overLayers[Drupal.behaviors.OLCommon.id] = Drupal.behaviors.OLCommon.overGroup[Drupal.behaviors.OLCommon.id].getLayers();
 
 
       // OK exploited
       // recursive function to create json tree
       Drupal.behaviors.OLCommon.jsonTreeString = function (key, val) {
-        console.log('jsonTreeString ' + key);
+        console.log('---- jsonTreeString ---- ' + key);
         console.log(val);
+        // NOOOO lo svuoti ogni volta la funzione è chiamata da un each var overLayers = Drupal.behaviors.OLCommon.overGroup[Drupal.behaviors.OLCommon.id].getLayers();
         // TODO to be tested for layer groups
         if (val.Layer instanceof Array) {
           console.log("ENTERED ITERATION");
@@ -74,7 +53,10 @@
                   serverType: 'qgis'
                 })
               })
-            overLayers.push(t);
+            // overLayers.push(t);
+            // SIIIIII Drupal.behaviors.OLCommon.overLayers[Drupal.behaviors.OLCommon.id].push(t);
+            Drupal.behaviors.OLCommon.overLayers[Drupal.behaviors.OLCommon.id].push(t);
+            // perchè poi devi fare un overGroup.setLayers(overLayers);
         }
       }
 
@@ -85,13 +67,19 @@
       // @qgisProject - the project name of the Map to show
       */
       Drupal.behaviors.OLCommon.SetUp = function (id, qgisProject){
-          // console.log(id);
-          // Compose the url given the parameters
-          console.log(id, qgisProject);
-          // Set the qgisProject name
+          console.log("CALLED SETUP WITH id=" + id + " and project=" +qgisProject);
+
+          // Set global Drupal.behaviors.OLCommon.id to id
+          // Inside this function use id
+          // The Drupal.behaviors.OLCommon.id settled is used inside
+          // Drupal.behaviors.OLCommon.jsonTreeString function after GetCapabilities
+          // function parseGetCapabilities to fill Drupal.behaviors.OLCommon.overLayers
+          Drupal.behaviors.OLCommon.id = id;
+          // Set globally the qgisProject name
+          // Used in Drupal.behaviors.OLCommon.jsonTreeString function
           Drupal.behaviors.OLCommon.qgisProject = qgisProject;
 
-          console.log(Drupal.behaviors.OLCommon.qgsUrl);
+          // console.log(Drupal.behaviors.OLCommon.qgsUrl);
 
           var mapCenter = [1833763.52, 5021650.70];
           var mapZoom = 8;
@@ -111,6 +99,17 @@
             view: view
           });
 
+          // Create an empty object for overGroup
+          Drupal.behaviors.OLCommon.overGroup[id] = new ol.layer.Group({
+            'title': 'All Layers',
+            layers: [],
+            // fold: 'open',
+          });
+
+          // Create an empty object for overLayers
+          Drupal.behaviors.OLCommon.overLayers[id] = Drupal.behaviors.OLCommon.overGroup[id].getLayers();
+
+
           // http://localhost:9003/?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities&map=/project/dw_waterloops.qgs
 
           var url = Drupal.behaviors.OLCommon.qgsUrl+
@@ -125,6 +124,7 @@
             type: 'GET',
             url: url,
             success: parseGetCapabilities,
+            // Passiamo i valori dalla success al complete
             complete: setGCjsonObject,
           });
 
@@ -139,6 +139,17 @@
           }
 
           function setGCjsonObject (data, textStatus, jqXHR) {
+
+            console.log('COMPLETE GetCapabilities REQUEST');
+
+
+            //???????????? Perchè non creiamo qui la mappa vuota ?????
+
+
+            // console.log(jqXHR.responseText); // undefined
+
+            // console.log(overLayers);
+
             var baseGroup = new ol.layer.Group({
               'title': 'Basemaps',
               layers: [],
@@ -172,11 +183,16 @@
               })
             );
 
-            overGroup.setLayers(overLayers);
+            // overGroup.setLayers(overLayers);
+            // SIIIII Drupal.behaviors.OLCommon.overGroup[Drupal.behaviors.OLCommon.id].setLayers(Drupal.behaviors.OLCommon.overLayers[Drupal.behaviors.OLCommon.id]) ?????
+
+            Drupal.behaviors.OLCommon.overGroup[id].setLayers(Drupal.behaviors.OLCommon.overLayers[id])
             baseGroup.setLayers(baseLayers);
 
+            // DO NOT REVERSE THE ORDER layer are added to map HERE
             Drupal.behaviors.OLCommon.Map[id].addLayer(baseGroup);
-            Drupal.behaviors.OLCommon.Map[id].addLayer(overGroup);
+            // Drupal.behaviors.OLCommon.Map[id].addLayer(overGroup);
+            Drupal.behaviors.OLCommon.Map[id].addLayer(Drupal.behaviors.OLCommon.overGroup[id]);
 
             Drupal.behaviors.OLCommon.Map[id].getLayers().forEach(layer => {
               console.log('--- Drupal.behaviors.OLCommon.Map.getLayers() ---');
@@ -191,27 +207,36 @@
               // console.log(source);
               // console.log(params);
 
-    					// if (layer.get('title') == 'All Layers'){
-    					// 	layer.getLayers().forEach(layer => {
-              //     console.log('--- ALL LAYERS ---');
-    					// 		// console.log('    LAYER NAME : '+ layer.get('title'));
-    					// 		var source = layer.getSource();
-    					// 		var params = source.getParams();
-              //
-              //     console.log(source);
-              //     console.log(params);
-    					// 		if (params.LAYERS == 'new_wells'){
-              //       console.log("--- FILTERING new_wells ---");
-    					// 		     params.FILTER = ''+layer.get('title')+':"exp_id" = 0'; // Funziona
-              //          // params.FILTER = ''+layer.get('title')+':"exp_id" = 1'; // Sembra non funzionare anche se a db sembra che abbimao dati
-    					// 		}
-    					// 		// if (Drupal.behaviors.Siric.SelectedTable == 'bacini_afferenti'){
-    					// 		// 	params.FILTER = ''+layer.get('title')+':"bacini_id" = '+newString;
-    					// 		// }
-    					// 		// // console.log(params);
-    					// 		source.updateParams(params);
-    					// 	});
-    					// }
+    					if (layer.get('title') == 'All Layers'){
+    						layer.getLayers().forEach(layer => {
+
+                  console.log('--- ALL LAYERS ---');
+    							console.log('    LAYER NAME : '+ layer.get('title'));
+    							// var source = layer.getSource();
+    							// var params = source.getParams();
+                  //
+                  // console.log(source);
+                  // console.log(params);
+    							// if (params.LAYERS == 'new_wells'){
+                  //   console.log("--- FILTERING new_wells ---");
+    							//      params.FILTER = ''+layer.get('title')+':"exp_id" = 0'; // Funziona
+                  //      // params.FILTER = ''+layer.get('title')+':"exp_id" = 1'; // Sembra non funzionare anche se a db sembra che abbimao dati
+    							// }
+    							// if (params.LAYERS == 'i_irr_def_mean_h'){
+    							// 	// params.FILTER = ''+layer.get('title')+':"exp_id" = 0';
+                  //   // params.FILTER = ''+layer.get('title')+':"exp_id" = 1';
+                  //   // params.FILTER = ''+layer.get('title')+':"exp_id" = 2';
+                  //
+                  //   params.FILTER = ''+layer.get('title')+':"exp_id" = 0 AND "scen_id" = 0';
+                  //   // params.FILTER = ''+layer.get('title')+':"exp_id" = 1';
+                  //   // params.FILTER = ''+layer.get('title')+':"exp_id" = 2';
+                  //
+    							// }
+    							// // // console.log(params);
+    							// source.updateParams(params);
+
+    						});
+    					}
     				});
 
             /**
