@@ -4,6 +4,8 @@ plotly:
   js:
     /libraries/plotly.js/dist/plotly.min.js: {}
 
+
+# La dir l'hai chiamata from modules ma non centra nulla è l'unzip della 6.14.1-dist.zip
 openlayers:
   version: 6.x
   js:
@@ -18,9 +20,9 @@ openlayers:
 # openlayers:
 #   version: 7.1.0
 #   js:
-#     /libraries/openlayers/dist/ol.js: {}
+#     /libraries/openlayers_git/build/full/ol.js: {}
 #   css:
-#     /libraries/openlayers/ol.css: {}
+#     /libraries/openlayers_git/build/ol/ol.css: {}
 
 
 # Use the original lyer switcher for maps in cards
