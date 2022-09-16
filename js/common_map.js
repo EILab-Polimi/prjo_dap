@@ -23,7 +23,10 @@
       // recursive function to create json tree
 
       Drupal.behaviors.OLCommon.jsonTreeString = function (key, val) {
+
+        console.log(test);
         Drupal.behaviors.OLCommon.GroupID = Drupal.behaviors.OLCommon.GroupID || 0;
+        console.log("MAP ID "+ Drupal.behaviors.OLCommon.id);
         console.log("GROUP ID "+ Drupal.behaviors.OLCommon.GroupID);
         console.log('---- jsonTreeString ---- ' + key);
         console.log(val);
@@ -38,6 +41,7 @@
           Drupal.behaviors.OLCommon.GroupID = key;
 
           // Create the group with GroupID - the GroupID does not change in recursion
+          // TODO add MAP id Drupal.behaviors.OLCommon.overGroup[Drupal.behaviors.OLCommon.id][Drupal.behaviors.OLCommon.GroupID]
           Drupal.behaviors.OLCommon.overGroup[Drupal.behaviors.OLCommon.GroupID] = new ol.layer.Group({
             'title': val.Title,
             layers: [],
@@ -115,17 +119,6 @@
             view: view
           });
 
-          // Create an empty object for overGroup
-          // Drupal.behaviors.OLCommon.overGroup[id] = new ol.layer.Group({
-          //   'title': 'All Layers',
-          //   layers: [],
-          //   // fold: 'open',
-          // });
-          //
-          // // Create an empty object for overLayers
-          // Drupal.behaviors.OLCommon.overLayers[id] = Drupal.behaviors.OLCommon.overGroup[id].getLayers();
-
-
           // http://localhost:9003/?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities&map=/project/dw_waterloops.qgs
 
           var url = Drupal.behaviors.OLCommon.qgsUrl+
@@ -149,7 +142,73 @@
             var capability = jqXHR.responseText;
             var jsonCap = new ol.format.WMSCapabilities().read(capability);
             // console.log(jsonCap);
-            $.each(jsonCap.Capability.Layer.Layer.reverse(), Drupal.behaviors.OLCommon.jsonTreeString);
+
+            // ADD map reference inside
+            console.log(jsonCap.Capability.Layer);
+
+            var test = 'CEST';
+
+            // $.each(jsonCap.Capability.Layer.Layer.reverse(), Drupal.behaviors.OLCommon.jsonTreeString);
+
+            $.each(jsonCap.Capability.Layer.Layer.reverse(), function(key,val){
+              console.log(test);
+              console.log(id);
+              Drupal.behaviors.OLCommon.GroupID = Drupal.behaviors.OLCommon.GroupID || 0;
+              // console.log("MAP ID "+ Drupal.behaviors.OLCommon.id);
+              console.log("GROUP ID "+ Drupal.behaviors.OLCommon.GroupID);
+              console.log('---- jsonTreeString ---- ' + key);
+              console.log(val);
+
+              if (val.Layer instanceof Array) {
+                console.log("ENTERED ITERATION");
+                // Reverse the array of layers
+                // This is to have the order in Legend like in Qgis desktop project
+                val.Layer.reverse()
+
+                // Set the GroupID globally to fill the array
+                Drupal.behaviors.OLCommon.GroupID = key;
+
+                // Create the group with GroupID - the GroupID does not change in recursion
+                // TODO add MAP id Drupal.behaviors.OLCommon.overGroup[Drupal.behaviors.OLCommon.id][Drupal.behaviors.OLCommon.GroupID]
+                Drupal.behaviors.OLCommon.overGroup[Drupal.behaviors.OLCommon.GroupID] = new ol.layer.Group({
+                  'title': val.Title,
+                  layers: [],
+                })
+                Drupal.behaviors.OLCommon.overLayers[Drupal.behaviors.OLCommon.GroupID] = Drupal.behaviors.OLCommon.overGroup[Drupal.behaviors.OLCommon.GroupID].getLayers();
+
+                // Call recursion
+                $.each(val.Layer, Drupal.behaviors.OLCommon.jsonTreeString);
+              } else {
+                  var t = new ol.layer.Image({
+                      type: 'layer',
+                      title: val.Title,
+                      source: new ol.source.ImageWMS({
+                        // url: qgsUrl + '?map=' + qgsMap,
+                        url: Drupal.behaviors.OLCommon.qgsUrl + '?map=/project/' + Drupal.behaviors.OLCommon.qgisProject[id] +'.qgs',
+                        params: {'LAYERS': val.Title},
+                        ratio: 1,
+                        serverType: 'qgis'
+                      })
+                    })
+
+                  // Manage Case with no subgroups
+                  // if ( ! Drupal.behaviors.OLCommon.overLayers.hasOwnProperty(Drupal.behaviors.OLCommon.GroupID) ){
+                  if ( ! Drupal.behaviors.OLCommon.overLayers.hasOwnProperty(id) ){
+                    Drupal.behaviors.OLCommon.overLayers[id] = {}
+                  }
+                  if ( ! Drupal.behaviors.OLCommon.overLayers[id].hasOwnProperty(Drupal.behaviors.OLCommon.GroupID) ){  
+                    Drupal.behaviors.OLCommon.overGroup[Drupal.behaviors.OLCommon.GroupID] = new ol.layer.Group({
+                      'title': 'TEST',
+                      layers: [],
+                    })
+                    Drupal.behaviors.OLCommon.overLayers[Drupal.behaviors.OLCommon.GroupID] = Drupal.behaviors.OLCommon.overGroup[Drupal.behaviors.OLCommon.GroupID].getLayers();
+                  }
+
+                  Drupal.behaviors.OLCommon.overLayers[Drupal.behaviors.OLCommon.GroupID].push(t);
+              }
+              Drupal.behaviors.OLCommon.overLayers[Drupal.behaviors.OLCommon.GroupID] = Drupal.behaviors.OLCommon.overGroup[Drupal.behaviors.OLCommon.GroupID].getLayers();
+            });
+            // jsonCap.Capability.Layer.Layer.reverse().each( Drupal.behaviors.OLCommon.jsonTreeString );
             // Get the extent form the getCapability result the EPSG:3857 bbox
             // console.log(capability.Layer.BoundingBox);
           }
