@@ -17,7 +17,7 @@
       // GLOBAL VARIABLES
       */
       // Complete experiments/WPPs output
-      Drupal.behaviors.OutlineInfograph.WPPList = Drupal.behaviors.OutlineInfograph.WPPList || null
+      // Drupal.behaviors.OutlineInfograph.WPPList = Drupal.behaviors.OutlineInfograph.WPPList || null
       // Variable to store selected WPP
       Drupal.behaviors.OutlineInfograph.WPP = Drupal.behaviors.OutlineInfograph.WPP || null
 
@@ -41,7 +41,7 @@
       Drupal.behaviors.OutlineInfograph.Redraw = function (id, route, table, scen, wpp, loc){
           // console.log(id);
           // Compose the url given the parameters
-          console.log(id, route, table, scen, wpp, loc);
+          // console.log(id, route, table, scen, wpp, loc);
 
           // Set part of url only if mandatory == mnd
           // var scenF = (scen == 'mnd') ? Drupal.behaviors.EvalInfograph.Scen : '';
@@ -56,7 +56,7 @@
                     // scenF+
                     // locality;
 
-          console.log(url);
+          // console.log(url);
 
           $.ajax({
             type: 'GET',
@@ -71,6 +71,9 @@
               $('#'+ id).closest('.card').children(".card-header").empty()
               $('#'+ id).closest('.card').children(".card-header").html(data.title)
               $('#'+id).append(data.graph);
+            },
+            error: function(data, textStatus, jqXHR){
+              console.log('ERROR - fastAPI');
             }
            });
       }
@@ -79,7 +82,7 @@
       /**
       // Call portfolios list to fill the select box and set selected
       */
-      Drupal.behaviors.OutlineInfograph.getPort = function (){
+      Drupal.behaviors.OutlineInfograph.getPortfolios = function (){
         $.ajax({
             type: 'GET',
             // url: 'http://localhost:8008/portfolios',
@@ -90,15 +93,21 @@
 
         // Success function callback for the ajax call
         function parseJson (data, textStatus, jqXHR) {
+          console.log("Call FastAPi /portfolios");
+          console.log("Called url: " +Drupal.behaviors.OutlineInfograph.Url+'/portfolios');
           // console.log(data);
+          console.log("DATA");
           console.log(JSON.parse(data));
-          Drupal.behaviors.OutlineInfograph.WPPList = JSON.parse(data);
+          console.log("END DATA");
+          portfolios = JSON.parse(data);
           var out = '';
-          $.each(Drupal.behaviors.OutlineInfograph.WPPList.id, function( index, value ) {
-            if (Drupal.behaviors.OutlineInfograph.WPPList.label[index] == Drupal.behaviors.OutlineInfograph.WPP) {
-              out += '<option selected value="'+Drupal.behaviors.OutlineInfograph.WPPList.id[index]+'">'+Drupal.behaviors.OutlineInfograph.WPPList.label[index]+'</option>'
+          $.each(portfolios.id, function( index, value ) {
+            console.log(portfolios.label[index]);
+            console.log(Drupal.behaviors.OutlineInfograph.WPP);
+            if (portfolios.id[index] == Drupal.behaviors.OutlineInfograph.WPP) {
+              out += '<option selected value="'+portfolios.id[index]+'">'+portfolios.label[index]+'</option>'
             } else {
-              out += '<option value="'+Drupal.behaviors.OutlineInfograph.WPPList.id[index]+'">'+Drupal.behaviors.OutlineInfograph.WPPList.label[index]+'</option>'
+              out += '<option value="'+portfolios.id[index]+'">'+portfolios.label[index]+'</option>'
             }
           });
           $('#wpp').append(out);
@@ -110,10 +119,11 @@
           // var graph = '';
           // var map = '';
           // console.log(Drupal.behaviors.OutlineInfograph.WPP);
-          // console.log(Drupal.behaviors.OutlineInfograph.WPPList.descr_plan[Drupal.behaviors.OutlineInfograph.WPP]);
-          // console.log(Drupal.behaviors.OutlineInfograph.WPPList.descr_plan[Drupal.behaviors.OutlineInfograph.WPP].cards);
-          $.each(Drupal.behaviors.OutlineInfograph.WPPList.descr_plan[Drupal.behaviors.OutlineInfograph.WPP].cards, function( index, card ){
+          $.each(portfolios.descr_plan[Drupal.behaviors.OutlineInfograph.WPP].cards, function( index, card ){
+            console.log("---- Cards cycle ----");
+            console.log(portfolios.descr_plan[Drupal.behaviors.OutlineInfograph.WPP]);
             console.log(card);
+
             var cards = '';
             var graph = '';
             var map = '';
@@ -219,10 +229,10 @@
               url: Drupal.behaviors.OutlineInfograph.Url+'/graph_api_url?plot_id='+$(this).attr('data-plot_id'),
               success: function(data, textStatus, jqXHR){
                 var plot = JSON.parse(data)
-                console.log("------ graph api url -------");
-                console.log(plot);
-
-                console.log('ID - da modificare ' + id);
+                // console.log("------ graph api url -------");
+                // console.log(plot);
+                //
+                // console.log('ID - da modificare ' + id);
 
                 if (plot_type === null) {
                   // $(this) non è più disponibile nella success function
@@ -258,33 +268,30 @@
       */
       $('#wpp').once().each(function() {
 
-        // Set size of fixed card to other cards size
-        // var new_width = $('#size').width();
-        // $('#fixed').width(new_width);
-        // console.log($("#dap_controls").offset().top);
-        // var dap_controls = $("#dap_controls");
-        // var startpos = dap_controls.offset().top;
-        // $(window).scroll(function() {
-        //     var b = $(window).scrollTop();
-        //     dap_controls.toggleClass("", b > startpos);
-        //     // if (b > startpos){
-        //     //   dap_controls.removeClass(position-fi).addClass()
-        //     // }
-        //     console.log(b);
-        //
-        // })
-
         // get selected wpp from url params
         var urlParams = new URLSearchParams(window.location.search);
-        console.log(urlParams.get('wpp'));
+        // console.log(urlParams.get('wpp'));
         // set selected wpp id
         if (urlParams.get('wpp') !== null) {
           Drupal.behaviors.OutlineInfograph.WPP = urlParams.get('wpp');
-        } else {
-          Drupal.behaviors.OutlineInfograph.WPP = 0;
         }
         // get and set Portfolios list in the WPP selectbox
-        Drupal.behaviors.OutlineInfograph.getPort()
+        Drupal.behaviors.OutlineInfograph.getPortfolios()
+
+        $( "#wpp" ).change(function() {
+            Drupal.behaviors.OutlineInfograph.WPP = this.value
+            // Clean the WPP selectbox
+            $('#wpp').empty();
+            // Clean the explanation cards container
+            $('#expl_cards').empty();
+            // Clean charts and maps
+            $('#outline_charts').empty();
+
+            // Reload cards && everityng
+            Drupal.behaviors.OutlineInfograph.getPortfolios()
+            // // Call the function to filter the layers
+            // Drupal.behaviors.OlMap.filterLayers(Drupal.behaviors.OlMap.Map);
+        })
 
       });
 
