@@ -47,16 +47,26 @@
           // var scenF = (scen == 'mnd') ? Drupal.behaviors.EvalInfograph.Scen : '';
           // var locality = (loc == 'mnd') ? "&loc=Locone" : '';
 
-          // Add the fullPage=False to get the right answer from fastAPI
-          var url = Drupal.behaviors.OutlineInfograph.Url+
+          console.log(scen);
+          if (scen == 'opt') {
+            // Add the fullPage=False to get the right answer from fastAPI
+            var url = Drupal.behaviors.OutlineInfograph.Url+
                     '/indicators/'+ route +
                     '?fullPage=False&'+
                     'plot_id='+ table +
                     '&expF='+ wpp;
                     // scenF+
                     // locality;
+          } else {
+            var url = Drupal.behaviors.OutlineInfograph.Url+
+                      '/indicators/'+ route +
+                      '?fullPage=False&'+
+                      'plot_id='+ table +
+                      '&expF='+ wpp +
+                      '&scenF='+ scen;
 
-          // console.log(url);
+          }
+          console.log(url);
 
           $.ajax({
             type: 'GET',
@@ -93,17 +103,17 @@
 
         // Success function callback for the ajax call
         function parseJson (data, textStatus, jqXHR) {
-          console.log("Call FastAPi /portfolios");
-          console.log("Called url: " +Drupal.behaviors.OutlineInfograph.Url+'/portfolios');
-          // console.log(data);
-          console.log("DATA");
-          console.log(JSON.parse(data));
-          console.log("END DATA");
+          // console.log("Call FastAPi /portfolios");
+          // console.log("Called url: " +Drupal.behaviors.OutlineInfograph.Url+'/portfolios');
+          // // console.log(data);
+          // console.log("DATA");
+          // console.log(JSON.parse(data));
+          // console.log("END DATA");
           portfolios = JSON.parse(data);
           var out = '';
           $.each(portfolios.id, function( index, value ) {
-            console.log(portfolios.label[index]);
-            console.log(Drupal.behaviors.OutlineInfograph.WPP);
+            // console.log(portfolios.label[index]);
+            // console.log(Drupal.behaviors.OutlineInfograph.WPP);
             if (portfolios.id[index] == Drupal.behaviors.OutlineInfograph.WPP) {
               out += '<option selected value="'+portfolios.id[index]+'">'+portfolios.label[index]+'</option>'
             } else {
@@ -121,7 +131,7 @@
           // console.log(Drupal.behaviors.OutlineInfograph.WPP);
           $.each(portfolios.descr_plan[Drupal.behaviors.OutlineInfograph.WPP].cards, function( index, card ){
             console.log("---- Cards cycle ----");
-            console.log(portfolios.descr_plan[Drupal.behaviors.OutlineInfograph.WPP]);
+            // console.log(portfolios.descr_plan[Drupal.behaviors.OutlineInfograph.WPP]);
             console.log(card);
 
             var cards = '';
@@ -154,6 +164,12 @@
                    '</div>';
 
               if ( card.hasOwnProperty('chart_api') && card.hasOwnProperty('item_type') ) {
+                if (card.hasOwnProperty('scen_id')) {
+                  var scen = card.scen_id;
+                } else {
+                  var scen = 'opt';
+                }
+                console.log(scen);
                 graph += '<div id="rowcard_'+index+'" class="row mt-3" style="scroll-margin-top: 100px;">'+
                             '<p ></p>'+
                             '<div class="col">'+
@@ -161,7 +177,7 @@
                                 '<div class="card-header">'+
                                 '</div>'+
                                 '<div class="card-body">'+
-                                  '<div id="outl_g'+index+'" data-plot_id="'+card.item_type+'" data-plot_type="'+card.chart_api+'" data-scen="opt" data-exp="nonserve" data-loc="opt" class="dap_plot"></div>'+
+                                  '<div id="outl_g'+index+'" data-plot_id="'+card.item_type+'" data-plot_type="'+card.chart_api+'" data-scen="'+scen+'" data-exp="nonserve" data-loc="opt" class="dap_plot"></div>'+
                                 '</div>'+
                               '</div>'+
                             '</div>'+
@@ -210,6 +226,7 @@
           $(".dap_map").each(function( index ) {
             var id = $(this).attr('id')
             var map = $(this).attr('data-qgis_map')
+            // console.log('CALLING SETUP with MAP : '+ map);
             Drupal.behaviors.OLCommon.SetUp(id, map)
           });
 
