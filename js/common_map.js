@@ -19,67 +19,6 @@
       Drupal.behaviors.OLCommon.overLayers = Drupal.behaviors.OLCommon.overLayers || {};
 
 
-      // OK exploited
-      // recursive function to create json tree
-
-      Drupal.behaviors.OLCommon.jsonTreeString = function (key, val) {
-
-        console.log(test);
-        Drupal.behaviors.OLCommon.GroupID = Drupal.behaviors.OLCommon.GroupID || 0;
-        console.log("MAP ID "+ Drupal.behaviors.OLCommon.id);
-        console.log("GROUP ID "+ Drupal.behaviors.OLCommon.GroupID);
-        console.log('---- jsonTreeString ---- ' + key);
-        console.log(val);
-
-        if (val.Layer instanceof Array) {
-          console.log("ENTERED ITERATION");
-          // Reverse the array of layers
-          // This is to have the order in Legend like in Qgis desktop project
-          val.Layer.reverse()
-
-          // Set the GroupID globally to fill the array
-          Drupal.behaviors.OLCommon.GroupID = key;
-
-          // Create the group with GroupID - the GroupID does not change in recursion
-          // TODO add MAP id Drupal.behaviors.OLCommon.overGroup[Drupal.behaviors.OLCommon.id][Drupal.behaviors.OLCommon.GroupID]
-          Drupal.behaviors.OLCommon.overGroup[Drupal.behaviors.OLCommon.GroupID] = new ol.layer.Group({
-            'title': val.Title,
-            layers: [],
-          })
-          Drupal.behaviors.OLCommon.overLayers[Drupal.behaviors.OLCommon.GroupID] = Drupal.behaviors.OLCommon.overGroup[Drupal.behaviors.OLCommon.GroupID].getLayers();
-
-          // Call recursion
-          $.each(val.Layer, Drupal.behaviors.OLCommon.jsonTreeString);
-        } else {
-            var t = new ol.layer.Image({
-                type: 'layer',
-                title: val.Title,
-                source: new ol.source.ImageWMS({
-                  // url: qgsUrl + '?map=' + qgsMap,
-                  url: Drupal.behaviors.OLCommon.qgsUrl + '?map=/project/' + Drupal.behaviors.OLCommon.qgisProject[Drupal.behaviors.OLCommon.id] +'.qgs',
-                  params: {'LAYERS': val.Title},
-                  ratio: 1,
-                  serverType: 'qgis'
-                })
-              })
-
-            // Manage Case with no subgroups
-            if ( ! Drupal.behaviors.OLCommon.overLayers.hasOwnProperty(Drupal.behaviors.OLCommon.GroupID) ){
-              Drupal.behaviors.OLCommon.overGroup[Drupal.behaviors.OLCommon.GroupID] = new ol.layer.Group({
-                'title': 'TEST',
-                layers: [],
-              })
-              Drupal.behaviors.OLCommon.overLayers[Drupal.behaviors.OLCommon.GroupID] = Drupal.behaviors.OLCommon.overGroup[Drupal.behaviors.OLCommon.GroupID].getLayers();
-            }
-
-            Drupal.behaviors.OLCommon.overLayers[Drupal.behaviors.OLCommon.GroupID].push(t);
-        }
-        Drupal.behaviors.OLCommon.overLayers[Drupal.behaviors.OLCommon.GroupID] = Drupal.behaviors.OLCommon.overGroup[Drupal.behaviors.OLCommon.GroupID].getLayers();
-
-      }
-
-
-
       /**
       // Function to filter the map given the selected WPP and the map div
       //
@@ -203,7 +142,7 @@
                     }
 
                     Drupal.behaviors.OLCommon.overGroup[id][Drupal.behaviors.OLCommon.GroupID] = new ol.layer.Group({
-                      'title': 'TEST',
+                      'title': 'ALL LAYERS',
                       layers: [],
                     })
                     Drupal.behaviors.OLCommon.overLayers[id][Drupal.behaviors.OLCommon.GroupID] = Drupal.behaviors.OLCommon.overGroup[id][Drupal.behaviors.OLCommon.GroupID].getLayers();
@@ -279,56 +218,6 @@
                 Drupal.behaviors.OLCommon.Map[id].addLayer(v);
             })
 
-
-            // Drupal.behaviors.OLCommon.Map[id].getLayers().forEach(layer => {
-            //   console.log('--- Drupal.behaviors.OLCommon.Map.getLayers() ---');
-    				// 	// console.log(layer.type);// Always undefined
-    				// 	console.log('    LAYER NAME : '+ layer.get('title'));
-            //   console.log(layer.getProperties());
-            //   // console.log(layer.getSource());
-            //
-            //   // PER I BASELAYERS LE DUE FUNZIONI QUI SOTTO DANNO ERRORE
-            //   // var source = layer.getSource();
-						// 	// var params = source.getParams();
-            //   // console.log(source);
-            //   // console.log(params);
-            //
-            //
-            //   // // TODO VERIFICARE cosa e se filtri
-    				// 	// if (layer.get('title') == 'All Layers'){
-    				// 	// 	layer.getLayers().forEach(layer => {
-            //   //
-            //   //     console.log('--- ALL LAYERS ---');
-    				// 	// 		console.log('    LAYER NAME : '+ layer.get('title'));
-    				// 	// 		var source = layer.getSource();
-    				// 	// 		var params = source.getParams();
-            //   //
-            //   //     console.log(source);
-            //   //     console.log(params);
-    				// 	// 		if (params.LAYERS == 'new_wells'){
-            //   //       console.log("--- FILTERING new_wells ---");
-            //   //       params.FILTER = ''+layer.get('title')+':"exp_id" = '+Drupal.behaviors.OutlineInfograph.WPP; // Funziona
-    				// 	// 		     // params.FILTER = ''+layer.get('title')+':"exp_id" = 0'; // Funziona
-            //   //          // params.FILTER = ''+layer.get('title')+':"exp_id" = 1'; // Sembra non funzionare anche se a db sembra che abbimao dati
-    				// 	// 		}
-    				// 	// 		// if (params.LAYERS == 'i_irr_def_mean_h'){
-    				// 	// 		// 	// params.FILTER = ''+layer.get('title')+':"exp_id" = 0';
-            //   //     //   // params.FILTER = ''+layer.get('title')+':"exp_id" = 1';
-            //   //     //   // params.FILTER = ''+layer.get('title')+':"exp_id" = 2';
-            //   //     //
-            //   //     //   params.FILTER = ''+layer.get('title')+':"exp_id" = 0 AND "scen_id" = 0';
-            //   //     //   // params.FILTER = ''+layer.get('title')+':"exp_id" = 1';
-            //   //     //   // params.FILTER = ''+layer.get('title')+':"exp_id" = 2';
-            //   //     //
-    				// 	// 		// }
-    				// 	// 		// // console.log(params);
-    				// 	// 		source.updateParams(params);
-            //   //
-    				// 	// 	});
-    				// 	// }
-            //
-    				// });
-
             /**
             / Default implementation for LayerSwitcher
             **/
@@ -341,39 +230,40 @@
 
           }
 
+          $.each(Drupal.behaviors.OLCommon.Map, function(k,v){
+              Drupal.behaviors.OLCommon.filterLayers(v);
+          })
+
+
       }
 
-      // $( "#target" ).click(function() {
-      //   Drupal.behaviors.OLCommon.Map.getLayers().forEach(layer => {
-      //     // console.log(layer.type);
-      //     console.log(layer.get('title'));
-      //     console.log(layer.getProperties());
-      //     // console.log(layer.getSource());
-      //
-      //     // PER I BASELAYERS LE DUE FUNZIONI QUI SOTTO DANNO ERRORE
-      //     // var source = layer.getSource();
-      //     // var params = source.getParams();
-      //     // console.log(source);
-      //     // console.log(params);
-      //
-      //     // if (glayer.type == 'group'){
-      //     // 	glayer.getLayers().forEach(layer => {
-      //     // 		// console.log(layer.get('title'));
-      //     // 		var source = layer.getSource();
-      //     // 		var params = source.getParams();
-      //     //
-      //     // 		if (Drupal.behaviors.Siric.SelectedTable == 'rl_comuni_selezione'){
-      //     // 			params.FILTER = ''+layer.get('title')+':"com_istat" = '+newString;
-      //     // 		}
-      //     // 		if (Drupal.behaviors.Siric.SelectedTable == 'bacini_afferenti'){
-      //     // 			params.FILTER = ''+layer.get('title')+':"bacini_id" = '+newString;
-      //     // 		}
-      //     // 		// console.log(params);
-      //     // 		source.updateParams(params);
-      //     // 	});
-      //     // }
-      //   });
-      // });
+      /**
+      / Recursive function to cycle on all the nested layers
+      */
+      Drupal.behaviors.OLCommon.filterLayers = function (obj) {
+        console.log(obj);
+        // if (obj.get('title') == 'Evaluation Indicators'){
+        //   console.log(" ---- ooooooooo -----  ");
+        //   Drupal.behaviors.OLCommon.ApplyFilter = true;
+        // }
+        obj.getLayers().forEach(function(layer) {
+          // console.log(layer.get('title') );
+          // console.log(layer.type);
+          if(layer instanceof ol.layer.Group) {
+            // Recursion on groups to get layers
+            Drupal.behaviors.OLCommon.filterLayers(layer)
+          // } else if(layer instanceof ol.layer.Image && Drupal.behaviors.OLCommon.ApplyFilter) {
+          } else if(layer instanceof ol.layer.Image) {
+            // console.log(layer.get('title'));
+            var source = layer.getSource();
+            var params = source.getParams();
+            // console.log(source);
+            // console.log(params);
+            params.FILTER = ''+layer.get('title')+':"exp_id" = '+Drupal.behaviors.OutlineInfograph.WPP;
+            source.updateParams(params);
+          }
+        });
+      }
 
 
     }
