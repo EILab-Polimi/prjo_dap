@@ -152,6 +152,7 @@
 
             $.each(jsonCap.Capability.Layer.Layer.reverse(), function(key,val){
               console.log(test);
+              // The map id is alive here
               console.log(id);
               Drupal.behaviors.OLCommon.GroupID = Drupal.behaviors.OLCommon.GroupID || 0;
               // console.log("MAP ID "+ Drupal.behaviors.OLCommon.id);
@@ -196,17 +197,21 @@
                   if ( ! Drupal.behaviors.OLCommon.overLayers.hasOwnProperty(id) ){
                     Drupal.behaviors.OLCommon.overLayers[id] = {}
                   }
-                  if ( ! Drupal.behaviors.OLCommon.overLayers[id].hasOwnProperty(Drupal.behaviors.OLCommon.GroupID) ){  
-                    Drupal.behaviors.OLCommon.overGroup[Drupal.behaviors.OLCommon.GroupID] = new ol.layer.Group({
+                  if ( ! Drupal.behaviors.OLCommon.overLayers[id].hasOwnProperty(Drupal.behaviors.OLCommon.GroupID) ){
+                    if ( ! Drupal.behaviors.OLCommon.overGroup.hasOwnProperty(id) ){
+                      Drupal.behaviors.OLCommon.overGroup[id] = {}
+                    }
+
+                    Drupal.behaviors.OLCommon.overGroup[id][Drupal.behaviors.OLCommon.GroupID] = new ol.layer.Group({
                       'title': 'TEST',
                       layers: [],
                     })
-                    Drupal.behaviors.OLCommon.overLayers[Drupal.behaviors.OLCommon.GroupID] = Drupal.behaviors.OLCommon.overGroup[Drupal.behaviors.OLCommon.GroupID].getLayers();
+                    Drupal.behaviors.OLCommon.overLayers[id][Drupal.behaviors.OLCommon.GroupID] = Drupal.behaviors.OLCommon.overGroup[id][Drupal.behaviors.OLCommon.GroupID].getLayers();
                   }
 
-                  Drupal.behaviors.OLCommon.overLayers[Drupal.behaviors.OLCommon.GroupID].push(t);
+                  Drupal.behaviors.OLCommon.overLayers[id][Drupal.behaviors.OLCommon.GroupID].push(t);
               }
-              Drupal.behaviors.OLCommon.overLayers[Drupal.behaviors.OLCommon.GroupID] = Drupal.behaviors.OLCommon.overGroup[Drupal.behaviors.OLCommon.GroupID].getLayers();
+              Drupal.behaviors.OLCommon.overLayers[id][Drupal.behaviors.OLCommon.GroupID] = Drupal.behaviors.OLCommon.overGroup[id][Drupal.behaviors.OLCommon.GroupID].getLayers();
             });
             // jsonCap.Capability.Layer.Layer.reverse().each( Drupal.behaviors.OLCommon.jsonTreeString );
             // Get the extent form the getCapability result the EPSG:3857 bbox
@@ -270,7 +275,7 @@
             Drupal.behaviors.OLCommon.Map[id].addLayer(baseGroup);
             // Drupal.behaviors.OLCommon.Map[id].addLayer(overGroup);
             // Drupal.behaviors.OLCommon.Map[id].addLayer(Drupal.behaviors.OLCommon.overGroup[id]);
-            $.each(Drupal.behaviors.OLCommon.overGroup, function(k,v){
+            $.each(Drupal.behaviors.OLCommon.overGroup[id], function(k,v){
                 Drupal.behaviors.OLCommon.Map[id].addLayer(v);
             })
 
