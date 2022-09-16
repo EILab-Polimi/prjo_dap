@@ -57,12 +57,12 @@
                   '<a type="button" class="btn" href="/dap_eval_infograph?wpp='+portfolios.id[index]+'">'+
                     '<i class="far fa-eye text-primary"></i>'+
                   '</a>'+
-                  '<a type="button" class="btn" href="/dap_eval_map?wpp='+portfolios.id[index]+'">'+
+                  '<a type="button" class="btn" href="/geoviz_test_dashboard?wpp='+portfolios.id[index]+'">'+
                     '<i class="far fa-map text-primary"></i>'+
                   '</a>'+
                 '</td>'+
               '</tr>';
-
+              // TODO verificare che sia giusto nell'evaluation map girare sulla dashboard di geoviz con i vari tab per l'analisi
           });
           $('#portfolios').append(out);
         }
