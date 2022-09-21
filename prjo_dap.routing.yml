@@ -7,6 +7,14 @@ prjo_dap.admin_settings:
   requirements:
     _permission: 'administer site configuration'
 
+# Custom form
+prjo_dap.upload_file_form:
+  path: '/myform'
+  defaults:
+    _form: '\Drupal\prjo_dap\Form\UploadFileForm'
+    _title: 'MyForm'
+  requirements:
+    _access: 'TRUE'
 
 # Portfolios page
 prjo_dap.portfolios:
