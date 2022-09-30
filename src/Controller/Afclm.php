@@ -66,13 +66,13 @@ class Afclm extends ControllerBase {
 
     $request = $this->httpClient->request('GET', 'http://DAP_fastapi:8000');
 
-    \Drupal::service('messenger')->addMessage("<code>".print_r($request->getContents(),TRUE)."</code>");
+    \Drupal::service('messenger')->addMessage("<code>".print_r($request->getBody(),TRUE)."</code>");
 
-    if ($request->getStatusCode() != 200) {
-      return $build;
-    }
+    // if ($request->getStatusCode() != 200) {
+    //   return $build;
+    // }
 
-    // return $build;
+    return $build;
 
   }
 
