@@ -14,3 +14,20 @@ fastAPI_http_client.getdata:
     _controller: '\Drupal\fastAPI_http_client\Controller\FastAPI::getData'
   requirements:
     _permission: 'access content'
+
+
+fastAPI_http_client.portfolios:
+  path: '/api/fastapi/portfolios'
+  defaults:
+    _controller: '\Drupal\fastAPI_http_client\Controller\FastAPI::portfolios'
+  requirements:
+    _permission: 'access content'
+
+
+fastAPI_http_client.indicators:
+  path: '/api/fastapi/indicators/{ind_route}'
+  # path: '/api/fastapi/indicators'
+  defaults:
+    _controller: '\Drupal\fastAPI_http_client\Controller\FastAPI::indicators'
+  requirements:
+    _permission: 'access content'
