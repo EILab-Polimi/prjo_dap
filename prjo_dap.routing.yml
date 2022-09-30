@@ -78,10 +78,10 @@ prjo_dap.eval_pyplotly:
 #   requirements:
 #     _permission: 'access content'
 
-prjo_dap.andamento_flusso_lagomaggiore:
-  path: '/afclm'
-  defaults:
-    _controller: '\Drupal\prjo_dap\Controller\Afclm::infograph'
-    _title: 'Andamento flusso Lago Maggiore'
-  requirements:
-    _permission: 'access content'
+# prjo_dap.andamento_flusso_lagomaggiore:
+#   path: '/afclm'
+#   defaults:
+#     _controller: '\Drupal\prjo_dap\Controller\Afclm::infograph'
+#     _title: 'Andamento flusso Lago Maggiore'
+#   requirements:
+#     _permission: 'access content'
