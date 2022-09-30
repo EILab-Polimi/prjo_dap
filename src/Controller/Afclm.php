@@ -10,6 +10,8 @@ use Drupal\Component\Serialization\Json as Json;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use GuzzleHttp\ClientInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+
 
 /**
  * An example controller.
@@ -66,13 +68,22 @@ class Afclm extends ControllerBase {
 
     $request = $this->httpClient->request('GET', 'http://DAP_fastapi:8000');
 
-    \Drupal::service('messenger')->addMessage("<code>".print_r($request->getBody(),TRUE)."</code>");
+    \Drupal::service('messenger')->addMessage("<code>".print_r($request->getStatusCode(),TRUE)."</code>");
+
+
+    $body = $request->getBody();
+    \Drupal::service('messenger')->addMessage("<code>".print_r($body,TRUE)."</code>");
+
+    $contents = $body->getContents();
+    \Drupal::service('messenger')->addMessage("<code>".print_r($contents,TRUE)."</code>");
+
 
     // if ($request->getStatusCode() != 200) {
     //   return $build;
     // }
 
-    return $build;
+    // return $build;
+    return new JsonResponse([ 'data' => $contents, 'method' => 'GET', 'status'=> 200]);
 
   }
 
