@@ -1,0 +1,16 @@
+# Configuration form
+# fastAPI_http_client.admin_settings:
+#   path: '/admin/config/dap/settings'
+#   defaults:
+#     _form: '\Drupal\fastAPI_http_client\Form\DapSettingsForm'
+#     _title: 'Dap configuration'
+#   requirements:
+#     _permission: 'administer site configuration'
+
+
+fastAPI_http_client.getdata:
+  path: '/api/fastapi'
+  defaults:
+    _controller: '\Drupal\fastAPI_http_client\Controller\FastAPI::getData'
+  requirements:
+    _permission: 'access content'

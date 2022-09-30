@@ -1,0 +1,9 @@
+name: fast API http client
+type: module
+description: 'Module to use http guzzle to get response from fastAPI container.'
+core_version_requirement: ^8 || ^9
+package: ProjectO
+# configure: prjo_dap.admin_settings
+
+# dependencies:
+#   - node:node
