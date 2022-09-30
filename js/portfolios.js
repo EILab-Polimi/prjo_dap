@@ -17,9 +17,22 @@
 
         console.log(settings);
 
+        // $.ajax({
+        //     type: 'GET',
+        //     url: Drupal.behaviors.Portfolios.Url+'/portfolios',
+        //     // url: 'http://85.94.200.117:8008/portfolios', // Docker FastAPI Production server
+        //     // url: 'http://localhost:8008/portfolios', // Docker FastAPI development
+        //     // url: 'http://localhost:5000/portfolios', // Dev on Pycharm FastAPI
+        //
+        //     success: parseJson,
+        //
+        //
+        //     // complete: setGCjsonObject,
+        // });
+
         $.ajax({
             type: 'GET',
-            url: Drupal.behaviors.Portfolios.Url+'/portfolios',
+            url: '/api/fastapi',
             // url: 'http://85.94.200.117:8008/portfolios', // Docker FastAPI Production server
             // url: 'http://localhost:8008/portfolios', // Docker FastAPI development
             // url: 'http://localhost:5000/portfolios', // Dev on Pycharm FastAPI
@@ -32,9 +45,13 @@
 
         // Success function callback for the ajax call
         function parseJson (data, textStatus, jqXHR) {
-          // console.log(data);
-          console.log(JSON.parse(data));
-          var portfolios = JSON.parse(data);
+          console.log(data);
+          console.log(JSON.parse(data['data']));
+          var portfolios = JSON.parse(data['data']);
+          portfolios = JSON.parse(portfolios);
+          // // console.log(data);
+          // console.log(JSON.parse(data));
+          // var portfolios = JSON.parse(data);
           var out = '';
           $.each(portfolios.id, function( index, value ) {
             console.log(index +' '+value );
