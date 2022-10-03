@@ -47,6 +47,9 @@ function prjo_dap_theme() {
     'evaluation_outline' => [
       'variables' => [],
     ],
+    'comparison' => [
+      'variables' => [],
+    ],
     'afclm' => [
       'variables' => [],
     ]

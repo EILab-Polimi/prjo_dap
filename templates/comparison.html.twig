@@ -1,0 +1,59 @@
+<div class="row">
+  <div class="col">
+    <div class="row">
+      <div class="col">
+        <h4 style="color:#395360;">Outline</h4>
+      </div>
+      <div class="col">
+        <span class="text-danger">WARNING: Test data, for demonstration purpose only</span>
+      </div>
+    </div>
+    <p style="font-size: 10px;">Analyze features of Water Portfolio or choose another one</p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <div class="card">
+      <div class="card-body">
+
+        <!-- Per avere i select come bottoni possiamo usare https://www.npmjs.com/package/bootstrap-select che però supporta fino a bootstrap4 -->
+        <div class="row sticky-top">
+          <div class="col">
+            <div class="card bg-primary bg-opacity-75" style="z-index: 2000;">
+              <div class="card-body">
+                <div class="col-3 my-1">
+                  <div class="form-floating">
+                    <select class="form-select" id="wpp"></select>
+                    <!-- <div class="form-select" id="wpp"></div> -->
+                    <label for="wpp">Selected Water portfolio</label>
+                  </div>
+                </div>
+                <!-- <div class="col-3 my-1">
+                  <div class="form-floating">
+                    <select class="form-select" id="scen"></select>
+                    <label for="scen">Selected scenario</label>
+                  </div>
+                </div> -->
+                <!-- <div class="col-3 my-1">
+                  <div class="form-floating">
+                    <select class="form-select" id="ind"></select>
+                    <label for="scen">Selected indicator</label>
+                  </div>
+                </div> -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cards section -->
+        <!-- see https://startbootstrap.com/previews/material-admin-pro -->
+        <div id="hiplot_chart" class="row mt-1">
+        </div>
+
+
+
+      </div>
+    </div>
+  </div>
+</div>
