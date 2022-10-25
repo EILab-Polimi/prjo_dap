@@ -19,7 +19,7 @@
       // Complete experiments/WPPs output
       // Drupal.behaviors.OutlineInfograph.WPPList = Drupal.behaviors.OutlineInfograph.WPPList || null
       // Variable to store selected WPP
-      Drupal.behaviors.OutlineInfograph.WPP = Drupal.behaviors.OutlineInfograph.WPP || null
+      Drupal.behaviors.OutlineInfograph.WPP = Drupal.behaviors.OutlineInfograph.WPP || 0
 
       /**
       // Set url for fastAPI services development or production
@@ -57,6 +57,14 @@
                     '&expF='+ wpp;
                     // scenF+
                     // locality;
+            // var url ='/api/fastapi'+
+            //         '/indicators/'+ route +
+            //         '?fullPage=False&'+
+            //         'plot_id='+ table +
+            //         '&expF='+ wpp;
+            //         // scenF+
+            //         // locality;
+
           } else {
             var url = Drupal.behaviors.OutlineInfograph.Url+
                       '/indicators/'+ route +
@@ -287,7 +295,7 @@
 
         // get selected wpp from url params
         var urlParams = new URLSearchParams(window.location.search);
-        // console.log(urlParams.get('wpp'));
+        console.log(urlParams.get('wpp'));
         // set selected wpp id
         if (urlParams.get('wpp') !== null) {
           Drupal.behaviors.OutlineInfograph.WPP = urlParams.get('wpp');
