@@ -85,9 +85,21 @@ class FastAPI extends ControllerBase {
   }
 
   public function portfolios() {
-    $request = $this->httpClient->request('GET', 'http://localhost:5000/portfolios');
-    $status = $request->getStatusCode();
-    $body = $request->getBody();
+    // Get configured url development or production for fastAPI service
+    // development for localhost
+    // production for docker container 
+    $config = \Drupal::config('dap.settings');
+    if ($config->get('fastapi_sel') == 0){
+      $fastAPIurl = $config->get('fastapi_dev_url');
+    } else {
+      $fastAPIurl = $config->get('fastapi_prod_url');
+    }
+
+    // \Drupal::service('messenger')->addMessage("<code>".print_r($fastAPIurl .'/portfolios',TRUE)."</code>");
+
+    $request  = $this->httpClient->request('GET', $fastAPIurl.'/portfolios');
+    $status   = $request->getStatusCode();
+    $body     = $request->getBody();
     $contents = $body->getContents();
 
     // transform $contents to array !!!
