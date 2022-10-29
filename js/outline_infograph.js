@@ -50,28 +50,36 @@
           console.log(scen);
           if (scen == 'opt') {
             // Add the fullPage=False to get the right answer from fastAPI
-            var url = Drupal.behaviors.OutlineInfograph.Url+
-                    '/indicators/'+ route +
-                    '?fullPage=False&'+
-                    'plot_id='+ table +
-                    '&expF='+ wpp;
-                    // scenF+
-                    // locality;
-            // var url ='/api/fastapi'+
+            // var url = Drupal.behaviors.OutlineInfograph.Url+
             //         '/indicators/'+ route +
             //         '?fullPage=False&'+
             //         'plot_id='+ table +
             //         '&expF='+ wpp;
             //         // scenF+
             //         // locality;
+            var url ='/api/fastapi'+
+                    '/indicators/'+ route +
+                    '?fullPage=False&'+
+                    'plot_id='+ table +
+                    '&expF='+ wpp;
+                    // scenF+
+                    // locality;
 
           } else {
-            var url = Drupal.behaviors.OutlineInfograph.Url+
+            // var url = Drupal.behaviors.OutlineInfograph.Url+
+            //           '/indicators/'+ route +
+            //           '?fullPage=False&'+
+            //           'plot_id='+ table +
+            //           '&expF='+ wpp +
+            //           '&scenF='+ scen;
+
+            var url = 'api/fastapi'+
                       '/indicators/'+ route +
                       '?fullPage=False&'+
                       'plot_id='+ table +
                       '&expF='+ wpp +
                       '&scenF='+ scen;
+
 
           }
           console.log(url);
@@ -82,13 +90,13 @@
             success: function(data, textStatus, jqXHR){
 
               // console.log('DATA BACK FROM GRAPH')
-              // console.log(data)
+              console.log(data)
               // console.log(id);
               $('#'+ id).empty()
               // console.log( $('#'+ id).closest('.card').children(".card-header") )
               $('#'+ id).closest('.card').children(".card-header").empty()
-              $('#'+ id).closest('.card').children(".card-header").html(data.title)
-              $('#'+id).append(data.graph);
+              $('#'+ id).closest('.card').children(".card-header").html(data['data'].title)
+              $('#'+id).append(data['data'].graph);
             },
             error: function(data, textStatus, jqXHR){
               console.log('ERROR - fastAPI');
