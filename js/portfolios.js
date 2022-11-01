@@ -30,9 +30,12 @@
         //     // complete: setGCjsonObject,
         // });
 
+        //
+        // TODO inject the drupal web_route before /api/
+        //
         $.ajax({
             type: 'GET',
-            url: '/api/fastapi/portfolios', // Guzzle http internal request
+            url: settings.path.baseUrl+'api/fastapi/portfolios', // Guzzle http internal request
             // url: 'http://85.94.200.117:8008/portfolios', // Docker FastAPI Production server
             // url: 'http://localhost:8008/portfolios', // Docker FastAPI development
             // url: 'http://localhost:5000/portfolios', // Dev on Pycharm FastAPI
