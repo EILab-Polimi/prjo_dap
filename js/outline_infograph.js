@@ -57,7 +57,7 @@
             //         '&expF='+ wpp;
             //         // scenF+
             //         // locality;
-            var url ='/api/fastapi'+
+            var url = settings.path.baseUrl+'/api/fastapi'+
                     '/indicators/'+ route +
                     '?fullPage=False&'+
                     'plot_id='+ table +
@@ -73,7 +73,7 @@
             //           '&expF='+ wpp +
             //           '&scenF='+ scen;
 
-            var url = 'api/fastapi'+
+            var url = settings.path.baseUrl+'api/fastapi'+
                       '/indicators/'+ route +
                       '?fullPage=False&'+
                       'plot_id='+ table +
@@ -112,7 +112,8 @@
         $.ajax({
             type: 'GET',
             // url: 'http://localhost:8008/portfolios',
-            url: Drupal.behaviors.OutlineInfograph.Url+'/portfolios',
+            // url: Drupal.behaviors.OutlineInfograph.Url+'/portfolios',
+            url: settings.path.baseUrl+'api/fastapi/portfolios',
             success: parseJson,
             // complete: setGCjsonObject,
         });
@@ -125,7 +126,7 @@
           // console.log("DATA");
           // console.log(JSON.parse(data));
           // console.log("END DATA");
-          portfolios = JSON.parse(data);
+          portfolios = JSON.parse(data['data']);
           var out = '';
           $.each(portfolios.id, function( index, value ) {
             // console.log(portfolios.label[index]);
