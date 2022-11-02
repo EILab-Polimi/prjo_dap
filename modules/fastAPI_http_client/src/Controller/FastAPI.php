@@ -95,6 +95,7 @@ class FastAPI extends ControllerBase {
       $fastAPIServerBaseUrl = $config->get('fastapi_prod_url');
     }
 
+    // TODO container to container
     $request  = $this->httpClient->request('GET', $fastAPIServerBaseUrl.'/portfolios');
     $status   = $request->getStatusCode();
     $body     = $request->getBody();
@@ -102,6 +103,27 @@ class FastAPI extends ControllerBase {
 
     return new JsonResponse([ 'data' => JSON::decode($contents), 'method' => 'GET', 'status'=> $status]);
   }
+
+  public function scenarios() {
+    // Get configured url development or production for fastAPI service
+    // development for localhost
+    // production for docker container
+    $config = \Drupal::config('dap.settings');
+    if ($config->get('fastapi_sel') == 0){
+      $fastAPIServerBaseUrl = $config->get('fastapi_dev_url');
+    } else {
+      $fastAPIServerBaseUrl = $config->get('fastapi_prod_url');
+    }
+
+    // TODO container to container
+    $request  = $this->httpClient->request('GET', $fastAPIServerBaseUrl.'/scenarios');
+    $status   = $request->getStatusCode();
+    $body     = $request->getBody();
+    $contents = $body->getContents();
+
+    return new JsonResponse([ 'data' => JSON::decode($contents), 'method' => 'GET', 'status'=> $status]);
+  }
+
 
   public function indicators($ind_route, Request $request) {
     // Get configured url development or production for fastAPI service

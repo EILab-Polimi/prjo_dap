@@ -23,6 +23,13 @@ fastAPI_http_client.portfolios:
   requirements:
     _permission: 'access content'
 
+fastAPI_http_client.scenarios:
+  path: '/api/fastapi/scenarios'
+  defaults:
+    _controller: '\Drupal\fastAPI_http_client\Controller\FastAPI::scenarios'
+  requirements:
+    _permission: 'access content'
+
 
 fastAPI_http_client.indicators:
   path: '/api/fastapi/indicators/{ind_route}'
