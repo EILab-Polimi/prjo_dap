@@ -18,7 +18,7 @@
       // Set url for fastAPI services development or production - TODO generalize
       */
       // Drupal.behaviors.EvalInfograph.FastApiUrl = settings.prjo_dap.fastapi_url
-      Drupal.behaviors.EvalInfograph.FastApiUrl = settings.path.baseUrl+'api/fastapi/'
+      Drupal.behaviors.EvalInfograph.FastApiUrl = settings.path.baseUrl+'api/fastapi'
       // Drupal.behaviors.EvalInfograph.FastApiUrl = settings.prjo_dap.fastapi_prod_url
 
       /**
