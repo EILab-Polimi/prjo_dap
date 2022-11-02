@@ -107,7 +107,7 @@
         function parseJson (data, textStatus, jqXHR) {
           // console.log(data);
           // console.log(JSON.parse(data));
-          var portfolios = JSON.parse(data);
+          var portfolios = JSON.parse(data['data']);
           var out = '';
           $.each(portfolios.id, function( index, value ) {
             if (portfolios.label[index] == Drupal.behaviors.EvalInfograph.WPP) {
@@ -161,8 +161,8 @@
               $('#'+ id).empty()
               // console.log( $('#'+ id).closest('.card').children(".card-header") )
               $('#'+ id).closest('.card').children(".card-header").empty()
-              $('#'+ id).closest('.card').children(".card-header").html(data.title)
-              $('#'+id).append(data.graph);
+              $('#'+ id).closest('.card').children(".card-header").html(data['data'].title)
+              $('#'+id).append(data['data'].graph);
             }
            });
       }
@@ -208,7 +208,7 @@
               type: 'GET',
               url: Drupal.behaviors.EvalInfograph.FastApiUrl+'/graph_api_url?plot_id='+$(this).attr('data-plot_id'),
               success: function(data, textStatus, jqXHR){
-                var plot = JSON.parse(data)
+                var plot = JSON.parse(data['data'])
                 console.log(plot);
 
                 console.log('ID - da modificare ' + id);
@@ -261,7 +261,7 @@
         function parseJson (data, textStatus, jqXHR) {
           console.log('INDICATORS LIST');
           console.log(JSON.parse(data));
-          var indicators = JSON.parse(data);
+          var indicators = JSON.parse(data['data']);
 
           // Make a diff array between what we have in interface
           var apiObj = {}
@@ -272,7 +272,7 @@
               type: 'GET',
               url: Drupal.behaviors.EvalInfograph.FastApiUrl+'/graph_api_url?plot_id='+value,
               success: function(data, textStatus, jqXHR){
-                var plot = JSON.parse(data)
+                var plot = JSON.parse(data['data'])
                 // console.log("------ OOOOOOOO -------");
                 // console.log(plot);
                 // data-plot_id="i_cyclo_mean_dw_def_M" data-plot_type="cyclost_heatmap"
