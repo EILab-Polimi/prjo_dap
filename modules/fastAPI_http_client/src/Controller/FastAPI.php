@@ -126,7 +126,7 @@ class FastAPI extends ControllerBase {
 
 
   // $ind_route can be omitted to get a full list of indicators
-  public function indicators($ind_route, Request $request) {
+  public function indicators($ind_route= NULL, Request $request) {
     // Get configured url development or production for fastAPI service
     // development for localhost
     // production for docker container
@@ -138,7 +138,7 @@ class FastAPI extends ControllerBase {
     }
 
 
-    if (isset($ind_route)){
+    if ($ind_route != NULL){
       // \Drupal::service('messenger')->addMessage("<code>".print_r($ind_route,TRUE)."</code>");
 
       // \Drupal::service('messenger')->addMessage("<code>".print_r($request,TRUE)."</code>");
