@@ -262,7 +262,7 @@
               type: 'GET',
               url: Drupal.behaviors.OutlineInfograph.Url+'/graph_api_url?plot_id='+$(this).attr('data-plot_id'),
               success: function(data, textStatus, jqXHR){
-                var plot = JSON.parse(data)
+                var plot = JSON.parse(data['data'])
                 // console.log("------ graph api url -------");
                 // console.log(plot);
                 //
