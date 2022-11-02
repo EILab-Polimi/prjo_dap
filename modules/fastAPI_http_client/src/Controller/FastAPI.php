@@ -125,29 +125,6 @@ class FastAPI extends ControllerBase {
   }
 
 
-  public function indicators_list() {
-    // Get configured url development or production for fastAPI service
-    // development for localhost
-    // production for docker container
-    $config = \Drupal::config('dap.settings');
-    if ($config->get('fastapi_sel') == 0){
-      $fastAPIServerBaseUrl = $config->get('fastapi_dev_url');
-    } else {
-      $fastAPIServerBaseUrl = $config->get('fastapi_prod_url');
-    }
-
-    $url =  $fastAPIServerBaseUrl.'/indicators';
-
-    $request = $this->httpClient->request('GET', $url);
-    $status = $request->getStatusCode();
-    $body = $request->getBody();
-    $contents = $body->getContents();
-
-    return new JsonResponse([ 'data' => JSON::decode($contents), 'method' => 'GET', 'status'=> $status]);
-
-  }
-
-
   // $ind_route can be omitted to get a full list of indicators
   public function indicators($ind_route= NULL, Request $request) {
     // Get configured url development or production for fastAPI service
@@ -189,6 +166,32 @@ class FastAPI extends ControllerBase {
 
   }
 
+  // $ind_route can be omitted to get a full list of indicators
+  public function graph_url(Request $request) {
+    // Get configured url development or production for fastAPI service
+    // development for localhost
+    // production for docker container
+    $config = \Drupal::config('dap.settings');
+    if ($config->get('fastapi_sel') == 0){
+      $fastAPIServerBaseUrl = $config->get('fastapi_dev_url');
+    } else {
+      $fastAPIServerBaseUrl = $config->get('fastapi_prod_url');
+    }
+
+    // GET all the GET parametrs from incoming request
+    $GET_params = $request->query->all();
+    \Drupal::service('messenger')->addMessage("<code>".print_r($GET_params,TRUE)."</code>");
+
+    $url =  $fastAPIServerBaseUrl.'/graph_api_url?'.http_build_query($GET_params);
+
+    $request = $this->httpClient->request('GET', $url);
+    $status = $request->getStatusCode();
+    $body = $request->getBody();
+    $contents = $body->getContents();
+
+    return new JsonResponse([ 'data' => JSON::decode($contents), 'method' => 'GET', 'status'=> $status]);
+
+  }
 
 
 }

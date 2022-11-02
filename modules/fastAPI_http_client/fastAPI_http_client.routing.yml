@@ -31,21 +31,20 @@ fastAPI_http_client.scenarios:
     _permission: 'access content'
 
 
-#fastAPI_http_client.indicators_list:
-#  path: '/api/fastapi/indicators'
-#  # path: '/api/fastapi/indicators'
-##  ind_route: NULL
-#  defaults:
-#    _controller: '\Drupal\fastAPI_http_client\Controller\FastAPI::indicators_list'
-#  requirements:
-#    _permission: 'access content'
-
-
 fastAPI_http_client.indicators:
   path: '/api/fastapi/indicators/{ind_route}'
   # path: '/api/fastapi/indicators'
   defaults:
     _controller: '\Drupal\fastAPI_http_client\Controller\FastAPI::indicators'
     ind_route: NULL
+  requirements:
+    _permission: 'access content'
+
+
+fastAPI_http_client.graph_url:
+  path: '/api/fastapi/graph_api_url'
+  # path: '/api/fastapi/indicators'
+  defaults:
+    _controller: '\Drupal\fastAPI_http_client\Controller\FastAPI::graph_url'
   requirements:
     _permission: 'access content'
