@@ -180,7 +180,7 @@ class FastAPI extends ControllerBase {
 
     // GET all the GET parametrs from incoming request
     $GET_params = $request->query->all();
-    \Drupal::service('messenger')->addMessage("<code>".print_r($GET_params,TRUE)."</code>");
+    // \Drupal::service('messenger')->addMessage("<code>".print_r($GET_params,TRUE)."</code>");
 
     $url =  $fastAPIServerBaseUrl.'/graph_api_url?'.http_build_query($GET_params);
 
