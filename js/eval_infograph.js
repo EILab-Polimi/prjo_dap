@@ -37,7 +37,7 @@
           type: 'GET',
           url: Drupal.behaviors.EvalInfograph.FastApiUrl+'/scenarios',
           success: function(data, textStatus, jqXHR){
-            console.log(JSON.parse(data));
+            console.log(JSON.parse(data['data']));
             var scenarios = JSON.parse(data['data'])
             $.each(scenarios.label, function( index, value ) {
                 Drupal.behaviors.EvalInfograph.Scen += '&scenF='+value
