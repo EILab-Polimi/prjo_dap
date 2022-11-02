@@ -125,6 +125,7 @@ class FastAPI extends ControllerBase {
   }
 
 
+  // $ind_route can be omitted to get a full list of indicators
   public function indicators($ind_route, Request $request) {
     // Get configured url development or production for fastAPI service
     // development for localhost
@@ -137,25 +138,29 @@ class FastAPI extends ControllerBase {
     }
 
 
-    // \Drupal::service('messenger')->addMessage("<code>".print_r($ind_route,TRUE)."</code>");
+    if (isset($ind_route)){
+      // \Drupal::service('messenger')->addMessage("<code>".print_r($ind_route,TRUE)."</code>");
 
-    // \Drupal::service('messenger')->addMessage("<code>".print_r($request,TRUE)."</code>");
+      // \Drupal::service('messenger')->addMessage("<code>".print_r($request,TRUE)."</code>");
 
-    // https://drupal.stackexchange.com/questions/207044/how-to-get-post-and-get-parameters
-    // $GET_params = $request->query->get('cesare');
-    // GET all the GET parametrs from incoming request
-    $GET_params = $request->query->all();
-    // \Drupal::service('messenger')->addMessage("<code>".print_r($GET_params,TRUE)."</code>");
+      // https://drupal.stackexchange.com/questions/207044/how-to-get-post-and-get-parameters
+      // $GET_params = $request->query->get('cesare');
+      // GET all the GET parametrs from incoming request
+      $GET_params = $request->query->all();
+      // \Drupal::service('messenger')->addMessage("<code>".print_r($GET_params,TRUE)."</code>");
 
-    $url =  $fastAPIServerBaseUrl.'/indicators/'.$ind_route.'?'.http_build_query($GET_params);
+      $url =  $fastAPIServerBaseUrl.'/indicators/'.$ind_route.'?'.http_build_query($GET_params);
 
-    // \Drupal::service('messenger')->addMessage("<code>".print_r($url,TRUE)."</code>");
+      // \Drupal::service('messenger')->addMessage("<code>".print_r($url,TRUE)."</code>");
+
+    } else {
+      $url =  $fastAPIServerBaseUrl.'/indicators';
+    }
 
     $request = $this->httpClient->request('GET', $url);
     $status = $request->getStatusCode();
     $body = $request->getBody();
     $contents = $body->getContents();
-
 
     return new JsonResponse([ 'data' => JSON::decode($contents), 'method' => 'GET', 'status'=> $status]);
 
