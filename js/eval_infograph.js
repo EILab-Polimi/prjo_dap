@@ -260,7 +260,7 @@
         // Success function callback for the ajax call
         function parseJson (data, textStatus, jqXHR) {
           console.log('INDICATORS LIST');
-          console.log(JSON.parse(data));
+          console.log(JSON.parse(data['data']));
           var indicators = JSON.parse(data['data']);
 
           // Make a diff array between what we have in interface
