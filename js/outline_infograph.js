@@ -24,7 +24,8 @@
       /**
       // Set url for fastAPI services development or production
       */
-      Drupal.behaviors.OutlineInfograph.Url = settings.prjo_dap.fastapi_url
+      // Drupal.behaviors.OutlineInfograph.Url = settings.prjo_dap.fastapi_url
+      Drupal.behaviors.OutlineInfograph.Url = settings.path.baseUrl+'api/fastapi'
       // Drupal.behaviors.OutlineInfograph.Url = settings.prjo_dap.fastapi_prod_url
 
 
