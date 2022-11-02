@@ -34,6 +34,7 @@ fastAPI_http_client.scenarios:
 fastAPI_http_client.indicators:
   path: '/api/fastapi/indicators/{ind_route}'
   # path: '/api/fastapi/indicators'
+  ind_route: NULL
   defaults:
     _controller: '\Drupal\fastAPI_http_client\Controller\FastAPI::indicators'
   requirements:

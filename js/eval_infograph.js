@@ -253,7 +253,7 @@
         */
         $.ajax({
             type: 'GET',
-            url: Drupal.behaviors.EvalInfograph.FastApiUrl+'/indicators/NULL',
+            url: Drupal.behaviors.EvalInfograph.FastApiUrl+'/indicators',
             success: parseJson,
         });
 
