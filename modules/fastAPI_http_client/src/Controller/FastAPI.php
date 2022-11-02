@@ -125,6 +125,29 @@ class FastAPI extends ControllerBase {
   }
 
 
+  public function indicators_list() {
+    // Get configured url development or production for fastAPI service
+    // development for localhost
+    // production for docker container
+    $config = \Drupal::config('dap.settings');
+    if ($config->get('fastapi_sel') == 0){
+      $fastAPIServerBaseUrl = $config->get('fastapi_dev_url');
+    } else {
+      $fastAPIServerBaseUrl = $config->get('fastapi_prod_url');
+    }
+
+    $url =  $fastAPIServerBaseUrl.'/indicators';
+
+    $request = $this->httpClient->request('GET', $url);
+    $status = $request->getStatusCode();
+    $body = $request->getBody();
+    $contents = $body->getContents();
+
+    return new JsonResponse([ 'data' => JSON::decode($contents), 'method' => 'GET', 'status'=> $status]);
+
+  }
+
+
   // $ind_route can be omitted to get a full list of indicators
   public function indicators($ind_route= NULL, Request $request) {
     // Get configured url development or production for fastAPI service
@@ -165,5 +188,7 @@ class FastAPI extends ControllerBase {
     return new JsonResponse([ 'data' => JSON::decode($contents), 'method' => 'GET', 'status'=> $status]);
 
   }
+
+
 
 }
