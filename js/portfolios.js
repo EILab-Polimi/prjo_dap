@@ -17,9 +17,25 @@
 
         console.log(settings);
 
+        // $.ajax({
+        //     type: 'GET',
+        //     url: Drupal.behaviors.Portfolios.Url+'/portfolios',
+        //     // url: 'http://85.94.200.117:8008/portfolios', // Docker FastAPI Production server
+        //     // url: 'http://localhost:8008/portfolios', // Docker FastAPI development
+        //     // url: 'http://localhost:5000/portfolios', // Dev on Pycharm FastAPI
+        //
+        //     success: parseJson,
+        //
+        //
+        //     // complete: setGCjsonObject,
+        // });
+
+        //
+        // TODO inject the drupal web_route before /api/
+        //
         $.ajax({
             type: 'GET',
-            url: Drupal.behaviors.Portfolios.Url+'/portfolios',
+            url: settings.path.baseUrl+'api/fastapi/portfolios', // Guzzle http internal request
             // url: 'http://85.94.200.117:8008/portfolios', // Docker FastAPI Production server
             // url: 'http://localhost:8008/portfolios', // Docker FastAPI development
             // url: 'http://localhost:5000/portfolios', // Dev on Pycharm FastAPI
@@ -32,9 +48,18 @@
 
         // Success function callback for the ajax call
         function parseJson (data, textStatus, jqXHR) {
-          // console.log(data);
-          console.log(JSON.parse(data));
-          var portfolios = JSON.parse(data);
+          console.log(data);
+
+          // FROM Guzzle http internal request
+          // console.log(JSON.parse(data['data']));
+          var portfolios = JSON.parse(data['data']);
+          // portfolios = JSON.parse(portfolios);
+
+          // Elsewhere
+          // // console.log(data);
+          // console.log(JSON.parse(data));
+          // var portfolios = JSON.parse(data);
+
           var out = '';
           $.each(portfolios.id, function( index, value ) {
             console.log(index +' '+value );
@@ -49,15 +74,15 @@
                 '<td>4</td>'+
                 '<td>'+ portfolios.descr_plan[index].short_descr +'</td>'+
                 '<td>'+
-                '<a type="button" class="btn" href="/dap_out_infograph?wpp='+portfolios.id[index]+'">'+
+                '<a type="button" class="btn" href="'+settings.path.baseUrl+'dap_out_infograph?wpp='+portfolios.id[index]+'">'+
                   '<i class="far fa-eye text-primary"></i>'+
                 '</a>'+
                 '</td>'+
                 '<td>'+
-                  '<a type="button" class="btn" href="/dap_eval_infograph?wpp='+portfolios.id[index]+'">'+
+                  '<a type="button" class="btn" href="'+settings.path.baseUrl+'dap_eval_infograph?wpp='+portfolios.id[index]+'">'+
                     '<i class="far fa-eye text-primary"></i>'+
                   '</a>'+
-                  '<a type="button" class="btn" href="/geoviz_test_dashboard?wpp='+portfolios.id[index]+'">'+
+                  '<a type="button" class="btn" href="'+settings.path.baseUrl+'geoviz_test_dashboard?wpp='+portfolios.id[index]+'">'+
                     '<i class="far fa-map text-primary"></i>'+
                   '</a>'+
                 '</td>'+

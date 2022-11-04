@@ -19,12 +19,13 @@
       // Complete experiments/WPPs output
       // Drupal.behaviors.OutlineInfograph.WPPList = Drupal.behaviors.OutlineInfograph.WPPList || null
       // Variable to store selected WPP
-      Drupal.behaviors.OutlineInfograph.WPP = Drupal.behaviors.OutlineInfograph.WPP || null
+      Drupal.behaviors.OutlineInfograph.WPP = Drupal.behaviors.OutlineInfograph.WPP || 0
 
       /**
       // Set url for fastAPI services development or production
       */
-      Drupal.behaviors.OutlineInfograph.Url = settings.prjo_dap.fastapi_url
+      // Drupal.behaviors.OutlineInfograph.Url = settings.prjo_dap.fastapi_url
+      Drupal.behaviors.OutlineInfograph.Url = settings.path.baseUrl+'api/fastapi'
       // Drupal.behaviors.OutlineInfograph.Url = settings.prjo_dap.fastapi_prod_url
 
 
@@ -50,20 +51,36 @@
           console.log(scen);
           if (scen == 'opt') {
             // Add the fullPage=False to get the right answer from fastAPI
-            var url = Drupal.behaviors.OutlineInfograph.Url+
+            // var url = Drupal.behaviors.OutlineInfograph.Url+
+            //         '/indicators/'+ route +
+            //         '?fullPage=False&'+
+            //         'plot_id='+ table +
+            //         '&expF='+ wpp;
+            //         // scenF+
+            //         // locality;
+            var url = settings.path.baseUrl+'/api/fastapi'+
                     '/indicators/'+ route +
                     '?fullPage=False&'+
                     'plot_id='+ table +
                     '&expF='+ wpp;
                     // scenF+
                     // locality;
+
           } else {
-            var url = Drupal.behaviors.OutlineInfograph.Url+
+            // var url = Drupal.behaviors.OutlineInfograph.Url+
+            //           '/indicators/'+ route +
+            //           '?fullPage=False&'+
+            //           'plot_id='+ table +
+            //           '&expF='+ wpp +
+            //           '&scenF='+ scen;
+
+            var url = settings.path.baseUrl+'api/fastapi'+
                       '/indicators/'+ route +
                       '?fullPage=False&'+
                       'plot_id='+ table +
                       '&expF='+ wpp +
                       '&scenF='+ scen;
+
 
           }
           console.log(url);
@@ -74,13 +91,13 @@
             success: function(data, textStatus, jqXHR){
 
               // console.log('DATA BACK FROM GRAPH')
-              // console.log(data)
+              console.log(data)
               // console.log(id);
               $('#'+ id).empty()
               // console.log( $('#'+ id).closest('.card').children(".card-header") )
               $('#'+ id).closest('.card').children(".card-header").empty()
-              $('#'+ id).closest('.card').children(".card-header").html(data.title)
-              $('#'+id).append(data.graph);
+              $('#'+ id).closest('.card').children(".card-header").html(data['data'].title)
+              $('#'+id).append(data['data'].graph);
             },
             error: function(data, textStatus, jqXHR){
               console.log('ERROR - fastAPI');
@@ -96,7 +113,8 @@
         $.ajax({
             type: 'GET',
             // url: 'http://localhost:8008/portfolios',
-            url: Drupal.behaviors.OutlineInfograph.Url+'/portfolios',
+            // url: Drupal.behaviors.OutlineInfograph.Url+'/portfolios',
+            url: settings.path.baseUrl+'api/fastapi/portfolios',
             success: parseJson,
             // complete: setGCjsonObject,
         });
@@ -109,7 +127,7 @@
           // console.log("DATA");
           // console.log(JSON.parse(data));
           // console.log("END DATA");
-          portfolios = JSON.parse(data);
+          portfolios = JSON.parse(data['data']);
           var out = '';
           $.each(portfolios.id, function( index, value ) {
             // console.log(portfolios.label[index]);
@@ -245,7 +263,7 @@
               type: 'GET',
               url: Drupal.behaviors.OutlineInfograph.Url+'/graph_api_url?plot_id='+$(this).attr('data-plot_id'),
               success: function(data, textStatus, jqXHR){
-                var plot = JSON.parse(data)
+                var plot = JSON.parse(data['data'])
                 // console.log("------ graph api url -------");
                 // console.log(plot);
                 //
@@ -287,7 +305,7 @@
 
         // get selected wpp from url params
         var urlParams = new URLSearchParams(window.location.search);
-        // console.log(urlParams.get('wpp'));
+        console.log(urlParams.get('wpp'));
         // set selected wpp id
         if (urlParams.get('wpp') !== null) {
           Drupal.behaviors.OutlineInfograph.WPP = urlParams.get('wpp');

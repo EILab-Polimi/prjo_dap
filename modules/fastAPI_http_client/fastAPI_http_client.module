@@ -1,0 +1,37 @@
+<?php
+
+/**
+ * @file
+ * Contains fastAPI_http_client.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_help().
+ */
+function fastAPI_http_client_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the fastAPI_http_client module.
+    case 'help.page.fastAPI_http_client':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('My Awesome Module') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+// function fastAPI_http_client_theme() {
+//   return [
+//     'afclm' => [
+//       'variables' => [],
+//     ]
+//   ];
+// }

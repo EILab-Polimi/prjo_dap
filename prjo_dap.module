@@ -38,6 +38,11 @@ function prjo_dap_theme() {
         'url' => NULL,
       ],
     ],
+    'scenarios' => [
+      'variables' => [
+        'url' => NULL,
+      ],
+    ],
     'evaluation_infograph' => [
       'variables' => [],
     ],
@@ -45,6 +50,9 @@ function prjo_dap_theme() {
       'variables' => [],
     ],
     'evaluation_outline' => [
+      'variables' => [],
+    ],
+    'comparison' => [
       'variables' => [],
     ],
     'afclm' => [

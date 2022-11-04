@@ -97,6 +97,12 @@ portfolios:
     js/portfolios.js: {}
 
 
+test-hiplot:
+  version: 1.x
+  js:
+    js/test_hiplot.js: {}
+
+
 afclm:
   version: 1.x
   js:

@@ -10,7 +10,8 @@
   Drupal.behaviors.OLCommon = {
     attach: function (context, settings) {
 
-      Drupal.behaviors.OLCommon.qgsUrl = Drupal.behaviors.OLCommon.qgsUrl || settings.prjo_dap.qgis_url;
+      // Drupal.behaviors.OLCommon.qgsUrl = Drupal.behaviors.OLCommon.qgsUrl || settings.prjo_dap.qgis_url;
+      Drupal.behaviors.OLCommon.qgsUrl = Drupal.behaviors.OLCommon.qgsUrl || settings.path.baseUrl+'api/QgisServer';
       Drupal.behaviors.OLCommon.qgisProject = Drupal.behaviors.OLCommon.qgisProject || {};
 
       // Drupal.behaviors.OLCommon.Map = Drupal.behaviors.OLCommon.Map || null;

@@ -17,7 +17,8 @@
       /**
       // Set url for fastAPI services development or production - TODO generalize
       */
-      Drupal.behaviors.EvalInfograph.FastApiUrl = settings.prjo_dap.fastapi_url
+      // Drupal.behaviors.EvalInfograph.FastApiUrl = settings.prjo_dap.fastapi_url
+      Drupal.behaviors.EvalInfograph.FastApiUrl = settings.path.baseUrl+'api/fastapi'
       // Drupal.behaviors.EvalInfograph.FastApiUrl = settings.prjo_dap.fastapi_prod_url
 
       /**
@@ -36,8 +37,8 @@
           type: 'GET',
           url: Drupal.behaviors.EvalInfograph.FastApiUrl+'/scenarios',
           success: function(data, textStatus, jqXHR){
-            console.log(JSON.parse(data));
-            var scenarios = JSON.parse(data)
+            console.log(JSON.parse(data['data']));
+            var scenarios = JSON.parse(data['data'])
             $.each(scenarios.label, function( index, value ) {
                 Drupal.behaviors.EvalInfograph.Scen += '&scenF='+value
             });
@@ -56,7 +57,7 @@
                 type: 'GET',
                 url: Drupal.behaviors.EvalInfograph.FastApiUrl+'/graph_api_url?plot_id='+$(this).attr('data-plot_id'),
                 success: function(data, textStatus, jqXHR){
-                  var plot = JSON.parse(data)
+                  var plot = JSON.parse(data['data'])
                   console.log("------ graph api url -------");
                   console.log(plot);
 
@@ -106,7 +107,7 @@
         function parseJson (data, textStatus, jqXHR) {
           // console.log(data);
           // console.log(JSON.parse(data));
-          var portfolios = JSON.parse(data);
+          var portfolios = JSON.parse(data['data']);
           var out = '';
           $.each(portfolios.id, function( index, value ) {
             if (portfolios.label[index] == Drupal.behaviors.EvalInfograph.WPP) {
@@ -160,8 +161,8 @@
               $('#'+ id).empty()
               // console.log( $('#'+ id).closest('.card').children(".card-header") )
               $('#'+ id).closest('.card').children(".card-header").empty()
-              $('#'+ id).closest('.card').children(".card-header").html(data.title)
-              $('#'+id).append(data.graph);
+              $('#'+ id).closest('.card').children(".card-header").html(data['data'].title)
+              $('#'+id).append(data['data'].graph);
             }
            });
       }
@@ -207,7 +208,7 @@
               type: 'GET',
               url: Drupal.behaviors.EvalInfograph.FastApiUrl+'/graph_api_url?plot_id='+$(this).attr('data-plot_id'),
               success: function(data, textStatus, jqXHR){
-                var plot = JSON.parse(data)
+                var plot = JSON.parse(data['data'])
                 console.log(plot);
 
                 console.log('ID - da modificare ' + id);
@@ -259,8 +260,8 @@
         // Success function callback for the ajax call
         function parseJson (data, textStatus, jqXHR) {
           console.log('INDICATORS LIST');
-          console.log(JSON.parse(data));
-          var indicators = JSON.parse(data);
+          console.log(JSON.parse(data['data']));
+          var indicators = JSON.parse(data['data']);
 
           // Make a diff array between what we have in interface
           var apiObj = {}
@@ -271,7 +272,7 @@
               type: 'GET',
               url: Drupal.behaviors.EvalInfograph.FastApiUrl+'/graph_api_url?plot_id='+value,
               success: function(data, textStatus, jqXHR){
-                var plot = JSON.parse(data)
+                var plot = JSON.parse(data['data'])
                 // console.log("------ OOOOOOOO -------");
                 // console.log(plot);
                 // data-plot_id="i_cyclo_mean_dw_def_M" data-plot_type="cyclost_heatmap"

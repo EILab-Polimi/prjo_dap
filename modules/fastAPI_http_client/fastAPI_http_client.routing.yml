@@ -1,0 +1,50 @@
+# Configuration form
+# fastAPI_http_client.admin_settings:
+#   path: '/admin/config/dap/settings'
+#   defaults:
+#     _form: '\Drupal\fastAPI_http_client\Form\DapSettingsForm'
+#     _title: 'Dap configuration'
+#   requirements:
+#     _permission: 'administer site configuration'
+
+
+fastAPI_http_client.getdata:
+  path: '/api/fastapi'
+  defaults:
+    _controller: '\Drupal\fastAPI_http_client\Controller\FastAPI::getData'
+  requirements:
+    _permission: 'access content'
+
+
+fastAPI_http_client.portfolios:
+  path: '/api/fastapi/portfolios'
+  defaults:
+    _controller: '\Drupal\fastAPI_http_client\Controller\FastAPI::portfolios'
+  requirements:
+    _permission: 'access content'
+
+fastAPI_http_client.scenarios:
+  path: '/api/fastapi/scenarios'
+  defaults:
+    _controller: '\Drupal\fastAPI_http_client\Controller\FastAPI::scenarios'
+  requirements:
+    _permission: 'access content'
+
+
+fastAPI_http_client.indicators:
+  path: '/api/fastapi/indicators/{ind_route}'
+  # path: '/api/fastapi/indicators'
+  defaults:
+    _controller: '\Drupal\fastAPI_http_client\Controller\FastAPI::indicators'
+    ind_route: NULL
+  requirements:
+    _permission: 'access content'
+
+
+fastAPI_http_client.graph_url:
+  path: '/api/fastapi/graph_api_url'
+  # path: '/api/fastapi/indicators'
+  defaults:
+    _controller: '\Drupal\fastAPI_http_client\Controller\FastAPI::graph_url'
+  requirements:
+    _permission: 'access content'
