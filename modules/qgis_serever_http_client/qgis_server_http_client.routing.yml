@@ -1,10 +1,10 @@
 
-qgis_server_http_client.test:
-  path: '/api/QgisServer/test'
-  defaults:
-    _controller: '\Drupal\qgis_server_http_client\Controller\QgisServer::test'
-  requirements:
-    _permission: 'access content'
+# qgis_server_http_client.test:
+#   path: '/api/QgisServer/test'
+#   defaults:
+#     _controller: '\Drupal\qgis_server_http_client\Controller\QgisServer::test'
+#   requirements:
+#     _permission: 'access content'
 
 
 
