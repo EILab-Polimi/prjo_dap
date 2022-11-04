@@ -1,0 +1,51 @@
+
+qgis_server_http_client.test:
+  path: '/api/QgisServer/test'
+  defaults:
+    _controller: '\Drupal\qgis_server_http_client\Controller\QgisServer::test'
+  requirements:
+    _permission: 'access content'
+
+
+
+qgis_server_http_client.ServiceUrl:
+  path: '/api/QgisServer'
+  defaults:
+    _controller: '\Drupal\qgis_server_http_client\Controller\QgisServer::ServiceUrl'
+  requirements:
+    _permission: 'access content'
+
+
+
+# qgis_server_http_client.GetCapabilities:
+#   path: '/api/QgisServer/GetCapabilities'
+#   defaults:
+#     _controller: '\Drupal\qgis_server_http_client\Controller\QgisServer::GetCapabilities'
+#   requirements:
+#     _permission: 'access content'
+#
+# qgis_server_http_client.GetMap:
+#   path: '/api/QgisServer/GetMap'
+#   defaults:
+#     _controller: '\Drupal\qgis_server_http_client\Controller\QgisServer::GetMap'
+#   requirements:
+#     _permission: 'access content'
+
+
+# qgis_server_http_client.indicators:
+#   path: '/api/QgisServer/indicators/{ind_route}'
+#   # path: '/api/QgisServer/indicators'
+#   defaults:
+#     _controller: '\Drupal\qgis_server_http_client\Controller\QgisServer::indicators'
+#     ind_route: NULL
+#   requirements:
+#     _permission: 'access content'
+#
+#
+# qgis_server_http_client.graph_url:
+#   path: '/api/QgisServer/graph_api_url'
+#   # path: '/api/QgisServer/indicators'
+#   defaults:
+#     _controller: '\Drupal\qgis_server_http_client\Controller\QgisServer::graph_url'
+#   requirements:
+#     _permission: 'access content'
