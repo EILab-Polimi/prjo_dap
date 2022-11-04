@@ -1,0 +1,13 @@
+prjo_dap.settings:
+  title: 'ProjectO'
+  route_name: prjo_dap.settings
+  parent: system.admin_config
+  description: 'Configure Urls for fastAPI and Qgis server'
+  weight: -10
+
+prjo_dap.admin_settings:
+  title: 'FastAPI'
+  parent: prjo_dap.settings
+  description: 'fastAPI configuration'
+  weight: 0
+  route_name: prjo_dap.admin_settings
