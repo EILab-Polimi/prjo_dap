@@ -58,7 +58,7 @@
             //         '&expF='+ wpp;
             //         // scenF+
             //         // locality;
-            var url = settings.path.baseUrl+'/api/fastapi'+
+            var url = settings.path.baseUrl+'api/fastapi'+
                     '/indicators/'+ route +
                     '?fullPage=False&'+
                     'plot_id='+ table +
