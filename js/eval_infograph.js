@@ -52,7 +52,7 @@
               var plot_id = $(this).attr('data-plot_id')
               var plot_type = $(this).attr('data-plot_type') || null
               var scen = $(this).attr('data-scen')
-              var loc = $(this).attr('data-loc')
+              var loc = $(this).attr('data-loc') || null
               $.ajax({
                 type: 'GET',
                 url: Drupal.behaviors.EvalInfograph.FastApiUrl+'/graph_api_url?plot_id='+$(this).attr('data-plot_id'),
@@ -137,16 +137,24 @@
 
           // Set part of url only if mandatory == mnd
           var scenF = (scen == 'mnd') ? Drupal.behaviors.EvalInfograph.Scen : '';
-          var locality = (loc == 'mnd') ? "&loc=Locone" : '';
+          var locality = (loc == null) ? '' : loc;
+          console.log(locality);
 
           // Add the fullPage=False to get the right answer from fastAPI
+          // var url = Drupal.behaviors.EvalInfograph.FastApiUrl+
+          //           '/indicators/'+ route +
+          //           '?fullPage=False&'+
+          //           'plot_id='+ table +
+          //           '&expF='+ wpp +
+          //           scenF+
+          //           locality;
+
           var url = Drupal.behaviors.EvalInfograph.FastApiUrl+
                     '/indicators/'+ route +
                     '?fullPage=False&'+
                     'plot_id='+ table +
                     '&expF='+ wpp +
-                    scenF+
-                    locality;
+                    '&loc='+locality;
 
           console.log(url);
 
@@ -311,8 +319,8 @@
                   apiObj[value]['descr'] = indicators.descr[index]
                 }
 
-                console.log('INDEX');
-                console.log(parseInt(index)+1);
+                // console.log('INDEX');
+                // console.log(parseInt(index)+1);
                 if (parseInt(index)+1 === count){
                   console.log('EACH TERMINATED');
                   console.log(apiObj)

@@ -49,13 +49,22 @@
 
         <!-- Charts -->
 
+
+        <!-- New carts -->
+        <!-- cyclost_lineplot('i_cyclo_mean_irr_def_M', expF=[exp_id])
+        cyclost_lineplot('i_cyclo_mean_dw_def_M', expF=[exp_id], locF=[5])  #nota che ho ripristinato la possibilità di filtrare per location perchè qui serve
+        cyclost_lineplot('i_cyclo_mean_wdistr_cost_M', expF=[exp_id], locF=[5])
+        cyclost_lineplot('i_cyclo_mean_ind_def_M', expF=[exp_id], locF=[2])
+        -->
+
+
         <div class="row mt-1">
           <div class="col">
             <div class="card" id="size">
               <div class="card-header">
               </div>
               <div class="card-body">
-                <div id="eval_g1" data-plot_id="i_cyclo_mean_irr_def_M" data-scen="opt" data-exp="nonserve" data-loc="opt" class="dap_plot"></div>
+                <div id="eval_g1" data-plot_id="i_cyclo_mean_irr_def_M" data-plot_type="cyclost_lineplot" data-scen="opt" data-exp="nonserve" class="dap_plot"></div>
               </div>
             </div>
           </div>
@@ -68,7 +77,9 @@
               </div>
               <div class="card-body">
                 <!-- Use data-plot_type to force the type of graph to be shown (if the data-plot_id return multiple choice ) -->
-                <div id="eval_g2" data-plot_id="i_cyclo_mean_dw_def_M" data-plot_type="cyclost_heatmap" data-scen="opt" data-exp="nonserve" data-loc="opt" class="dap_plot"></div>
+                <!-- <div id="eval_g2" data-plot_id="i_cyclo_mean_dw_def_M" data-plot_type="cyclost_heatmap" data-scen="opt" data-exp="nonserve" data-loc="opt" class="dap_plot"></div> -->
+                <div id="eval_g2" data-plot_id="i_cyclo_mean_dw_def_M" data-plot_type="cyclost_lineplot" data-scen="opt" data-exp="nonserve" data-loc="5" class="dap_plot"></div>
+
               </div>
             </div>
           </div>
@@ -81,11 +92,25 @@
               <div class="card-header">
               </div>
               <div class="card-body">
-                <div id="eval_g3" data-plot_id="i_wdistr_cost_Y" data-scen="opt" data-exp="nonserve" data-loc="opt" class="dap_plot"></div>
+                <!-- <div id="eval_g3" data-plot_id="i_wdistr_cost_Y" data-scen="opt" data-exp="nonserve" data-loc="opt" class="dap_plot"></div> -->
+                <div id="eval_g3" data-plot_id="i_cyclo_mean_wdistr_cost_M" data-plot_type="cyclost_lineplot" data-scen="opt" data-exp="nonserve" data-loc="5" class="dap_plot"></div>
               </div>
             </div>
           </div>
         </div>
+
+        <div class="row mt-3">
+          <div class="col">
+            <div class="card">
+              <div class="card-header">
+              </div>
+              <div class="card-body">
+                <div id="eval_g4" data-plot_id="i_cyclo_mean_ind_def_M" data-plot_type="cyclost_lineplot" data-scen="opt" data-exp="nonserve" data-loc="2" class="dap_plot"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
 
         <div id="opt_plots"></div>
 
