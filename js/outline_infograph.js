@@ -173,11 +173,13 @@
                          '</div>'+
                                '<div class="card-text">'+
                                   card.body +
-                               '</div>'+
-                               '<div class="card-text">'+
+                               '</div>';
+            if ( card.hasOwnProperty('chart_api') && card.hasOwnProperty('item_type') ) {
+                               cards += '<div class="card-text">'+
                                   '<a href="#rowcard_'+index+'" class="stretched-link">More</a>' +
-                               '</div>'+
-                       '</div>'+
+                               '</div>';
+            }
+             cards += '</div>'+
                      '</div>'+
                    '</div>';
 
