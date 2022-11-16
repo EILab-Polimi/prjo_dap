@@ -90,6 +90,14 @@ outline-infograph:
     js/common_map.js: {}
     js/outline_infograph.js: {}
 
+scenarios:
+  version: 1.x
+  js:
+    # js/common_chart.js: {}
+    js/common_map.js: {}
+    js/scenarios.js: {}
+
+
 # Portfolios page
 portfolios:
   version: 1.x

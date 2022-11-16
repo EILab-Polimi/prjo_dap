@@ -51,7 +51,7 @@ class Scenarios extends ControllerBase {
           'prjo_dap/openlayers',
           'prjo_dap/ol-layerswitcher',
           'prjo_dap/plotly',
-          'prjo_dap/outline-infograph',
+          'prjo_dap/scenarios',
           // 'prjo_dap/charts',
         ],
         'drupalSettings' => [
