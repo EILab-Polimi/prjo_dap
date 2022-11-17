@@ -48,3 +48,12 @@ fastAPI_http_client.graph_url:
     _controller: '\Drupal\fastAPI_http_client\Controller\FastAPI::graph_url'
   requirements:
     _permission: 'access content'
+
+
+fastAPI_http_client.geocoder:
+  path: '/api/fastapi/geocoder'
+  # path: '/api/fastapi/indicators'
+  defaults:
+    _controller: '\Drupal\fastAPI_http_client\Controller\FastAPI::geocoder'
+  requirements:
+    _permission: 'access content'
