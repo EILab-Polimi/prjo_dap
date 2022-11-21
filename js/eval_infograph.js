@@ -383,6 +383,8 @@
             // var descr = optionSelected.text()
             var indSelected = optionSelected.val();
             // console.log(wppSelected);
+            // data-plot_type="cyclost_lineplot"
+            console.log(Drupal.behaviors.EvalInfograph.apiObj[optionSelected.val()].api_root[0]);
 
             var out = '<div class="row mt-3">'+
                       '<div class="col">'+
@@ -408,7 +410,7 @@
                 type: 'GET',
                 url: Drupal.behaviors.EvalInfograph.FastApiUrl+'/graph_api_url?plot_id='+$(this).attr('data-plot_id'),
                 success: function(data, textStatus, jqXHR){
-                  var plot = JSON.parse(data)
+                  var plot = JSON.parse(data['data'])
                   console.log(plot);
 
                   console.log('ID - da modificare ' + id);
