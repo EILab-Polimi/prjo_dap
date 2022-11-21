@@ -40,6 +40,12 @@ fastAPI_http_client.indicators:
   requirements:
     _permission: 'access content'
 
+fastAPI_http_client.hiplot:
+  path: '/api/fastapi/hiplot'
+  defaults:
+    _controller: '\Drupal\fastAPI_http_client\Controller\FastAPI::hiplot'
+  requirements:
+    _permission: 'access content'
 
 fastAPI_http_client.graph_url:
   path: '/api/fastapi/graph_api_url'

@@ -47,16 +47,19 @@
       */
       $('#hiplot_chart').once().each(function() {
 
-        var url = 'http://localhost:5000/hiplot/test'
+        // var url = 'http://localhost:5000/hiplot/comparison'
+        var url = settings.path.baseUrl+'api/fastapi/hiplot'
 
         $.ajax({
           type: 'GET',
           url: url,
           success: function(data, textStatus, jqXHR){
 
-            // console.log('DATA BACK FROM GRAPH')
-            // console.log(data)
-            $('#hiplot_chart').append(data);
+            console.log('DATA BACK FROM GRAPH')
+            console.log(data)
+
+            $('#hiplot_chart').append(data['data']);
+            // $('#hiplot_chart').append(data);
           },
           error: function(data, textStatus, jqXHR){
             console.log('ERROR - fastAPI');

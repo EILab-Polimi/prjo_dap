@@ -105,10 +105,10 @@ portfolios:
     js/portfolios.js: {}
 
 
-test-hiplot:
+hiplot:
   version: 1.x
   js:
-    js/test_hiplot.js: {}
+    js/hiplot.js: {}
 
 
 afclm:

@@ -166,6 +166,30 @@ class FastAPI extends ControllerBase {
 
   }
 
+  public function hiplot() {
+    // Get configured url development or production for fastAPI service
+    // development for localhost
+    // production for docker container
+    $config = \Drupal::config('dap.settings');
+    if ($config->get('fastapi_sel') == 0){
+      $fastAPIServerBaseUrl = $config->get('fastapi_dev_url');
+    } else {
+      $fastAPIServerBaseUrl = $config->get('fastapi_prod_url');
+    }
+
+    // TODO container to container
+    $request  = $this->httpClient->request('GET', $fastAPIServerBaseUrl.'/hiplot/comparison');
+    $status   = $request->getStatusCode();
+    $body     = $request->getBody();
+    $contents = $body->getContents();
+
+    // \Drupal::service('messenger')->addMessage("<code>".print_r($body,TRUE)."</code>");
+    // \Drupal::service('messenger')->addMessage("<code>".print_r($contents,TRUE)."</code>");
+
+    return new JsonResponse([ 'data' => $contents, 'method' => 'GET', 'status'=> $status]);
+  }
+
+
   // $ind_route can be omitted to get a full list of indicators
   public function graph_url(Request $request) {
     // Get configured url development or production for fastAPI service

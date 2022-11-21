@@ -23,7 +23,7 @@ class Comparison extends ControllerBase {
       '#theme' => 'comparison',
       '#attached' => [
         'library' => [
-          'prjo_dap/test-hiplot',
+          'prjo_dap/hiplot',
         ]
       ],
     ];
