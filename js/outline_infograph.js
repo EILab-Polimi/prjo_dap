@@ -19,7 +19,7 @@
       // Complete experiments/WPPs output
       // Drupal.behaviors.OutlineInfograph.WPPList = Drupal.behaviors.OutlineInfograph.WPPList || null
       // Variable to store selected WPP
-      Drupal.behaviors.OutlineInfograph.WPP = Drupal.behaviors.OutlineInfograph.WPP || 0
+      Drupal.behaviors.OutlineInfograph.WPP = Drupal.behaviors.OutlineInfograph.WPP || 1
 
       /**
       // Set url for fastAPI services development or production
@@ -147,7 +147,9 @@
           // var graph = '';
           // var map = '';
           // console.log(Drupal.behaviors.OutlineInfograph.WPP);
-          $.each(portfolios.descr_plan[Drupal.behaviors.OutlineInfograph.WPP].cards, function( index, card ){
+          console.log(portfolios);
+          var newid = parseInt(Drupal.behaviors.OutlineInfograph.WPP)-1
+          $.each(portfolios.descr_plan[newid].cards, function( index, card ){
             console.log("---- Cards cycle ----");
             // console.log(portfolios.descr_plan[Drupal.behaviors.OutlineInfograph.WPP]);
             console.log(card);
