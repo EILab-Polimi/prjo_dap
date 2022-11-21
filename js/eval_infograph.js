@@ -24,7 +24,7 @@
       /**
       // Global variable to store selected WPP
       */
-      Drupal.behaviors.EvalInfograph.WPP = Drupal.behaviors.EvalInfograph.WPP || 0
+      Drupal.behaviors.EvalInfograph.WPP = Drupal.behaviors.EvalInfograph.WPP || 1
 
       /**
       // Scenarios
