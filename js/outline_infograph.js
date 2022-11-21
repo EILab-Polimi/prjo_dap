@@ -132,10 +132,10 @@
           $.each(portfolios.id, function( index, value ) {
             // console.log(portfolios.label[index]);
             // console.log(Drupal.behaviors.OutlineInfograph.WPP);
-            if (portfolios.id[index] == Drupal.behaviors.OutlineInfograph.WPP) {
-              out += '<option selected value="'+portfolios.id[index]+'">'+portfolios.label[index]+'</option>'
+            if (value == Drupal.behaviors.OutlineInfograph.WPP) {
+              out += '<option selected value="'+value+'">'+portfolios.label[index]+'</option>'
             } else {
-              out += '<option value="'+portfolios.id[index]+'">'+portfolios.label[index]+'</option>'
+              out += '<option value="'+value+'">'+portfolios.label[index]+'</option>'
             }
           });
           $('#wpp').append(out);

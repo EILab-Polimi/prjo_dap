@@ -19,6 +19,7 @@
       // Complete experiments/WPPs output
       // Drupal.behaviors.Scenarios.WPPList = Drupal.behaviors.Scenarios.WPPList || null
       // Variable to store selected WPP
+      // Drupal.behaviors.Scenarios.SCEN = Drupal.behaviors.Scenarios.SCEN || {}
       Drupal.behaviors.Scenarios.SCEN = Drupal.behaviors.Scenarios.SCEN || 0
 
       /**
@@ -106,8 +107,9 @@
            });
       }
 
-
-      // Get the list of scenarios
+      /**
+      / Get the list of scenarios
+      **/
       Drupal.behaviors.Scenarios.getScenarios = function () {
         $.ajax({
           type: 'GET',
@@ -115,12 +117,17 @@
           success: function(data, textStatus, jqXHR){
             console.log(JSON.parse(data['data']));
             var scenarios = JSON.parse(data['data'])
+
+            //Drupal.behaviors.Scenarios.SCEN = scenarios.label;
+            console.log(Drupal.behaviors.Scenarios.SCEN);
+
             var out = '';
             $.each(scenarios.id, function( index, value ) {
-              if (scenarios.label[index] == Drupal.behaviors.Scenarios.SCEN) {
-                out += '<option selected value="'+scenarios.id[index]+'">'+scenarios.label[index]+'</option>'
+              console.log(scenarios.label[index]);
+              if (value == Drupal.behaviors.Scenarios.SCEN) {
+                out += '<option selected value="'+value+'">'+scenarios.label[index]+'</option>'
               } else {
-                out += '<option value="'+scenarios.id[index]+'">'+scenarios.label[index]+'</option>'
+                out += '<option value="'+value+'">'+scenarios.label[index]+'</option>'
               }
             });
             $('#scen').append(out);
