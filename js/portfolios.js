@@ -48,7 +48,7 @@
 
         // Success function callback for the ajax call
         function parseJson (data, textStatus, jqXHR) {
-          console.log(data);
+          // console.log(data);
 
           // FROM Guzzle http internal request
           // console.log(JSON.parse(data['data']));
@@ -64,6 +64,10 @@
           $.each(portfolios.id, function( index, value ) {
             console.log(index +' '+value );
             console.log(portfolios.label[index]);
+            var num_scen = 4;
+            if(portfolios.label[index] == 'WPP0' || portfolios.label[index] == 'WPP1'){
+              num_scen = 2;
+            }
             out += '<tr>'+
               '<td>'+
                 '<span class="fa-stack">'+
@@ -71,7 +75,7 @@
                   '<i class="fas fa-folder-open fa-stack-1x fa-inverse"></i>'+
                 '</span>'+
                 portfolios.label[index] +'</td>'+
-                '<td>4</td>'+
+                '<td>'+num_scen+'</td>'+
                 '<td>'+ portfolios.descr_plan[index].short_descr +'</td>'+
                 '<td>'+
                 '<a type="button" class="btn" href="'+settings.path.baseUrl+'dap_out_infograph?wpp='+portfolios.id[index]+'">'+
