@@ -332,6 +332,20 @@
 
       });
 
+      $('#eval_map').once().each(function() {
+        $('#eval_map').click(function() {
+          console.log(settings.path.baseUrl+'geoviz_test_dashboard?wpp='+Drupal.behaviors.OutlineInfograph.WPP);
+          window.location.replace(settings.path.baseUrl+'geoviz_test_dashboard?wpp='+Drupal.behaviors.OutlineInfograph.WPP)
+        })
+      });
+
+      $('#eval_chart').once().each(function() {
+        $('#eval_chart').click(function() {
+          console.log(settings.path.baseUrl+'dap_eval_infograph?wpp='+Drupal.behaviors.OutlineInfograph.WPP);
+          window.location.replace(settings.path.baseUrl+'dap_eval_infograph?wpp='+Drupal.behaviors.OutlineInfograph.WPP)
+        })
+
+      });
 
 
     }

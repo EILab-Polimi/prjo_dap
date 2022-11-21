@@ -110,10 +110,12 @@
           var portfolios = JSON.parse(data['data']);
           var out = '';
           $.each(portfolios.id, function( index, value ) {
-            if (portfolios.label[index] == Drupal.behaviors.EvalInfograph.WPP) {
-              out += '<option selected value="'+portfolios.id[index]+'">'+portfolios.label[index]+'</option>'
+            // console.log(value);
+            // console.log(Drupal.behaviors.EvalInfograph.WPP);
+            if (value == Drupal.behaviors.EvalInfograph.WPP) {
+              out += '<option selected value="'+value+'">'+portfolios.label[index]+'</option>'
             } else {
-              out += '<option value="'+portfolios.id[index]+'">'+portfolios.label[index]+'</option>'
+              out += '<option value="'+value+'">'+portfolios.label[index]+'</option>'
             }
           });
           $('#wpp').append(out);
