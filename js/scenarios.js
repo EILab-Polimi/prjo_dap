@@ -50,7 +50,8 @@
           // var scenF = (scen == 'mnd') ? Drupal.behaviors.EvalInfograph.Scen : '';
           // var locality = (loc == 'mnd') ? "&loc=Locone" : '';
 
-          console.log(scen);
+          // console.log('Scenario: ' +scen);
+          // console.log('Exp: '+ wpp);
           if (scen == 'opt') {
             // Add the fullPage=False to get the right answer from fastAPI
             // var url = Drupal.behaviors.Scenarios.Url+
