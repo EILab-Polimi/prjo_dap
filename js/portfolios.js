@@ -75,15 +75,15 @@
                 '<td>'+ portfolios.descr_plan[index].short_descr +'</td>'+
                 '<td>'+
                 '<a type="button" class="btn" href="'+settings.path.baseUrl+'dap_out_infograph?wpp='+portfolios.id[index]+'">'+
-                  '<i class="far fa-eye text-primary"></i>'+
+                  '<i class="fa fa-gauge-high text-primary"></i>'+
                 '</a>'+
                 '</td>'+
                 '<td>'+
                   '<a type="button" class="btn" href="'+settings.path.baseUrl+'dap_eval_infograph?wpp='+portfolios.id[index]+'">'+
-                    '<i class="far fa-eye text-primary"></i>'+
+                    '<i class="fa fa-chart-line text-primary"></i>'+
                   '</a>'+
                   '<a type="button" class="btn" href="'+settings.path.baseUrl+'geoviz_test_dashboard?wpp='+portfolios.id[index]+'">'+
-                    '<i class="far fa-map text-primary"></i>'+
+                    '<i class="fa fa-map text-primary"></i>'+
                   '</a>'+
                 '</td>'+
               '</tr>';
