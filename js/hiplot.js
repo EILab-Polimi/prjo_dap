@@ -55,8 +55,8 @@
           url: url,
           success: function(data, textStatus, jqXHR){
 
-            console.log('DATA BACK FROM GRAPH')
-            console.log(data)
+            // console.log('DATA BACK FROM GRAPH')
+            // console.log(data)
 
             $('#hiplot_chart').append(data['data']);
             // $('#hiplot_chart').append(data);
