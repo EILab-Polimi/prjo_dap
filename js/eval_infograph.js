@@ -137,6 +137,8 @@
           // Compose the url given the parameters
           console.log(id, route, table, scen, wpp, loc);
 
+          // FORCE ROUTE
+          route = 'cyclost_lineplot';
           // Set part of url only if mandatory == mnd
           var scenF = (scen == 'mnd') ? Drupal.behaviors.EvalInfograph.Scen : '';
           var locality = (loc == null) ? '' : loc;
@@ -283,8 +285,8 @@
               url: Drupal.behaviors.EvalInfograph.FastApiUrl+'/graph_api_url?plot_id='+value,
               success: function(data, textStatus, jqXHR){
                 var plot = JSON.parse(data['data'])
-                // console.log("------ OOOOOOOO -------");
-                // console.log(plot);
+                console.log("------ OOOOOOOO -------");
+                console.log(plot);
                 // data-plot_id="i_cyclo_mean_dw_def_M" data-plot_type="cyclost_heatmap"
 
                 // filter by data-plot_id
@@ -317,8 +319,31 @@
                   // data-plot_id NON esiste in interfaccia inseriamo l'oggetto
                   // plot completo
                   // che può avere più di un api_root
-                  apiObj[value] = plot
-                  apiObj[value]['descr'] = indicators.descr[index]
+                  console.log('INDICATOR: ' +value+ ' | NAME: '+ indicators.descr[index]+ ' | API_URL : '+plot.api_root[0]);
+                  // console.log(plot.api_root);
+                  if (value == 'i_cyclo_cumsum_a_D'	||
+                  value == 'i_cyclo_mean_a_M' ||
+                  value == 'i_cyclo_mean_dw_def_M' ||
+                  value == 'i_cyclo_mean_h_M'	||
+                  value == 'i_cyclo_mean_ind_def_M'	||
+                  value == 'i_cyclo_mean_irr_def_M'	||
+                  value == 'i_cyclo_mean_r_irr_D'	||
+                  value == 'i_cyclo_mean_wdistr_cost_M') {
+                      // console.log(value);
+                      // console.log(indicators.descr[index]);
+                      // apiObj[value] = 'cyclost_lineplot'
+                      // apiObj[value]['descr'] = indicators.descr[index]
+                      apiObj[value] = {api_root: {0: 'cyclost_lineplot'},
+                                       descr: indicators.descr[index],
+                                       id : {0: 0}
+                                      }
+                  }
+
+
+                  // if (! $.isEmptyObject(plot.api_root)){
+                  //   apiObj[value] = plot
+                  //   apiObj[value]['descr'] = indicators.descr[index]
+                  // }
                 }
 
                 // console.log('INDEX');
