@@ -25,6 +25,81 @@ function prjo_dap_help($route_name, RouteMatchInterface $route_match) {
   }
 }
 
+// function prjo_dap_mail_tokens(&$replacements, $data, $options) {
+//   \Drupal::logger('prjo_dap')->notice("<code>".print_r($replacements,TRUE)."</code>");
+//   if (isset($data['user'])) {
+//     $replacements['[user:one-time-login-url]'] = user_pass_reset_url($data['user'], $options);
+//     $replacements['[user:cancel-url]'] = user_cancel_url($data['user'], $options);
+//   }
+// }
+
+/*
+* implement hook_token_info()
+*/
+function prjo_dap_token_info(){
+  $types['custom_token_type'] = array(
+    'name' => t('Custom token type'),
+    'description' => t('Define custom token type')
+  );
+  $tokens['one-time-login-url'] = array(
+    'name' => t('one time login url rewrite'),
+    'description' => t('Define custom token name')
+  );
+
+  return array(
+    'types' => $types,
+    'tokens' => array(
+      'custom_token_type' => $tokens
+    )
+  );
+}
+
+function prjo_dap_tokens($type, $tokens, array $data, array $options, \Drupal\Core\Render\BubbleableMetadata $bubbleable_metadata){
+  $replacements = array();
+  if($type == 'custom_token_type') {
+    foreach ($tokens as $name => $original) {
+      \Drupal::logger('prjo_dap')->notice("Original <code>".print_r($original,TRUE)."</code>");
+      switch ($name) {
+        case 'one-time-login-url':
+        // $text = 'Hello World!';
+        \Drupal::logger('prjo_dap')->notice("User reset url <code>".print_r(user_pass_reset_url($data['user'], $options),TRUE)."</code>");
+        $original_url = user_pass_reset_url($data['user'], $options);
+        $new_url = str_replace('http://127.0.0.1:8082/', 'https://xake.deib.polimi.it:8080/', $original_url);
+      	$replacements[$original] = $new_url;
+      	break;
+      }
+
+    }
+  }
+  return $replacements;
+}
+
+// function prjo_dap_tokens_alter(array &$replacements, array $context, \Drupal\Core\Render\BubbleableMetadata $bubbleable_metadata) {
+//   // \Drupal::service('messenger')->addMessage("<code>".print_r($context,TRUE)."</code>");
+//   \Drupal::logger('prjo_dap')->notice("<code>".print_r($context,TRUE)."</code>");
+//   $options = $context['options'];
+//   // if (isset($options['langcode'])) {
+//   //   $url_options['language'] = \Drupal::languageManager()
+//   //     ->getLanguage($options['langcode']);
+//   //   $langcode = $options['langcode'];
+//   // }
+//   // else {
+//   //   $langcode = NULL;
+//   // }
+//   // if ($context['type'] == 'node' && !empty($context['data']['node'])) {
+//   //   $node = $context['data']['node'];
+//   //
+//   //   // Alter the [node:title] token, and replace it with the rendered content
+//   //   // of a field (field_title).
+//   //   if (isset($context['tokens']['title'])) {
+//   //     $title = $node->field_title
+//   //       ->view('default');
+//   //     $replacements[$context['tokens']['title']] = \Drupal::service('renderer')
+//   //       ->render($title);
+//   //   }
+//   // }
+// }
+
 /**
  * Implements hook_theme().
  */
